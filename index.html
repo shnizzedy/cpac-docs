@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+
+<head>
+  <title>C-PAC Docs</title>
+
+  <link rel="icon" href="assets/img/cpac.png">
+  <link href="assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="assets/css/main.css" rel="stylesheet">
+
+  <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/main.js"></script>
+
+</head>
+
+<body>
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+      <a href="index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+         <img src="assets/img/logo.png" alt="">
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="index.html" class="active">C-PAC</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="neuroimaging.html">Neuroimaging</a></li>
+          <li><a href="preprocessing.html">Preprocessing</a></li>
+          <li><a href="use.html">How to Use</a></li>
+          <li><a href="gallery.html">Gallery</a></li>
+          <li><a href="support.html">User Support</a></li>
+          <li><a href="appendix.html">Appendix</a></li>
+        </ul>
+      </nav>
+
+    </div>
+  </header>
+
+  <main class="main">
+
+    <section id="banner" class="banner section">
+
+       <img src="assets/img/bg.png">
+
+      <div class="container text-center">
+        <div class="row justify-content-center">
+          <div class="col-lg-8">
+            <h2>C-PAC</h2>
+            <p>Configurable Pipeline for the Analysis of Connectomes</p>
+            <a href="https://github.com/FCP-INDI/C-PAC" class="btn">see the code</a>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+    <div class="container text-center">
+      <p>The Configurable Pipeline for the Analysis of Connectomes (C-PAC) is an open-source software pipeline for automated preprocessing and analysis of resting-state fMRI data. C-PAC builds upon a robust set of existing software packages including AFNI, FSL, and ANTS, and makes it easy for both novice users and experts to explore their data using a wide array of analytic tools. Users define analysis pipelines by specifying a combination of preprocessing options and analyses to be run on an arbitrary number of subjects. Results can then be compared across groups using the integrated group statistics feature. </p>
+      
+      <h4>Optimize Large Datasets</h4>
+      <p>Researchers can now explore functional connectome data from thousands of subjects made public through releases by the International Neuroimaging Data-Sharing Initiative (INDI) and 1000 Functional Connectomes Project. With this in mind, C-PAC has been designed to reliably preprocess and analyize data for hundreds of subjects in a single run, either on a single machine or on a compute cluster using Sun Grid Engine, HTCondor, or Portable Batch System.</p>
+      
+      <h4>Ensure Robust Results</h4>
+      <p>Different analysis pipelines can produce significantly different results, raising questions about the replicability and reliability of brain imaging findings. C-PAC makes it easy to explore the impact of particular processing decisions by allowing users to run a factorial number of analysis pipelines, each with a different set of preprocessing and analysis options. An integrated Quality Control interface facillitates rapid manual examination of pipeline outputs and selection of subjects to be included in group comparisons.</p>
+
+        <div class="row">
+          <div class="col">
+
+            <h4>Preprocessing Options</h4>
+              <ul class="no-bullets">
+                <li>Skull Stripping</li>
+                <li>Template-Based Registration</li>
+                <li>Automatic Tissue Segmentation</li>
+                <li>Anatomical / Functional Coregistration</li>
+                <li>Volume Realignment</li>
+                <li>Slice Timing Correction</li>
+                <li>Intensity Normalization</li>
+                <li>Temporal Filtering</li>
+                <li>Nuisance Signal Correction</li>
+                <li>Median Angle Correction</li>
+                <li>Spatial Smoothing</li>
+                <li>Motion Scrubbing</li>
+              </ul>
+          </div>
+
+          <div class="col">
+            <h4>Analytic Tools</h4>
+              <ul class="no-bullets">
+                <li>Seed-based Correlation Analysis</li>
+                <li>Amplitude of Low Frequency Fluctuations (ALFF) and fALFF</li>
+                <li>Regional Homogeneity</li>
+                <li>Voxel-Mirrored Homotopic Connectivity</li>
+                <li>Timeseries Extraction</li>
+                <li>Network Centrality</li>
+                <li>Connectome-Wide Association Studies</li>
+                <li>Dual Regression</li>
+                <li>Bootstrap Analysis of Stable Clusters</li>
+                <li>Group Comparisons</li>
+              </ul>
+            </div>
+          </div>
+    </div>
+
+  </main>
+
+  <div class="footer">
+  © Copyright 2025 C-PAC Team
+  </div>
+
+</body>
+
+</html>
