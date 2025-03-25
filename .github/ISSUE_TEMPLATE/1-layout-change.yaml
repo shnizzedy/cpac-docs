@@ -1,0 +1,31 @@
+name: 💄 Layout change
+description: Suggest a layout change
+title: "💄 [layout change]"
+labels: [layout]
+body:
+  - type: markdown
+    attributes:
+      value: |
+          Please check [open issues](https://github.com/FCP-INDI/cpac-docs/issues?q=is%3Aissue%20state%3Aopen%20label%3Alayout) before adding a new feature request. If something like your request already exists, please add to that discussion. Also, please change
+          
+          > [layout change]
+          
+          in the title of this issue to something more descriptive of the feature you are requesting. If you'd like to update the emoji, consider checking [Gitm😂ji](https://gitmoji.dev) for guidance on emoji selection. Clicking an emoji image on that page will copy it to your clipboard.
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed feature
+      description: Describe the change you'd like. A clear and concise description of what you want to happen. [Wireframes](https://en.wikipedia.org/wiki/Website_wireframe) are welcome.
+    validations:
+      required: true
+  - type: textarea
+    id: related-problem
+    attributes:
+      label: Related problem
+      description: Is your feature request related to a problem? Please provide a clear and concise description of what the problem is. If any open issues relate to the problem, please link to them here.
+      placeholder: I'm always frustrated when…
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: 'If this change is specific to a page or set of pages, please apply the relevant [!["PAGE: *"](https://img.shields.io/badge/-PAGE:%20*-000000.svg) label(s)](https://github.com/FCP-INDI/cpac-docs/labels?q=PAGE%3A+) below.'

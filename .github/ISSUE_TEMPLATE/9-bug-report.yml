@@ -1,0 +1,73 @@
+name: "🐛 Bug report"
+description: Report a bug in this documentation
+title: "\U0001F41B [User-reported Bug]"
+labels: [bug, user-reported]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Please check [open issues](https://github.com/FCP-INDI/cpac-docs/labels/bug) before adding a new bug report. If something like your bug is already reported, please add to that discussion. Also, please change
+        
+        > [User-reported Bug]
+        
+        in the title of this issue to something more descriptive of the bug you are reporting. If you'd like to update the emoji, consider checking [Gitm😂ji](https://gitmoji.dev) for guidance on emoji selection. Clicking an emoji image on that page will copy it to your clipboard.
+
+        If you want to request changes to content or layout, please [switch to the more relevant issue template](https://github.com/FCP-INDI/cpac-docs/issues/new/choose).
+  - type: textarea
+    id: description
+    attributes:
+      label: Describe the bug
+      description: A clear and concise description of what the bug is.
+      placeholder: Tell us what you see!
+    validations:
+      required: true
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: To reproduce
+      description: Steps to reproduce the behavior.
+      placeholder: |
+        1. Go to '...'
+        2. Click on '...'
+        3. Scroll down to '...'
+        4. See error
+    validations:
+      required: false
+  - type: textarea
+    id: expectation
+    attributes:
+      label: Expected behavior
+      description: A clear and concise description of what you expected to happen.
+      placeholder: Tell us what you thought you'd see!
+    validations:
+      required: true
+  - type: textarea
+    id: criteria
+    attributes:
+      label: Acceptance criteria
+      description: What needs to be true for this issue to be considered resolved?
+      placeholder: |
+        Tell us what you'd like to see!
+        - [ ] criterion 1
+        - [ ] criterion 2
+        …
+    validations:
+      required: true
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: Screenshots
+      description: If applicable, add screenshots to help explain your problem.
+      placeholder: Show us what you see!
+    validations:
+      required: false
+  - type: textarea
+    id: additional
+    attributes:
+      label: Additional context
+      description: Add any other context about the problem here.
+    validations:
+      required: false
+  - type: markdown
+    attributes:
+      value: 'If this change is specific to a page or set of pages, please apply the relevant [!["PAGE: *"](https://img.shields.io/badge/-PAGE:%20*-000000.svg) label(s)](https://github.com/FCP-INDI/cpac-docs/labels?q=PAGE%3A+) below.'
