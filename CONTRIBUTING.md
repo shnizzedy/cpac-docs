@@ -1,5 +1,7 @@
 <!-- TOC -->
 
+To add a contributor using the [@all-contributors bot](https://allcontributors.org/docs/en/bot/usage), use the following syntax: @all-contributors please add @'username' for 'contributions'
+
 - [Branches](#branches)
   - [Versions](#versions)
     - [`nightly`](#nightly)
