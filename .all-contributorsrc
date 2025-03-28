@@ -1,4 +1,23 @@
 {
-  "projectName": "<cpac-docs>",
-  "projectOwner": "<FCP-INDI>"
+  "projectName": "cpac-docs",
+  "projectOwner": "FCP-INDI",
+  "files": [
+    "README.md"
+  ],
+  "commitType": "docs",
+  "commitConvention": "angular",
+  "contributorsPerLine": 7,
+  "contributors": [
+    {
+      "login": "tamsinrogers",
+      "name": "Tamsin Rogers",
+      "avatar_url": "https://avatars.githubusercontent.com/u/30237570?v=4",
+      "profile": "https://github.com/tamsinrogers",
+      "contributions": [
+        "test",
+        "code",
+        "ideas"
+      ]
+    }
+  ]
 }
