@@ -1,4 +1,3 @@
-{
    "projectName": "cpac-docs",
    "projectOwner": "tamsinrogers",
    "files": [
@@ -15,7 +14,8 @@
        "profile": "https://github.com/tamsinrogers",
        "contributions": [
          "code",
-         "ideas"
+         "ideas",
+         "infra"
        ]
      },
      {
