@@ -45,7 +45,7 @@ See [CONTRIBUTING](./CONTRIBUTING.md) for editing and contributing guidelines.
 <!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
 <!-- prettier-ignore-start -->
 <!-- markdownlint-disable -->
-<table style="border-collapse: collapse; border: none;">
+<table>
 <tbody>
 <tr>
   
