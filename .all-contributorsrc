@@ -1,4 +1,48 @@
 {
-  "projectName": "<cpac-docs>",
-  "projectOwner": "<tamsinrogers>"
-}
+   "projectName": "cpac-docs",
+   "projectOwner": "tamsinrogers",
+   "files": [
+     "README.md"
+   ],
+   "commitType": "docs",
+   "commitConvention": "angular",
+   "contributorsPerLine": 7,
+   "contributors": [
+     {
+       "login": "tamsinrogers",
+       "name": "Tamsin Rogers",
+       "avatar_url": "https://avatars.githubusercontent.com/u/30237570?v=4",
+       "profile": "https://github.com/tamsinrogers",
+       "contributions": [
+         "code",
+         "ideas"
+       ]
+     },
+     {
+       "login": "sgiavasis",
+       "name": "Steve Giavasis",
+       "avatar_url": "https://avatars.githubusercontent.com/u/4644673?v=4",
+       "profile": "https://github.com/sgiavasis",
+             "contributions": [
+                 "ideas"
+               ]
+     },
+     {
+       "login": "birajstha",
+       "name": "birajstha",
+       "avatar_url": "https://avatars.githubusercontent.com/u/111654544?v=4",
+       "profile": "https://github.com/birajstha",
+         "ideas"
+       ]
+     },
+     {
+       "login": "shnizzedy",
+       "name": "Jon Cluce",
+       "avatar_url": "https://avatars.githubusercontent.com/u/5974438?v=4",
+       "profile": "https://github.com/shnizzedy",
+       "contributions": [
+         "ideas",
+         "tool"
+       ]
+     }
+ }
