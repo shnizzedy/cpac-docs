@@ -49,7 +49,7 @@ See [CONTRIBUTING](./CONTRIBUTING.md) for editing and contributing guidelines.
   <tbody>
     <tr>
       <td align="center" valign="top" width="14.28%"><a href="https://github.com/tamsinrogers"><img src="https://avatars.githubusercontent.com/u/30237570?v=4?s=100" width="100px;" alt="Tamsin Rogers"/><br /><sub><b>Tamsin Rogers</b></sub></a><br /><a href="#test-tamsinrogers" title="Tests">⚠️</a> <a href="#code-tamsinrogers" title="Code">💻</a> <a href="#ideas-tamsinrogers" title="Ideas, Planning, & Feedback">🤔</a></td>
-      <td align="center" valign="top" width="14.28%"><a href="https://github.com/shnizzedy"><img src="https://avatars.githubusercontent.com/u/5974438?v=4?s=100" width="100px;" alt="Jon Cluce"/><br /><sub><b>Jon Cluce</b></sub></a><br /><a href="#ideas-shnizzedy" title="Ideas, Planning, & Feedback">🤔</a></td>
+      <td align="center" valign="top" width="14.28%"><a href="https://github.com/shnizzedy"><img src="https://avatars.githubusercontent.com/u/5974438?v=4?s=100" width="100px;" alt="Jon Cluce"/><br /><sub><b>Jon Cluce</b></sub></a><br /><a href="#ideas-shnizzedy" title="Ideas, Planning, & Feedback">🤔</a> <a href="#tool-shnizzedy" title="Tools">🔧</a></td>
     </tr>
   </tbody>
 </table>
