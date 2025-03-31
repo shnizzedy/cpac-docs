@@ -12,6 +12,7 @@
 - [Tutorials](#tutorials)
 - [References and citations](#references-and-citations)
 - [Environment notes](#environment-notes)
+- [Contributors](#contributors)
 
 <!-- /TOC -->
 
@@ -203,3 +204,8 @@ to generate the bibliography entry without the citation.
    ```
 * :heavy_plus_sign: Check [`.circleci/config.yml`](https://github.com/FCP-INDI/fcp-indi.github.io/blob/source/.circleci/config.yml) of the branch you're working from for build dependencies.
 * :octocat: Set an environment variable `GITHUBTOKEN` to a [personal access token](https://help.github.com/en/github/authenticating-to-github/creating-a-personal-access-token-for-the-command-line) to increase [your API rate limit](https://developer.github.com/v3/#rate-limiting) from 60 to 5000 requests per hour (for getting [release notes from GitHub](https://github.com/FCP-INDI/C-PAC/releases)).
+
+<a id="contributors" name="contributors"></a>
+## Contributors
+
+To add a contributor using the [@all-contributors bot](https://allcontributors.org/docs/en/bot/usage), use the following syntax in a comment: "@all-contributors please add `@username` for `contributions`".  See [allcontributors.org](https://allcontributors.org/docs/en/bot/usage) for usage and command specifications.
