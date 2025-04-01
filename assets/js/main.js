@@ -1,11 +1,13 @@
 (function() {
   "use strict";
+
   function toggleScrolled() {
     const b = document.querySelector('body');
     const h = document.querySelector('#header');
     if (!h.classList.contains('scroll-up-sticky') && !h.classList.contains('sticky-top') && !h.classList.contains('fixed-top')) return;
     window.scrollY > 100 ? b.classList.add('scrolled') : b.classList.remove('scrolled');
   }
+
   document.addEventListener('scroll', toggleScrolled);
   window.addEventListener('load', toggleScrolled);
 
@@ -15,22 +17,22 @@
       const data = await response.json();
       const container = document.getElementById('jsonContent');
       container.innerHTML = '';
-      
+
       if (!Array.isArray(data) || data.length === 0) {
         container.innerHTML = 'No nodeblocks found.';
         return;
       }
-      
+
       data.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-      
+
       const gridContainer = document.createElement('div');
       gridContainer.classList.add('grid-container');
-      
+
       data.forEach(item => {
         if (item.name) {
           const block = document.createElement('div');
           block.classList.add('nodeblock');
-          
+
           const title = document.createElement('button');
           title.classList.add('node-title');
           title.textContent = item.name;
@@ -38,12 +40,12 @@
           title.addEventListener('click', () => {
             showPopup(item);
           });
-          
+
           block.appendChild(title);
           gridContainer.appendChild(block);
         }
       });
-      
+
       container.appendChild(gridContainer);
     } catch (error) {
       console.error('Error loading JSON:', error);
@@ -79,6 +81,10 @@
     `;
     document.body.appendChild(popup);
   }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    mermaid.initialize({ startOnLoad: true });
+  });
 
   window.onload = function() {
     toggleScrolled();

@@ -372,3 +372,9 @@ section,
   font-size: 20px;
   cursor: pointer;
 }
+
+.mermaid {
+  max-height: 800px; 
+  overflow: auto;    
+  padding: 15px;
+}
