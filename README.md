@@ -26,14 +26,14 @@ This version of the C-PAC website is located here: https://fcp-indi.github.io/cp
 Discussion Forum
 ---------------
 
-If you are stuck and need help or have any other questions or comments about C-PAC, there is a C-PAC discussion forum here: https://neurostars.org/tag/cpac
+If you are stuck and need help or have any other questions or comments about C-PAC please contribute to the C-PAC discussion forum on <a href="https://neurostars.org/tag/cpac">Neurostars</a>
 
 Issue Tracker and Bugs
 ----------------------
 
-This is a beta version of C-PAC, which means that it is still under active development. As such, although we have done our best to ensure a stable pipeline, there will likely still be a few bugs that we did not catch. If you find a bug or would like to suggest a new feature, please open an issue on the the C-PAC Github issue tracker: https://github.com/FCP-INDI/C-PAC/issues?state=open
+This is a beta version of C-PAC, which means that it is still under active development. As such, although we have done our best to ensure a stable pipeline, there will likely still be a few bugs that we did not catch. If you find a bug or would like to suggest a new feature, please open an issue on the the <a href="https://github.com/FCP-INDI/C-PAC/issues?state=open">C-PAC Github issue tracker</a>
 
-If you would like to suggest revisions to the user documentation, please open an issue on the C-PAC website's GitHub issue tracker: https://github.com/FCP-INDI/fcp-indi.github.io/issues
+If you would like to suggest revisions to the user documentation, please open an issue on the <a href="https://github.com/FCP-INDI/cpac-docs/issues">C-PAC website's GitHub issue tracker</a>
 
 Editing
 ----------------------
