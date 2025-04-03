@@ -34,8 +34,7 @@ Issue Trackers
 This is a beta version of C-PAC, which means that it is still under active development. Although we have done our best to ensure a stable pipeline, there will likely still be a few bugs that we did not catch. If you find a bug or would like to suggest an edit or new feature, please open an issue on one of our issue trackers.
 
 * <a href="https://github.com/FCP-INDI/C-PAC/issues?state=open">C-PAC Codebase</a>
-* <a href="https://github.com/FCP-INDI/cpac-docs/issues">C-PAC Docs (usability)</a>
-* C-PAC Docs (content)
+* <a href="https://github.com/FCP-INDI/cpac-docs/issues">C-PAC Docs</a>
 
 If you would like to suggest revisions to the user documentation, please open an issue on the C-PAC website's GitHub issue tracker</a>.
 
