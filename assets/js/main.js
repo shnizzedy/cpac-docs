@@ -71,7 +71,7 @@
       const container = document.getElementById('yamlContent');
       container.innerHTML = '';
 
-      if (filename === 'assets/content/error_triage.yaml') {
+      if (filename === '../assets/content/error_triage.yaml') {
         // Extract only the content field from error_triage.yaml
         const parsedData = parseYAMLContent(yamlText);
         if (parsedData && parsedData.content) {
@@ -138,7 +138,7 @@
 
   window.onload = function() {
     toggleScrolled();
-    loadJSON('assets/content/nodeblock_index.json');
-    loadYAML('assets/content/error_triage.yaml');  
+    loadJSON('../assets/content/nodeblock_index.json');
+    loadYAML('../assets/content/error_triage.yaml');  
   };
 })();
