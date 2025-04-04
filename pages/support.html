@@ -7,6 +7,7 @@
   <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
   <script src="../assets/js/main.js"></script>
 
 </head>
@@ -54,21 +55,52 @@
             <center><a href="https://neurostars.org/tag/cpac" class="btn">submit a neurostars question</a></center>
           </div>
       </div>
+    </div>
 
     <div class="row">
 
       <div class="col">
         <center><h4 style="padding-bottom: 20px;">C-PAC Triage Error Flow</h4></center>
 
-        <center>
-        <div id="yamlContent">
+          <div class="mermaid">
+            graph TD;
+            A[Start] --> B{Error Message Prefix};
+            B -->|Killed| C[Provide more memory or talk to sysadmin];
+            B -->|Docker daemon| D[Check startup, reboot, or Docker access];
+            B -->|Other| E[Look in log directory];
+        
+            E --> F{Are there crash files?};
+            F -->|Yes| G[Nipype issue];
+            F -->|No| H[Continue];
+        
+            G --> I[Identify earliest failure in pipeline];
+            G --> J{input not specified or does not exist};
+            J -->|Check for all input data| K[Verify dataset completeness];
+        
+            G --> L[Enter Docker container to run c-pac];
+            L --> M[Run `singularity shell c-pac IMAGE.sif`];
+            L --> N[Run `docker ps` to find running containers];
+            L --> O[Find target container in NAMES column];
+            L --> P[Run `docker exec -it container_name bash`];
+        
+            A --> Q{Missing Resource};
+            Q -->|LookupError| R[Mismatch between node block docstring input and strat_pool.get_data call];
+            Q -->|RuntimeError| S[Workflow did not execute cleanly. Check logs];
+            S --> T[May lead to FileNotFound Error - file does not exist!];
+        
+            A --> U{Other};
+            U -->|data is a directory| V[Possible error binding directory to Docker];
+            U -->|Docker with entry point| W[No bindings after container name];
+          </div>
 
-        </div>
-        </center>
+          <div id="yamlContent" style="padding: 20px">
+          
+          </div>
 
       </div>
 
 
+    </div>
     </div>
 
     <div class="row">

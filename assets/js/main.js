@@ -75,14 +75,14 @@
         // Extract only the content field from error_triage.yaml
         const parsedData = parseYAMLContent(yamlText);
         if (parsedData && parsedData.content) {
-          container.textContent = parsedData.content;  // Display only the 'content' field
+          container.innerHTML = parsedData.content.replace(/\n/g, '<br>');  // Convert newlines to <br> tags
         } else {
           console.error('Content not found in error_triage.yaml');
           container.textContent = 'Error: Content not found in the YAML file.';
         }
       } else {
-        // For other YAML files, display the raw YAML content
-        container.textContent = yamlText;
+        // For other YAML files, display the raw YAML content with newlines preserved as <br>
+        container.innerHTML = yamlText.replace(/\n/g, '<br>');  // Convert newlines to <br> tags
       }
     } catch (error) {
       console.error(`Error loading YAML from ${filename}:`, error);
@@ -94,9 +94,9 @@
   // Simple YAML parser to extract 'content' from error_triage.yaml
   function parseYAMLContent(yamlText) {
     try {
-      const contentMatch = yamlText.match(/content:\s*(.*)/);
+      const contentMatch = yamlText.match(/content:\s*([\s\S]*)/); // Capture multiline content
       if (contentMatch) {
-        return { content: contentMatch[1].trim() };
+        return { content: contentMatch[1].trim() }; // Extract multiline content
       }
     } catch (error) {
       console.error('Error parsing YAML:', error);
