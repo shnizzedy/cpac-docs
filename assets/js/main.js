@@ -11,19 +11,25 @@
   document.addEventListener('scroll', toggleScrolled);
   window.addEventListener('load', toggleScrolled);
 
-  async function loadJSON() {
+  async function loadJSON(filepath) {
+    if (!filepath) {
+      console.error('loadJSON: No filepath provided.');
+      document.getElementById('jsonContent').textContent = 'Error: No JSON file specified.';
+      return;
+    }
+
     try {
-      const response = await fetch('nodeblock_index.json');
+      const response = await fetch(filepath);
       const data = await response.json();
       const container = document.getElementById('jsonContent');
       container.innerHTML = '';
 
       if (!Array.isArray(data) || data.length === 0) {
-        container.innerHTML = 'No nodeblocks found.';
+        container.innerHTML = `No data found in ${filepath}`;
         return;
       }
 
-      data.sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+      data.sort((a, b) => a.name?.toLowerCase().localeCompare(b.name?.toLowerCase()));
 
       const gridContainer = document.createElement('div');
       gridContainer.classList.add('grid-container');
@@ -48,9 +54,54 @@
 
       container.appendChild(gridContainer);
     } catch (error) {
-      console.error('Error loading JSON:', error);
-      document.getElementById('jsonContent').textContent = `Failed to load JSON data: ${error.message}`;
+      console.error(`Error loading JSON from ${filepath}:`, error);
+      document.getElementById('jsonContent').textContent = `Failed to load JSON from ${filepath}: ${error.message}`;
     }
+  }
+
+  async function loadYAML(filename) {
+    if (!filename) {
+      console.error('loadYAML: No filename provided.');
+      return;
+    }
+
+    try {
+      const response = await fetch(filename);
+      const yamlText = await response.text();
+      const container = document.getElementById('yamlContent');
+      container.innerHTML = '';
+
+      if (filename === 'error_triage.yaml') {
+        // Extract only the content field from error_triage.yaml
+        const parsedData = parseYAMLContent(yamlText);
+        if (parsedData && parsedData.content) {
+          container.textContent = parsedData.content;  // Display only the 'content' field
+        } else {
+          console.error('Content not found in error_triage.yaml');
+          container.textContent = 'Error: Content not found in the YAML file.';
+        }
+      } else {
+        // For other YAML files, display the raw YAML content
+        container.textContent = yamlText;
+      }
+    } catch (error) {
+      console.error(`Error loading YAML from ${filename}:`, error);
+      const container = document.getElementById('yamlContent');
+      container.textContent = `Failed to load YAML from ${filename}: ${error.message}`;
+    }
+  }
+
+  // Simple YAML parser to extract 'content' from error_triage.yaml
+  function parseYAMLContent(yamlText) {
+    try {
+      const contentMatch = yamlText.match(/content:\s*(.*)/);
+      if (contentMatch) {
+        return { content: contentMatch[1].trim() };
+      }
+    } catch (error) {
+      console.error('Error parsing YAML:', error);
+    }
+    return null;
   }
 
   function formatArray(arr) {
@@ -61,7 +112,6 @@
   }
 
   function showPopup(item) {
-    // Close any existing popups
     const existingPopups = document.querySelectorAll('.popup');
     existingPopups.forEach(popup => popup.remove());
 
@@ -88,6 +138,7 @@
 
   window.onload = function() {
     toggleScrolled();
-    loadJSON();
+    loadJSON('nodeblock_index.json');
+    loadYAML('error_triage.yaml');  
   };
 })();
