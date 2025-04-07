@@ -199,8 +199,8 @@
 
   window.onload = function () {
     toggleScrolled();
-    loadJSON("../assets/content/nodeblock_index.json");
-    loadYAML("../assets/content/error_triage.yaml");
-    loadYAMLdropdown("../assets/content/error_triage.yaml");
+    loadJSON("../assets/content/pages/pipelines/nodeblock_index.json");
+    loadYAML("../assets/content/pages/support/error_triage.yaml");
+    loadYAMLdropdown("../assets/content//pages/support/error_triage.yaml");
   };
 })();
