@@ -63,7 +63,8 @@
       <div class="col">
         <center><h4 style="padding-bottom: 20px;">C-PAC Triage Error Flow</h4></center>
 
-          <center><div class="mermaid">
+          <center>
+            <div class="mermaid">
             graph TD;
             A[Start] --> B{Error Message Prefix};
             B -->|Killed| C[Provide more memory or talk to sysadmin];
@@ -92,16 +93,15 @@
             A --> U{Other};
             U -->|data is a directory| V[Possible error binding directory to Docker];
             U -->|Docker with entry point| W[No bindings after container name];
-          </div></center>
+          </div>
 
           <!--<div id="yamlContent" style="padding: 20px"> </div>-->
 
-          <center>
+          <h4>Reminders & Memory-Joggers</h4>
 
-            <div id="dropdownContent" style="padding: 20px"> </div>
-            
-          </center>
+          <div id="dropdownContent"></div>
 
+        </center>
 
       </div>
 

@@ -33,28 +33,56 @@ operations:
 
 content:
   - dropdown_title: AFNI
-    dropdown_details: details
+    dropdown_details: 
+      - May assume first line as a header - solve by adding an arbitrary header
+      - 3dskullstrip sometimes requires a GUI
   - dropdown_title: Atlas
-    dropdown_details: details
+    dropdown_details: 
+      - refer to Schaefer200 
   - dropdown_title: Container
-    dropdown_details: details
+    dropdown_details: 
+      - Docker daemon - start-up, reboot, or make sure you have access to Docker
   - dropdown_title: Config
-    dropdown_details: details
+    dropdown_details: 
+      - Generate_quality_control_images doesn't work unless motion correction is also on
+      - Multiple magnitude files for echo times need to be named with an integer i.e. _magnitude1, _magnitude2
+      - May need to create ROIs from coordinates with no nifti file
+      - If binding a local FSL installation, make sure to also tell C-PAC to use it
+      - When pattern is set to default, the code searches for the first key it finds out of ['acquisition', 'SliceTiming', 'SliceAcquisitionOrder'] for slice time pattern
+      - SGE batch files with empty -S parameter cause crash
+      - To pull fmri outputs into cpac, set pipeline_setup > outdir_ingress > run
+      - To pull freesurfer outputs into cpac, set surface_analysis > freesurfer > ingress_reconall > true
   - dropdown_title: File/Path Naming
-    dropdown_details: details
+    dropdown_details: 
+      - Are your dotfiles visible?
+      - Spacing issues
+      - Do you need to delete a hidden file?
   - dropdown_title: fmriprep
-    dropdown_details: details
+    dropdown_details: 
+      - C-PAC does not currently support separate WM and CSF for aCompCor
+      - You can run a post-proc script that simply runs 3dTproject standalone if you're okay with two 3dTproject runs in sequence (which should not negatively impact the data)
   - dropdown_title: GUI
-    dropdown_details: details
+    dropdown_details: 
+      - Python.app to open GUI from command line
+      - Check Nipype version
   - dropdown_title: Installation
-    dropdown_details: details
+    dropdown_details: 
+      - Errors typically found in setup.py
   - dropdown_title: Memory
-    dropdown_details: details
+    dropdown_details: 
+      - Parallel_nodes needs to be  ≤ n_procs 
+      - Delayed/joblib can help with endless loops
   - dropdown_title: Nuisance Regression
-    dropdown_details: details
+    dropdown_details: 
+      - In native space, alff also needs to be switched to 'native'
   - dropdown_title: Python Packages
-    dropdown_details: details
+    dropdown_details: 
+      - conda comes with newer Numpy and Scipy builds which rely on certain Intel MKL math libraries, required for install
   - dropdown_title: Registration
-    dropdown_details: details
+    dropdown_details: 
+      - If an error is happening to all/most subjects, that's more likely a pipeline or C-PAC problem (and might become an issue we need to resolve)
+      - If it's happening to only some but not all, it's more likely a data-related issue (and might only require some pipeline configuration tweaks)
+      - If it's the final bold timeseries in template space that's off, generally the two points in the pipeline that are most likely to be the culprit is either coregistration or the final warp to template. And sometimes but less often, the actual original registration (T1 to template).
+      - Once the source has been isolated, check the Nipype working directory (if saved) to trace backwards. Find the subdirectory for the specific node that produced the step and check the command.txt or report.rst files inside to see the command run, check the inputs, etc.
   - dropdown_title: Version Control
     dropdown_details: details

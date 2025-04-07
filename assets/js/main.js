@@ -103,7 +103,7 @@
       const dropdownContainer = document.getElementById("dropdownContent");
       dropdownContainer.innerHTML = "";
       dropdownContainer.style.display = "grid";
-      dropdownContainer.style.gridTemplateColumns = "repeat(4, 1fr)";
+      dropdownContainer.style.gridTemplateColumns = "1fr"; 
       dropdownContainer.style.gap = "16px";
 
       const dropdownItems = yamlData.content;
@@ -130,7 +130,19 @@
         details.classList.add("dropdown-details");
         details.style.display = "none";
         details.style.marginLeft = "10px";
-        details.innerText = item.dropdown_details || "No details available.";
+        details.style.overflowWrap = "break-word";
+
+        if (Array.isArray(item.dropdown_details)) {
+          const list = document.createElement("ul");
+          item.dropdown_details.forEach((detail) => {
+            const listItem = document.createElement("li");
+            listItem.textContent = detail;
+            list.appendChild(listItem);
+          });
+          details.appendChild(list);
+        } else {
+          details.innerText = "No details available.";
+        }
 
         wrapper.appendChild(button);
         wrapper.appendChild(details);

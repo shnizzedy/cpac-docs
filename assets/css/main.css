@@ -377,6 +377,7 @@ section,
 
 .mermaid {  
   padding: 15px;
+  padding-bottom:50px;
   height: 50%;
   width:fit-content;
 }
@@ -384,16 +385,19 @@ section,
 
 .dropdownContent {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
   gap: 16px;
-}
-
-.dropdown-item:hover {
-  transform: scale(1.02);
+  align-self: center;
+  width: 70%;
 }
 
 .dropdown-details {
   font-size: 12px;
+  text-align: left;
+  width: 70%;
+
 }
 
 
+.dropdown-toggle{
+  width: 70%;
+}
