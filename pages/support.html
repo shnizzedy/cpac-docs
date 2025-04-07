@@ -8,6 +8,7 @@
   <link href="../assets/css/main.css" rel="stylesheet">
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
   <script src="../assets/js/main.js"></script>
 
 </head>
@@ -62,7 +63,7 @@
       <div class="col">
         <center><h4 style="padding-bottom: 20px;">C-PAC Triage Error Flow</h4></center>
 
-          <div class="mermaid">
+          <center><div class="mermaid">
             graph TD;
             A[Start] --> B{Error Message Prefix};
             B -->|Killed| C[Provide more memory or talk to sysadmin];
@@ -91,11 +92,16 @@
             A --> U{Other};
             U -->|data is a directory| V[Possible error binding directory to Docker];
             U -->|Docker with entry point| W[No bindings after container name];
-          </div>
+          </div></center>
 
-          <div id="yamlContent" style="padding: 20px">
-          
-          </div>
+          <!--<div id="yamlContent" style="padding: 20px"> </div>-->
+
+          <center>
+
+            <div id="dropdownContent" style="padding: 20px"> </div>
+            
+          </center>
+
 
       </div>
 

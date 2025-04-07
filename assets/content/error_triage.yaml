@@ -32,17 +32,29 @@ operations:
 
 
 content:
-  Walkthroughs, Reminders, & Memory Joggers
-  - AFNI
-  - Atlas
-  - Container
-  - Config
-  - File/Path Naming
-  - fmriprep
-  - GUI
-  - Installation
-  - Memory
-  - Nuisance Regression
-  - Python Packages
-  - Registration
-  - Version Control
+  - dropdown_title: AFNI
+    dropdown_details: details
+  - dropdown_title: Atlas
+    dropdown_details: details
+  - dropdown_title: Container
+    dropdown_details: details
+  - dropdown_title: Config
+    dropdown_details: details
+  - dropdown_title: File/Path Naming
+    dropdown_details: details
+  - dropdown_title: fmriprep
+    dropdown_details: details
+  - dropdown_title: GUI
+    dropdown_details: details
+  - dropdown_title: Installation
+    dropdown_details: details
+  - dropdown_title: Memory
+    dropdown_details: details
+  - dropdown_title: Nuisance Regression
+    dropdown_details: details
+  - dropdown_title: Python Packages
+    dropdown_details: details
+  - dropdown_title: Registration
+    dropdown_details: details
+  - dropdown_title: Version Control
+    dropdown_details: details
