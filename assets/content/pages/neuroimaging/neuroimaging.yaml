@@ -1,1 +1,37 @@
 # this is a C-PAC Docs content file (placeholder)
+
+paragraphs:
+  - title: Anatomical Preprocessing
+    paragraphs:
+    - General Preprocessing (Non-Local Means Filtering (NLM), N4 Bias Field Correction)
+    - Brain Masking (Skull-Stripping)
+    - ACPC Alignment
+  - title: Tissue Segmentation
+    paragraphs:
+    - Overview
+  - title: Registration (Calculation of Spatial Transforms)
+    paragraphs:
+    - Overview
+  - title: Cortical Surface Preprocessing
+    paragraphs:
+    - Overview
+  - title: Distortion Correction
+    paragraphs:
+    - Overview
+  - title: Functional Preprocessing
+    paragraphs:
+    - General Preprocessing (Slice-Time Correction, De-Spiking, Intensity Normalization, Smoothing)
+    - BOLD Masking
+    - Motion Correction
+  - title: Functional Coregistration (BOLD-toStructural)
+    paragraphs:
+    - Creating the structural BOLD reference (Single-Band Reference/SBREF)
+  - title: Applying Transforms (Spatial Normalization)
+    paragraphs:
+    - Overview
+  - title: Nuisance Denoising
+    paragraphs:
+    - Overview
+  - title: Connectivity Measures
+    paragraphs:
+    - Overview

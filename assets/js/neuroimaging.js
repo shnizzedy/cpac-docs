@@ -9,7 +9,6 @@
   }
 
   document.addEventListener("scroll", toggleScrolled);
-  window.addEventListener("load", toggleScrolled);
 
   async function loadJSON(filepath) {
     if (!filepath) {
@@ -68,26 +67,13 @@
     try {
       const response = await fetch(filename);
       const yamlText = await response.text();
-      const yamlData = jsyaml.load(yamlText); 
+      const yamlData = jsyaml.load(yamlText);
 
       const paragraphsContainer = document.getElementById("paragraphsContent");
-      const mermaidContainer = document.getElementById("operationsContent");
-      const listContainer = document.getElementById("listContent");
-
       paragraphsContainer.innerHTML = "";
-      mermaidContainer.innerHTML = ""; 
-      listContainer.innerHTML = ""; 
 
       if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
-        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer); 
-      }
-
-      if (yamlData.operations) {
-        renderMermaidFromYAML(yamlData.operations, mermaidContainer); 
-      }
-
-      if (yamlData.list && Array.isArray(yamlData.list)) {
-        renderYAMLList(yamlData.list, listContainer); 
+        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer);
       }
 
     } catch (error) {
@@ -125,44 +111,8 @@
   }
   
 
-  function renderMermaidFromYAML(operationsData, container) {
-
-    const mermaidContainer = document.createElement("div");
-    mermaidContainer.classList.add("mermaid");
-    mermaidContainer.textContent = operationsData;
-
-    container.appendChild(mermaidContainer);
-
-    mermaid.init(undefined, mermaidContainer);
-  }
-
-  function renderYAMLList(listData, container) {
-    listData.forEach((item) => {
-      const section = document.createElement("div");
-      section.classList.add("list-section");
-
-      const title = document.createElement("h4");
-      title.textContent = item.title;
-
-      const list = document.createElement("ul");
-      item.items.forEach((listItem) => {
-        const li = document.createElement("li");
-        li.textContent = listItem;
-        list.appendChild(li);
-      });
-
-      section.appendChild(title);
-      section.appendChild(list);
-      container.appendChild(section);
-    });
-  }
-
-  document.addEventListener("DOMContentLoaded", function () {
-    mermaid.initialize({ startOnLoad: true });
-  });
-
-  window.onload = function () {
+  window.addEventListener("load", () => {
     toggleScrolled();
-    loadYAML("assets/content/pages/index/index.yaml");
-  };
+    loadYAML("../assets/content/pages/neuroimaging/neuroimaging.yaml");
+  });
 })();
