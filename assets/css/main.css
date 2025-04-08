@@ -375,13 +375,14 @@ section,
   cursor: pointer;
 }
 
-.mermaid {  
+.mermaid {
   padding: 15px;
-  padding-bottom:50px;
+  padding-bottom: 50px;
   height: 50%;
-  width:fit-content;
+  width: fit-content;
+  margin-left: auto;
+  margin-right: auto;
 }
-
 
 .dropdownContent {
   display: grid;
@@ -400,4 +401,25 @@ section,
 
 .dropdown-toggle{
   width: 70%;
+}
+
+#paragraphContent {
+  width: 75%;
+  margin: 40px auto; 
+  text-align: center;
+  line-height: 1.6;
+}
+
+#paragraphContent .paragraph-block {
+  margin-bottom: 40px;
+}
+
+#paragraphContent .paragraph-title {
+  font-size: 1.6em;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+#paragraphContent .paragraph-text {
+  font-size: 1.1em;
 }

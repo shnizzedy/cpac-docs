@@ -68,20 +68,31 @@
     try {
       const response = await fetch(filename);
       const yamlText = await response.text();
+      const yamlData = jsyaml.load(yamlText); // Parsing YAML into a JavaScript object
       const container = document.getElementById("yamlContent");
-      container.innerHTML = "";
+      container.innerHTML = ""; // Clear previous content
 
-      if (filename === "../assets/content/error_triage.yaml") {
-        const parsedData = parseYAMLContent(yamlText);
-        if (parsedData && parsedData.content) {
-          container.innerHTML = parsedData.content.replace(/\n/g, "<br>");
-        } else {
-          console.error("Content not found in error_triage.yaml");
-          container.textContent = "Error: Content not found in the YAML file.";
-        }
-      } else {
-        container.innerHTML = yamlText.replace(/\n/g, "<br>");
+      // Check if 'dropdown' field exists and handle it
+      if (yamlData.dropdown && Array.isArray(yamlData.dropdown)) {
+        loadYAMLdropdown(yamlData.dropdown); // Function to display dropdown items
+        return;
       }
+
+      // Check if 'content' field exists and handle it
+      if (yamlData.content && Array.isArray(yamlData.content)) {
+        readYAMLparagraphs(yamlData.content); // Function to handle paragraphs
+        return;
+      }
+
+      // Check if 'operations' field exists and handle it (display mermaid chart)
+      if (yamlData.operations) {
+        renderMermaidFlowchart(yamlData.operations); // Function to handle mermaid flowchart
+        return;
+      }
+
+      // If no specific fields found, show raw YAML content
+      displayRawYAMLContent(yamlText);
+
     } catch (error) {
       console.error(`Error loading YAML from ${filename}:`, error);
       const container = document.getElementById("yamlContent");
@@ -89,87 +100,80 @@
     }
   }
 
-  async function loadYAMLdropdown(filename) {
-    if (!filename) {
-      console.error("loadYAMLdropdown: No filename provided.");
-      return;
-    }
+  function loadYAMLdropdown(dropdownData) {
+    const dropdownContainer = document.getElementById("dropdownContent");
+    dropdownContainer.innerHTML = ""; // Clear previous dropdown content
 
-    try {
-      const response = await fetch(filename);
-      const yamlText = await response.text();
-      const yamlData = jsyaml.load(yamlText);
+    dropdownData.forEach((item) => {
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("dropdown-item");
 
-      const dropdownContainer = document.getElementById("dropdownContent");
-      dropdownContainer.innerHTML = "";
-      dropdownContainer.style.display = "grid";
-      dropdownContainer.style.gridTemplateColumns = "1fr"; 
-      dropdownContainer.style.gap = "16px";
-
-      const dropdownItems = yamlData.content;
-
-      if (!Array.isArray(dropdownItems) || dropdownItems.length === 0) {
-        dropdownContainer.innerHTML = "No dropdown content found in YAML.";
-        return;
-      }
-
-      dropdownItems.forEach((item) => {
-        const wrapper = document.createElement("div");
-        wrapper.classList.add("dropdown-item");
-
-        const button = document.createElement("button");
-        button.classList.add("dropdown-toggle");
-        button.textContent = item.dropdown_title;
-        button.style.display = "block";
-        button.style.marginBottom = "10px";
-        button.addEventListener("click", () => {
-          details.style.display = details.style.display === "none" ? "block" : "none";
-        });
-
-        const details = document.createElement("div");
-        details.classList.add("dropdown-details");
-        details.style.display = "none";
-        details.style.marginLeft = "10px";
-        details.style.overflowWrap = "break-word";
-
-        if (Array.isArray(item.dropdown_details)) {
-          const list = document.createElement("ul");
-          item.dropdown_details.forEach((detail) => {
-            const listItem = document.createElement("li");
-            listItem.textContent = detail;
-            list.appendChild(listItem);
-          });
-          details.appendChild(list);
-        } else {
-          details.innerText = "No details available.";
-        }
-
-        wrapper.appendChild(button);
-        wrapper.appendChild(details);
-        dropdownContainer.appendChild(wrapper);
+      const button = document.createElement("button");
+      button.classList.add("dropdown-toggle");
+      button.textContent = item.dropdown_title;
+      button.style.display = "block";
+      button.style.marginBottom = "10px";
+      button.addEventListener("click", () => {
+        details.style.display = details.style.display === "none" ? "block" : "none";
       });
-    } catch (error) {
-      console.error(`Error loading YAML dropdown from ${filename}:`, error);
-      const dropdownContainer = document.getElementById("dropdownContent");
-      dropdownContainer.textContent = `Failed to load YAML: ${error.message}`;
-    }
-  }
 
-  function parseYAMLContent(yamlText) {
-    try {
-      const contentMatch = yamlText.match(/content:\s*([\s\S]*)/);
-      if (contentMatch) {
-        return { content: contentMatch[1].trim() };
+      const details = document.createElement("div");
+      details.classList.add("dropdown-details");
+      details.style.display = "none";
+      details.style.marginLeft = "10px";
+      details.style.overflowWrap = "break-word";
+
+      if (Array.isArray(item.dropdown_details)) {
+        const list = document.createElement("ul");
+        item.dropdown_details.forEach((detail) => {
+          const listItem = document.createElement("li");
+          listItem.textContent = detail;
+          list.appendChild(listItem);
+        });
+        details.appendChild(list);
+      } else {
+        details.innerText = "No details available.";
       }
-    } catch (error) {
-      console.error("Error parsing YAML:", error);
-    }
-    return null;
+
+      wrapper.appendChild(button);
+      wrapper.appendChild(details);
+      dropdownContainer.appendChild(wrapper);
+    });
   }
 
-  function formatArray(arr) {
-    if (!arr) return "N/A";
-    return `${(Array.isArray(arr) ? arr : [arr]).map((item) => `${JSON.stringify(item)}`).join(" ")}`;
+  function readYAMLparagraphs(contentData) {
+    const container = document.getElementById("yamlContent");
+    contentData.forEach((item) => {
+      const section = document.createElement("div");
+      section.classList.add("paragraph-section");
+
+      const title = document.createElement("h3");
+      title.textContent = item.title;
+
+      const paragraph = document.createElement("p");
+      paragraph.textContent = item.paragraph;
+
+      section.appendChild(title);
+      section.appendChild(paragraph);
+      container.appendChild(section);
+    });
+  }
+
+  function renderMermaidFlowchart(operationsData) {
+    const container = document.getElementById("operationsContent");
+    container.innerHTML = ""; // Clear previous content
+
+    const mermaidScript = document.createElement("script");
+    mermaidScript.textContent = `graph TD; ${operationsData}`; // Assuming operationsData is in mermaid syntax
+    container.appendChild(mermaidScript);
+
+    // Initialize Mermaid to render the flowchart
+    mermaid.init(undefined, container);
+  }
+
+  function displayRawYAMLContent(yamlText) {
+    const container = document.getElementById("yamlContent");
+    container.textContent = yamlText; // Display the raw YAML content as is
   }
 
   function showPopup(item) {
@@ -193,14 +197,19 @@
     document.body.appendChild(popup);
   }
 
+  function formatArray(arr) {
+    if (!arr) return "N/A";
+    return `${(Array.isArray(arr) ? arr : [arr]).map((item) => `${JSON.stringify(item)}`).join(" ")}`;
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     mermaid.initialize({ startOnLoad: true });
   });
 
   window.onload = function () {
     toggleScrolled();
-    loadJSON("../assets/content/pages/pipelines/nodeblock_index.json");
-    loadYAML("../assets/content/pages/support/error_triage.yaml");
-    loadYAMLdropdown("../assets/content//pages/support/error_triage.yaml");
+    //loadJSON("../assets/content/pages/pipelines/nodeblock_index.json");
+    //loadYAML("../assets/content/pages/support/error_triage.yaml");
+    loadYAML("../assets/content/pages/index/index.yaml");
   };
 })();

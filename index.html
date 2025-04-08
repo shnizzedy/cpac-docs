@@ -9,6 +9,7 @@
 
   <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
   <script src="assets/js/main.js"></script>
 
 </head>
@@ -57,32 +58,10 @@
 
     </section>
 
-    <div class="container text-center">
-      <p>The Configurable Pipeline for the Analysis of Connectomes (C-PAC) is an open-source software pipeline for automated preprocessing and analysis of resting-state fMRI data. C-PAC builds upon a robust set of existing software packages including AFNI, FSL, and ANTS, and makes it easy for both novice users and experts to explore their data using a wide array of analytic tools. Users define analysis pipelines by specifying a combination of preprocessing options and analyses to be run on an arbitrary number of subjects. Results can then be compared across groups using the integrated group statistics feature. </p>
+    <div id="yamlContent"></div> <!-- For displaying paragraphs or raw YAML -->
 
-      <h4>Optimize Large Datasets</h4>
-      <p>Researchers can now explore functional connectome data from thousands of subjects made public through releases by the International Neuroimaging Data-Sharing Initiative (INDI) and 1000 Functional Connectomes Project. With this in mind, C-PAC has been designed to reliably preprocess and analyize data for hundreds of subjects in a single run, either on a single machine or on a compute cluster using Sun Grid Engine, HTCondor, or Portable Batch System.</p>
-      
-      <h4>Ensure Robust Results</h4>
-      <p>Different analysis pipelines can produce significantly different results, raising questions about the replicability and reliability of brain imaging findings. C-PAC makes it easy to explore the impact of particular processing decisions by allowing users to run a factorial number of analysis pipelines, each with a different set of preprocessing and analysis options. An integrated Quality Control interface facillitates rapid manual examination of pipeline outputs and selection of subjects to be included in group comparisons.</p>
+    <div id="operationsContent"></div> <!-- For displaying mermaid flowchart -->
 
-      <center><div class="mermaid">
-        graph TD;
-            A[Input Data] -->|Short| B[Anatomical Preprocessing];
-            B -->|Medium| C[Tissue Segmentation];
-            A -->|Medium| D[Functional Preprocessing];
-            D -->|Medium| E[Nuisance Regression];
-            A -->|Long| F[Registrations - Calculation of Transforms];
-            C --> F;
-            F -->|Short| G[Application of Transforms];
-            G --> H[Output Data - Template Space];
-            H -->|Varies| I[Group-Level Analyses];
-            I --> J[Statistical Model - if applicable];
-            E -->|Long| K[Connectivity Measures];
-            K --> L[Output Data - Native Space];
-            G --> K;
-
-      </div></center>
 
         <div class="row">
           <div class="col">
@@ -121,6 +100,9 @@
             </div>
           </div>
     </div>
+
+    
+
 
   </main>
 

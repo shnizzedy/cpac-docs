@@ -31,7 +31,7 @@ operations:
     U -->|Docker with entry point| W[No bindings after container name];
 
 
-content:
+dropdown:
   - dropdown_title: AFNI
     dropdown_details: 
       - May assume first line as a header - solve by adding an arbitrary header
