@@ -12,6 +12,12 @@
   <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
   <script src="assets/js/main.js"></script>
 
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
+  
+
 </head>
 
 <body>
@@ -58,9 +64,11 @@
 
     </section>
 
-    <div id="yamlContent"></div> <!-- For displaying paragraphs or raw YAML -->
+    <div id="paragraphsContent"></div> <!-- This will contain the paragraphs -->
+    <div id="operationsContent"></div> <!-- This will contain the Mermaid flowchart -->
+    
 
-    <div id="operationsContent"></div> <!-- For displaying mermaid flowchart -->
+    
 
 
         <div class="row">

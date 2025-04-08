@@ -403,23 +403,23 @@ section,
   width: 70%;
 }
 
-#paragraphContent {
+#paragraphsContent {
   width: 75%;
   margin: 40px auto; 
   text-align: center;
   line-height: 1.6;
 }
 
-#paragraphContent .paragraph-block {
+#paragraphsContent .paragraph-block {
   margin-bottom: 40px;
 }
 
-#paragraphContent .paragraph-title {
+#paragraphsContent .paragraph-title {
   font-size: 1.6em;
   font-weight: bold;
   margin-bottom: 10px;
 }
 
-#paragraphContent .paragraph-text {
+#paragraphsContent .paragraph-text {
   font-size: 1.1em;
 }
