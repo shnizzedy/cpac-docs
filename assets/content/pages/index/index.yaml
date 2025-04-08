@@ -30,7 +30,25 @@ list:
     items:
       - Skull Stripping
       - Template-Based Registration
+      - Automatic Tissue Segmentation
+      - Anatomical / Functional Coregistration
+      - Volume Realignment
+      - Slice Timing Correction
+      - Intensity Normalization
+      - Temporal Filtering
+      - Nuisance Signal Correction
+      - Median Angle Correction
+      - Spatial Smoothing
+      - Motion Scrubbing
   - title: Analytic Tools
     items:
       - Seed-based Correlation Analysis
       - Amplitude of Low Frequency Fluctuations (ALFF) and fALFF
+      - Regional Homogeneity
+      - Voxel-Mirrored Homotopic Connectivity
+      - Timeseries Extraction
+      - Network Centrality
+      - Connectome-Wide Association Studies
+      - Dual Regression
+      - Bootstrap Analysis of Stable Clusters
+      - Group Comparisons

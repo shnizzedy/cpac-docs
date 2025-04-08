@@ -395,7 +395,6 @@ section,
   font-size: 12px;
   text-align: left;
   width: 70%;
-
 }
 
 
@@ -422,4 +421,11 @@ section,
 
 #paragraphsContent .paragraph-text {
   font-size: 1.1em;
+}
+
+#listContent {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px; 
+  justify-items: center; 
 }

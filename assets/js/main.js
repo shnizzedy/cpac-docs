@@ -68,22 +68,26 @@
     try {
       const response = await fetch(filename);
       const yamlText = await response.text();
-      const yamlData = jsyaml.load(yamlText); // Parsing YAML into a JavaScript object
+      const yamlData = jsyaml.load(yamlText); 
 
       const paragraphsContainer = document.getElementById("paragraphsContent");
       const mermaidContainer = document.getElementById("operationsContent");
+      const listContainer = document.getElementById("listContent");
 
-      paragraphsContainer.innerHTML = ""; // Clear previous content
-      mermaidContainer.innerHTML = ""; // Clear previous content
+      paragraphsContainer.innerHTML = "";
+      mermaidContainer.innerHTML = ""; 
+      listContainer.innerHTML = ""; 
 
-      // Check if 'paragraphs' field exists and handle it (display paragraphs first)
       if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
-        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer); // Function to handle paragraphs
+        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer); 
       }
 
-      // Check if 'operations' field exists and handle it (render mermaid flowchart)
       if (yamlData.operations) {
-        renderMermaidFromYAML(yamlData.operations, mermaidContainer); // Function to render mermaid chart
+        renderMermaidFromYAML(yamlData.operations, mermaidContainer); 
+      }
+
+      if (yamlData.list && Array.isArray(yamlData.list)) {
+        renderYAMLList(yamlData.list, listContainer); 
       }
 
     } catch (error) {
@@ -111,16 +115,35 @@
   }
 
   function renderMermaidFromYAML(operationsData, container) {
-    // Create a new div to hold the Mermaid chart
+
     const mermaidContainer = document.createElement("div");
     mermaidContainer.classList.add("mermaid");
-    mermaidContainer.textContent = operationsData; // Set the Mermaid syntax
+    mermaidContainer.textContent = operationsData;
 
-    // Append the Mermaid container to the mermaidContainer
     container.appendChild(mermaidContainer);
 
-    // Initialize Mermaid to render the flowchart
     mermaid.init(undefined, mermaidContainer);
+  }
+
+  function renderYAMLList(listData, container) {
+    listData.forEach((item) => {
+      const section = document.createElement("div");
+      section.classList.add("list-section");
+
+      const title = document.createElement("h4");
+      title.textContent = item.title;
+
+      const list = document.createElement("ul");
+      item.items.forEach((listItem) => {
+        const li = document.createElement("li");
+        li.textContent = listItem;
+        list.appendChild(li);
+      });
+
+      section.appendChild(title);
+      section.appendChild(list);
+      container.appendChild(section);
+    });
   }
 
   document.addEventListener("DOMContentLoaded", function () {
