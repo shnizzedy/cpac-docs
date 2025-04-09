@@ -73,7 +73,7 @@
       paragraphsContainer.innerHTML = "";
 
       if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
-        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer);
+        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer, true);
       }
 
     } catch (error) {
@@ -83,33 +83,49 @@
     }
   }
 
-  function readYAMLparagraphs(contentData, container) {
-    contentData.forEach((item) => {
+  function readYAMLparagraphs(paragraphs, container, isTopLevel = false) {
+    paragraphs.forEach(item => {
       const section = document.createElement("div");
       section.classList.add("paragraph-section");
-  
-      const title = document.createElement("h3");
-      title.textContent = item.title;
-      section.appendChild(title);
-  
-      // Support multiple paragraphs
-      if (Array.isArray(item.paragraphs)) {
-        item.paragraphs.forEach((paraText) => {
-          const para = document.createElement("p");
-          para.textContent = paraText;
-          section.appendChild(para);
-        });
-      } else {
-        // Fallback if single string (legacy support)
-        const para = document.createElement("p");
-        para.textContent = item.paragraphs || "";
-        section.appendChild(para);
+
+      if (item.paragraph) {
+        const heading = document.createElement(isTopLevel ? "h4" : "h5");
+        heading.textContent = item.paragraph;
+
+        if (isTopLevel) {
+          heading.style.fontWeight = "bold"; 
+        } else {
+          heading.style.fontWeight = "normal"; 
+          heading.style.fontStyle = "italic";  
+        }
+
+        section.appendChild(heading);
       }
-  
+
+      if (Array.isArray(item.details)) {
+        const ul = document.createElement("ul");
+        ul.classList.add("paragraph-details-list");
+
+        item.details.forEach(detailText => {
+          const li = document.createElement("li");
+          li.textContent = detailText || "(detail)";
+          li.classList.add("paragraph-detail");
+          ul.appendChild(li);
+        });
+
+        section.appendChild(ul);
+      }
+
+      if (Array.isArray(item.subparagraphs) && item.subparagraphs.length > 0) {
+        const subContainer = document.createElement("div");
+        subContainer.classList.add("subparagraphs-container");
+        readYAMLparagraphs(item.subparagraphs, subContainer, false);
+        section.appendChild(subContainer);
+      }
+
       container.appendChild(section);
     });
   }
-  
 
   window.addEventListener("load", () => {
     toggleScrolled();

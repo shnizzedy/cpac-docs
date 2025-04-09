@@ -402,29 +402,21 @@ section,
   width: 70%;
 }
 
-#paragraphsContent {
-  width: 75%;
-  margin: 40px auto; 
-  line-height: 1.6;
-}
-
-#paragraphsContent .paragraph-block {
-  margin-bottom: 40px;
-}
-
-#paragraphsContent .paragraph-title {
-  font-size: 1.6em;
-  font-weight: bold;
-  margin-bottom: 10px;
-}
-
-#paragraphsContent .paragraph-text {
-  font-size: 1.1em;
-}
-
 #listContent {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 20px; 
   justify-items: center; 
+}
+
+.paragraph-section {
+  margin-bottom: 30px;
+  margin-left: 50px;
+  margin-right: 50px;
+}
+
+.paragraph-detail {
+  margin-left: 50px;
+  line-height: 20px;
+  margin-bottom: 6px;
 }
