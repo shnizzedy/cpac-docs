@@ -420,3 +420,34 @@ section,
   line-height: 20px;
   margin-bottom: 6px;
 }
+
+.navmenu li.dropdown {
+  position: relative;
+}
+
+.navmenu li.dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background-color: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  list-style: none;
+  padding: 0;
+}
+
+.navmenu li.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.navmenu li.dropdown .dropdown-menu li a {
+  padding: 10px 20px;
+  text-decoration: none;
+  display: block;
+}
+
+.navmenu li.dropdown .dropdown-menu li a:hover {
+  background-color: #f0f0f0;
+}
+

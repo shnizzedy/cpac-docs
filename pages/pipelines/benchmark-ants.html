@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+
+<head>
+  <title>C-PAC: Pipelines</title>
+
+  <link rel="icon" href="../../assets/img/cpac.png">
+  <link href="../../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../assets/css/main.css" rel="stylesheet">
+  <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <script src="../../assets/js/pipelines.js"></script>  
+
+</head>
+
+<body>
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid position-relative d-flex align-items-center justify-content-between">
+
+      <a href="../../index.html" class="logo d-flex align-items-center me-auto me-xl-0">
+        <img src="../../assets/img/logo.png" alt="">
+     </a>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../../index.html">C-PAC</a></li>
+          <li><a href="../about.html">About</a></li>
+          <li><a href="../neuroimaging.html">Neuroimaging</a></li>
+          <li class="dropdown">
+            <a href="../pipelines.html" class="active">Pipelines</a>
+            <ul class="dropdown-menu">
+              <li><a href="default.html">Default</a></li>
+              <li><a href="abcd-options.html">ABCD-options</a></li>
+              <li><a href="anat-only.html">anat-only</a></li>
+              <li><a href="benchmark-ants.html" class="active">benchmark-ANTS</a></li>
+              <li><a href="benchmark-fnirt.html">benchmark-FNIRT</a></li>
+              <li><a href="fmriprep-options.html">fmriprep-options</a></li>
+              <li><a href="hcp-options.html">hcp-options</a></li>
+              <li><a href="monkey.html">monkey</a></li>
+              <li><a href="ndmg.html">ndmg</a></li>
+              <li><a href="preproc.html">preproc</a></li>
+              <li><a href="rbc-options.html">rbc-options</a></li>
+              <li><a href="references.html">references</a></li>
+            </ul>
+          </li>          
+          <li><a href="../use.html">How to Use</a></li>
+          <li><a href="../tutorials.html">Tutorials</a></li>
+          <li><a href="../projects.html">Projects</a></li>
+          <li><a href="../support.html">User Support</a></li>
+          <li><a href="../appendix.html">Appendix</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <div class="title"> Pre-Configured Pipelines: benchmark-ANTS </div>
+
+    <div class="container">
+ 
+      <h5><a href="https://github.com/FCP-INDI/C-PAC/blob/main/CPAC/resources/configs/pipeline_config_benchmark-ANTS.yml">benchmark-ANTS</a></h5>
+        <ul>
+          <li>This pipeline is based on registration-to-template using the ANTs/ITK toolset, as this decision impacts many other aspects of the pipeline further downstream.</li>
+          <li>It is designed to test a wide range of pipeline options.</li>
+          <li>The benchmark pipeline has remained mostly unchanged since the project’s inception, and is used at the end of each release cycle to ensure the results of C-PAC’s key outputs have not changed.</li>
+        </ul>
+
+    </div>
+
+
+</main>
+
+<div class="footer">
+© Copyright 2025 C-PAC Team
+</div>
+
+</body>
+
+</html>
