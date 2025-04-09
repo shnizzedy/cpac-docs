@@ -51,6 +51,9 @@ paragraphs:
         subparagraphs:
           - paragraph: Slice-Time Correction
           - paragraph: De-Spiking
+            details:
+            - AFNI 3dDespike directly modifies the BOLD values which some may not like, vs. spike regression which affects all regressors/estimates, but does not directly modify the actual BOLD spike values.
+            - AFNI 3dDespike does not account for broader spatial/global effects of spikes.
           - paragraph: Intensity Normalization
           - paragraph: Smoothing
             details:
