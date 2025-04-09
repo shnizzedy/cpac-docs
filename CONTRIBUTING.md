@@ -1,6 +1,7 @@
 <!-- TOC -->
 
 - [Content](#content)
+  - [Writing a Content-Related PR](#content-pr)
 - [Contributors](#contributors)
 
 For contribution guidelines that may have archived or are currently being moved over to this repo, please refer to [archive/CONTRIBUTING.md](https://github.com/FCP-INDI/cpac-docs/tree/main/archive/CONTRIBUTING.md)
@@ -23,6 +24,10 @@ In upholding our SSOT goal for this iteration of C-PAC Documentation, the majori
 - [User Support](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/support)
 - [Appendix](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/appendix)
 
+<a id="content-pr" name="content-pr"></a>
+### Writing a Content-Related PR
+- To contribute content-specific changes, create a new branch and make edits to the appropriate .yaml file 
+See https://github.com/FCP-INDI/cpac-docs/pull/78 for an example.
 
 <a id="contributors" name="contributors"></a>
 ## Contributors
