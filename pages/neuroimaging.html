@@ -7,6 +7,8 @@
   <link href="../assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../assets/css/main.css" rel="stylesheet">
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <script src="../assets/js/neuroimaging.js"></script>  
 
 </head>
 
@@ -42,153 +44,12 @@
 
     <div id="paragraphsContent"></div> 
 
-    <!--
-    
-    <div class="container">
-      <div class="row">
-        <div class="col">
-
-          <h4>Anatomical Preprocessing</h4>
-            <ul>
-            <li><h5>General Preprocessing</h5></li>
-              <ul>
-              <li><h6>Non-Local Means Filtering (NLM)</h6></li>
-                <ul>
-                  <li>
-                    Non-local means filtering reduces noise by averaging pixel intensities based on similarity, not just proximity, preserving important structural details like edges and fine anatomical features.
-                  </li>
-                  <li>
-                    Unlike traditional smoothing methods (e.g., Gaussian smoothing), which blur the image and reduce sharpness, NLM compares patches of the image to identify similar regions, even if they are spatially distant.
-                  </li>
-                  <li>
-                    This approach is particularly beneficial for structural MRI, where fine details and boundaries between tissues must remain clear.
-                  </li>
-                  <li>
-                    This can possibly improve registration or tissue segmentation results.
-                  </li>
-                </ul>
-              <li><h6>N4 Bias Field Correction</h6></li>
-                <ul>
-                  <li>
-                    The bias field is a low-frequency artifact in MRI images that results in uneven signal intensity across the image, unrelated to the actual tissue properties.
-                  </li>
-                  <li>
-                    This method will remove the bias field while preserving the true anatomical contrast in the image.
-                  </li>
-                  <li>
-                    Can be used to improve tissue contrast in MRI images, which can possibly improve registration or tissue segmentation results.
-                  </li>
-                  <li>
-                    If you see a gradient of voxel intensity difference spanning over the length of the image (ex. very light at one end of the head, very dark at the other, with a smooth transition in between that is not related to anatomical boundaries), using this technique may work particularly well with that specific data.
-                  </li>
-                </ul>
-              </ul>
-            <li><h5>Brain Masking (Skull-stripping)</h5></li>
-              <ul>
-                <li>
-                  Skull-stripping is the removal of skull and other non-brain tissue like dura and eyes from anatomical images, which could otherwise complicate co-registration and normalization steps.
-                </li>
-                <li>
-                  Tips
-                </li>
-                <ul>
-                  <li>
-                    Consider participant population (e.g., age, neurological condition) and scan quality.
-                  </li>
-                  <li>
-                    High-quality, noise-free data may work well with simpler tools like FSL BET, while noisy or atypical datasets may require more advanced tools like ANTs or FreeSurfer.
-                  </li>
-                  <li>
-                    Always visually inspect! Brain mask quality varies significantly across technique and data.
-                  </li>
-                  <li>
-                    Parameters may need to be optimized to reduce either over-masking or under-masking.
-                  </li>
-                  <li>
-                    With over-masking, loss of critical cortical areas might result.
-                  </li>
-                  <li>
-                    With under-masking, small pieces of skull or dura left on the boundary of the brain can result in over-sized errors in preprocessing downstream in the pipeline.
-                  </li>
-                  <li>
-                    Any sub-optimal result in brain masking resulting in errors in the brain’s boundary can result in lower registration or segmentation quality.
-                  </li>
-                </ul>
-              </ul>
-            <li><h5>ACPC Alignment</h5></li>
-            </ul>
-          <h4>Tissue Segmentation</h4>
-          <h4>Registration (Calculation of Spatial Transforms)</h4>
-            <ul>
-            <li><h5>Overview</h5></li>
-            </ul>
-          <h4>Cortical Surface Preprocessing</h4>
-          <h4>Distortion Correction</h4>
-
-        </div>
-        
-        <div class="col">
-          <h4>Functional Preprocessing</h4>
-            <ul>
-            <li><h5>General Preprocessing</h5></li>
-              <ul>
-              <li><h6 id="slice" class="highlight-target">Slice-Time Correction</h6></li>
-              <li><h6>De-Spiking</h6></li>
-              <li><h6>Intensity Normalization</h6></li>
-              <li><h6>Smoothing</h6></li>
-                <ul>
-                  <li>
-                    Smoothing decreases the spatial resolution of functional data by replacing the signal at each voxel with a weighted average of that voxel’s neighbors.
-                  </li>
-                  <li>
-                    By averaging nearby voxels, we can cancel out the noise found in fMRI data and enhance the signal.
-                  </li>
-                  <li>
-                    As we use larger smoothing kernels, the images become blurrier and the anatomical details become less distinct.
-                  </li>
-                </ul>
-              </ul>
-            <li><h5>BOLD Masking</h5></li>
-            <li><h5 id="motion" class="highlight-target">Motion Correction</h5></li>
-            </ul>
-          <h4>Functional Coregistration (BOLD-to-Structural)</h4>
-            <ul>
-            <li><h5>Creating the structural BOLD reference (Single-Band Reference/SBREF)</h5></li>
-              <ul>
-                <li>
-                  The “sbref” is a single-volume snapshot of the functional BOLD data which serves as a structural reference of the BOLD data.
-                </li>
-                <li>
-                  This is used as an input for several operations, notably coregistration to the structural data, and any other operation which needs the BOLD data in a form that has clearer anatomical boundaries or landmarks.
-                </li>
-                <li>
-                  The sbref is originally produced from the BOLD timeseries itself, but separate preprocessing can be performed on the sbref that is specific to the sbref, and would not be applied to the timeseries. Thus, sometimes it is possible for the final sbref to visually look a little different than the timeseries.
-                </li>
-                <li>
-                  Some operations that may seem familiar from structural preprocessing can sometimes be used on the sbref - for example, N4 bias field correction, if needed.
-                </li>
-              </ul>
-            </ul>
-          <h4>Applying Transforms (Spatial Normalization)</h4>
-            <ul>
-            <li><h5>Overview</h5></li>
-            </ul>
-          <h4>Nuisance Denoising</h4>
-          <h4>Connectivity Measures</h4>
-        
-        </div>
-      </div>
-      
-    -->
-
   </main>
 
 <div class="footer">
   © Copyright 2025 C-PAC Team
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
-<script src="../assets/js/neuroimaging.js"></script>
 </body>
 
 
