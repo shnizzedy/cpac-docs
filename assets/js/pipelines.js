@@ -145,7 +145,6 @@
 
   window.addEventListener("load", () => {
     toggleScrolled();
-    loadYAML("../assets/content/pages/neuroimaging/neuroimaging.yaml");
     setupDropdownMenu(); // Initialize the dropdown menu
   });
 })();

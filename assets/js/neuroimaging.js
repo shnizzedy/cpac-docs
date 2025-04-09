@@ -127,8 +127,25 @@
     });
   }
 
+  // Add event listeners for the dropdown menu
+  function setupDropdownMenu() {
+    const dropdown = document.querySelector(".navmenu li.dropdown");
+    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+
+    // Show dropdown on mouse enter
+    dropdown.addEventListener("mouseenter", function() {
+      dropdownMenu.style.display = "block";
+    });
+
+    // Hide dropdown on mouse leave
+    dropdown.addEventListener("mouseleave", function() {
+      dropdownMenu.style.display = "none";
+    });
+  }
+
   window.addEventListener("load", () => {
     toggleScrolled();
     loadYAML("../assets/content/pages/neuroimaging/neuroimaging.yaml");
+    setupDropdownMenu(); // Initialize the dropdown menu
   });
 })();
