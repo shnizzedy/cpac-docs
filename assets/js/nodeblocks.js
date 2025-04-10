@@ -1,4 +1,8 @@
-(function () {
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+
+mermaid.initialize({ startOnLoad: true });
+
+document.addEventListener("DOMContentLoaded", function() {
   "use strict";
 
   function toggleScrolled() {
@@ -22,30 +26,63 @@
       'func_preproc.yaml'
     ];
 
+    const nodeblocksContainer = document.querySelector('.nodeblocks');
 
-    const nodeblocks = document.querySelectorAll('nodeblock');
-
-
-    nodeblocks.forEach((nodeblock, index) => {
-      if (index < yamlFiles.length) {
-        fetch(`${yamlDirectory}/${yamlFiles[index]}`)
+    if (nodeblocksContainer) {
+      const contentContainer = document.createElement('div');
+      
+      yamlFiles.forEach((fileName) => {
+        fetch(`${yamlDirectory}/${fileName}`)
           .then(response => response.text())
           .then(yamlContent => {
+            const parsedYaml = jsyaml.load(yamlContent);
 
-            const fileNameElement = document.createElement('h4');
-            fileNameElement.textContent = yamlFiles[index].replace('.yaml', ''); 
+            for (let title in parsedYaml) {
+              const topLevel = parsedYaml[title];
 
+              if (topLevel.description) {
+                const titleElement = document.createElement('h3');
+                titleElement.textContent = title; 
 
-            const preTag = document.createElement('pre');
-            preTag.textContent = yamlContent; 
+                const descriptionElement = document.createElement('p');
+                descriptionElement.textContent = topLevel.description; 
 
+                contentContainer.appendChild(titleElement);
+                contentContainer.appendChild(descriptionElement);
+              }
 
-            nodeblock.appendChild(fileNameElement);
-            nodeblock.appendChild(preTag);
+              if (topLevel.method) {
+                for (let methodName in topLevel.method) {
+                  const methodDetails = topLevel.method[methodName];
+
+                  if (methodDetails.description || methodDetails.operations) {
+                    const methodTitleElement = document.createElement('h4');
+                    methodTitleElement.textContent = methodName; 
+
+                    const methodDescriptionElement = document.createElement('p');
+                    methodDescriptionElement.textContent = methodDetails.description || 'No description available';  
+
+                    contentContainer.appendChild(methodTitleElement);
+                    contentContainer.appendChild(methodDescriptionElement);
+
+                    if (methodDetails.operations) {
+                      const mermaidContainer = document.createElement('div');
+                      mermaidContainer.classList.add('mermaid');
+                      mermaidContainer.textContent = methodDetails.operations; 
+
+                      contentContainer.appendChild(mermaidContainer);
+
+                      mermaid.init();
+                    }
+                  }
+                }
+              }
+            }
           })
-          .catch(error => console.error(`Failed to load YAML file: ${yamlFiles[index]}`, error));
-      }
-    });
-  }
+          .catch(error => console.error(`Failed to load YAML file: ${fileName}`, error));
+      });
 
-})();
+      nodeblocksContainer.appendChild(contentContainer);
+    }
+  }
+});

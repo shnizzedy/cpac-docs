@@ -12,13 +12,12 @@
   <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
 
-  <script type="module">
-    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
-  </script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
   
+  <script type="module" src="../../assets/js/nodeblocks.js"></script>
 
-  <!-- Your custom JS script -->
-  <script src="../../assets/js/nodeblocks.js"></script>
+
+  
 </head>
 
 <body>
@@ -69,23 +68,17 @@
   <main class="main">
     <div class="title"> Nodeblocks </div>
 
-    <div id="main-content">
-      <nodeblock></nodeblock>  <!-- Content from anat_preproc.yaml -->
-      <nodeblock></nodeblock>  <!-- Content from func_preproc.yaml -->
-    </div>
+    <div class="container">
+      
+      <div class="nodeblocks"></div>
+
+
+  </div>
   </main>
 
   <div class="footer">
     © Copyright 2025 C-PAC Team
   </div>
-
-  <!-- Add custom script to initialize Mermaid diagrams after loading content -->
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      // Initialize Mermaid for newly added content
-      mermaid.init(undefined, document.querySelectorAll('.mermaid'));
-    });
-  </script>
 
 </body>
 

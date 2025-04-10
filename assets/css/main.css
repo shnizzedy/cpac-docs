@@ -356,15 +356,6 @@ section,
   cursor: pointer;
 }
 
-.mermaid {
-  padding: 15px;
-  padding-bottom: 50px;
-  height: 50%;
-  width: fit-content;
-  margin-left: auto;
-  margin-right: auto;
-}
-
 .dropdownContent {
   display: grid;
   gap: 16px;
@@ -431,3 +422,33 @@ section,
 .navmenu li.dropdown .dropdown-menu li a:hover {
   background-color: #f0f0f0;
 }
+
+.nodeblocks {
+  padding: 20px;
+  max-width: 1200px; 
+  margin: 0 auto; 
+}
+
+/* Stretch the overall width of the flowchart */
+.mermaid {
+  display: block;
+  width: 100%; /* Make it as wide as possible */
+  max-width: none; /* Remove any max-width constraints */
+}
+
+/* Adjust the SVG layout to be wider */
+.mermaid svg {
+  width: 100%;  /* Make the SVG fill the container width */
+  height: auto; /* Maintain aspect ratio */
+  transform: scale(1, 1); /* Remove previous scaling, you can scale it differently if needed */
+  transform-origin: top left; /* Keep the flowchart layout consistent */
+}
+
+/* Target the individual nodes inside the flowchart */
+.mermaid .node {
+  width: auto;
+  height: auto;
+  font-size: 12px;  /* Adjust font size of the text inside nodes */
+  padding: 4px;  /* Adjust the padding inside nodes */
+}
+
