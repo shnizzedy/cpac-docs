@@ -10,54 +10,6 @@
 
   document.addEventListener("scroll", toggleScrolled);
 
-  async function loadJSON(filepath) {
-    if (!filepath) {
-      console.error("loadJSON: No filepath provided.");
-      document.getElementById("jsonContent").textContent = "Error: No JSON file specified.";
-      return;
-    }
-
-    try {
-      const response = await fetch(filepath);
-      const data = await response.json();
-      const container = document.getElementById("jsonContent");
-      container.innerHTML = "";
-
-      if (!Array.isArray(data) || data.length === 0) {
-        container.innerHTML = `No data found in ${filepath}`;
-        return;
-      }
-
-      data.sort((a, b) => a.name?.toLowerCase().localeCompare(b.name?.toLowerCase()));
-
-      const gridContainer = document.createElement("div");
-      gridContainer.classList.add("grid-container");
-
-      data.forEach((item) => {
-        if (item.name) {
-          const block = document.createElement("div");
-          block.classList.add("nodeblock");
-
-          const title = document.createElement("button");
-          title.classList.add("node-title");
-          title.textContent = item.name;
-          title.style.fontSize = "12px";
-          title.addEventListener("click", () => {
-            showPopup(item);
-          });
-
-          block.appendChild(title);
-          gridContainer.appendChild(block);
-        }
-      });
-
-      container.appendChild(gridContainer);
-    } catch (error) {
-      console.error(`Error loading JSON from ${filepath}:`, error);
-      document.getElementById("jsonContent").textContent = `Failed to load JSON from ${filepath}: ${error.message}`;
-    }
-  }
-
   async function loadYAML(filename) {
     if (!filename) {
       console.error("loadYAML: No filename provided.");
@@ -93,10 +45,10 @@
         heading.textContent = item.paragraph;
 
         if (isTopLevel) {
-          heading.style.fontWeight = "bold"; 
+          heading.style.fontWeight = "bold";
         } else {
-          heading.style.fontWeight = "normal"; 
-          heading.style.fontStyle = "italic";  
+          heading.style.fontWeight = "normal";
+          heading.style.fontStyle = "italic";
         }
 
         section.appendChild(heading);
@@ -127,25 +79,8 @@
     });
   }
 
-  // Add event listeners for the dropdown menu
-  function setupDropdownMenu() {
-    const dropdown = document.querySelector(".navmenu li.dropdown");
-    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
-
-    // Show dropdown on mouse enter
-    dropdown.addEventListener("mouseenter", function() {
-      dropdownMenu.style.display = "block";
-    });
-
-    // Hide dropdown on mouse leave
-    dropdown.addEventListener("mouseleave", function() {
-      dropdownMenu.style.display = "none";
-    });
-  }
-
   window.addEventListener("load", () => {
     toggleScrolled();
     loadYAML("../assets/content/pages/neuroimaging/neuroimaging.yaml");
-    setupDropdownMenu(); // Initialize the dropdown menu
   });
 })();

@@ -300,9 +300,7 @@ section,
   margin-top: 30px;
 }
 
-.btn:hover,
-.node-title:hover,
-.dropdown-toggle:hover {
+.btn:hover {
   background-color: var(--accent-color);
   color: var(--background-color);
   transition: all 0.3s ease-in-out;
@@ -314,23 +312,6 @@ section,
   padding: 15px;
 }
 /* ---------------------------- */
-
-.node-title,
-.dropdown-toggle {
-  background: var(--surface-color);
-  color: var(--accent-color);
-  border: none;
-  padding: 10px;
-  width:90%;
-  text-align: center;
-  font-size: 12px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.node-content {
-  padding: 10px;
-}
 
 .hidden {
   display: none;
@@ -346,7 +327,7 @@ section,
 }
 
 .nodeblock {
-  text-align: center;
+  text-align: left;
 }
 
 .popup {
@@ -450,4 +431,3 @@ section,
 .navmenu li.dropdown .dropdown-menu li a:hover {
   background-color: #f0f0f0;
 }
-

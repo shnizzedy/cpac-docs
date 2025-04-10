@@ -11,54 +11,6 @@
   document.addEventListener("scroll", toggleScrolled);
   window.addEventListener("load", toggleScrolled);
 
-  async function loadJSON(filepath) {
-    if (!filepath) {
-      console.error("loadJSON: No filepath provided.");
-      document.getElementById("jsonContent").textContent = "Error: No JSON file specified.";
-      return;
-    }
-
-    try {
-      const response = await fetch(filepath);
-      const data = await response.json();
-      const container = document.getElementById("jsonContent");
-      container.innerHTML = "";
-
-      if (!Array.isArray(data) || data.length === 0) {
-        container.innerHTML = `No data found in ${filepath}`;
-        return;
-      }
-
-      data.sort((a, b) => a.name?.toLowerCase().localeCompare(b.name?.toLowerCase()));
-
-      const gridContainer = document.createElement("div");
-      gridContainer.classList.add("grid-container");
-
-      data.forEach((item) => {
-        if (item.name) {
-          const block = document.createElement("div");
-          block.classList.add("nodeblock");
-
-          const title = document.createElement("button");
-          title.classList.add("node-title");
-          title.textContent = item.name;
-          title.style.fontSize = "12px";
-          title.addEventListener("click", () => {
-            showPopup(item);
-          });
-
-          block.appendChild(title);
-          gridContainer.appendChild(block);
-        }
-      });
-
-      container.appendChild(gridContainer);
-    } catch (error) {
-      console.error(`Error loading JSON from ${filepath}:`, error);
-      document.getElementById("jsonContent").textContent = `Failed to load JSON from ${filepath}: ${error.message}`;
-    }
-  }
-
   async function loadYAML(filename) {
     if (!filename) {
       console.error("loadYAML: No filename provided.");
