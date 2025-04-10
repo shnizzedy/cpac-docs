@@ -150,6 +150,32 @@ section, .section {
   width: 100%;
 }
 
+/* --------------------------- GRID STYLES ---------------------------- */
+.grid-container-buttons {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  padding: 20px 10%;
+}
+
+.grid-item-button {
+  background-color: white;
+  height: 200px;
+  color: black;
+  padding: 20px;
+  text-align: center;
+  font-size: 1.2em;
+  border-radius: 5px;
+  transition: background-color 0.3s;
+}
+
+.grid-item:hover {
+  background-color: var(--surface-color);
+  color: var(--accent-color);
+}
+
+.grid-item a { display: block; height: 100%; width: 100%; text-decoration: none; color: inherit; font-weight: 500; }
+
 /* -------------------------- BUTTON STYLES ---------------------------- */
 .btn {
   color: var(--accent-color);
