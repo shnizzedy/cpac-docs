@@ -30,51 +30,104 @@ document.addEventListener("DOMContentLoaded", function() {
 
     if (nodeblocksContainer) {
       const contentContainer = document.createElement('div');
-      
+
       yamlFiles.forEach((fileName) => {
         fetch(`${yamlDirectory}/${fileName}`)
           .then(response => response.text())
           .then(yamlContent => {
             const parsedYaml = jsyaml.load(yamlContent);
 
-            for (let title in parsedYaml) {
-              const topLevel = parsedYaml[title];
+            // Add a div to display the file name
+            const fileNameDiv = document.createElement('h4');
+            fileNameDiv.classList.add('file-name');
+            fileNameDiv.textContent = fileName;
+            fileNameDiv.style.fontWeight = 'bold';
+            contentContainer.appendChild(fileNameDiv);
 
-              if (topLevel.description) {
-                const titleElement = document.createElement('h3');
-                titleElement.textContent = title; 
+            for (let stepName in parsedYaml.steps) {
+              const step = parsedYaml.steps[stepName];
 
-                const descriptionElement = document.createElement('p');
-                descriptionElement.textContent = topLevel.description; 
+              if (step.description) {
+                const stepTitleElement = document.createElement('h4');
+                stepTitleElement.textContent = stepName; 
 
-                contentContainer.appendChild(titleElement);
-                contentContainer.appendChild(descriptionElement);
+                const stepDescriptionElement = document.createElement('p');
+                stepDescriptionElement.textContent = step.description; 
+
+                contentContainer.appendChild(stepTitleElement);
+                contentContainer.appendChild(stepDescriptionElement);
               }
 
-              if (topLevel.method) {
-                for (let methodName in topLevel.method) {
-                  const methodDetails = topLevel.method[methodName];
+              for (let methodName in step.methods) {
+                const methodDetails = step.methods[methodName];
 
-                  if (methodDetails.description || methodDetails.operations) {
-                    const methodTitleElement = document.createElement('h4');
-                    methodTitleElement.textContent = methodName; 
+                if (methodDetails.description || methodDetails.operations) {
+                  const methodTitleElement = document.createElement('h4');
+                  methodTitleElement.textContent = methodName; 
 
-                    const methodDescriptionElement = document.createElement('p');
-                    methodDescriptionElement.textContent = methodDetails.description || 'No description available';  
+                  const methodDescriptionElement = document.createElement('p');
+                  methodDescriptionElement.textContent = methodDetails.description || 'No description available';  
 
-                    contentContainer.appendChild(methodTitleElement);
-                    contentContainer.appendChild(methodDescriptionElement);
+                  contentContainer.appendChild(methodTitleElement);
+                  contentContainer.appendChild(methodDescriptionElement);
 
-                    if (methodDetails.operations) {
-                      const mermaidContainer = document.createElement('div');
-                      mermaidContainer.classList.add('mermaid');
-                      mermaidContainer.textContent = methodDetails.operations; 
+                  if (methodDetails.operations) {
+                    const mermaidContainer = document.createElement('div');
+                    mermaidContainer.classList.add('mermaid');
+                    mermaidContainer.textContent = methodDetails.operations; 
 
-                      contentContainer.appendChild(mermaidContainer);
+                    contentContainer.appendChild(mermaidContainer);
 
-                      mermaid.init();
-                    }
+                    mermaid.init();
                   }
+                }
+
+                if (methodDetails.references) {
+                  const referencesTitleElement = document.createElement('h5');
+                  referencesTitleElement.textContent = 'References';
+
+                  const referencesList = document.createElement('ul');
+                  methodDetails.references.forEach(ref => {
+                    const referenceItem = document.createElement('li');
+                    const referenceLink = document.createElement('a');
+                    referenceLink.href = ref;
+                    referenceLink.textContent = ref;
+                    referenceItem.appendChild(referenceLink);
+                    referencesList.appendChild(referenceItem);
+                  });
+
+                  contentContainer.appendChild(referencesTitleElement);
+                  contentContainer.appendChild(referencesList);
+                }
+
+                if (methodDetails.source) {
+                  const sourceTitleElement = document.createElement('h5');
+                  sourceTitleElement.textContent = 'Source';
+
+                  const sourceList = document.createElement('ul');
+                  for (let sourceName in methodDetails.source) {
+                    const sourceItem = document.createElement('li');
+                    const sourceLink = document.createElement('a');
+                    sourceLink.href = methodDetails.source[sourceName];
+                    sourceLink.textContent = sourceName;
+                    sourceItem.appendChild(sourceLink);
+                    sourceList.appendChild(sourceItem);
+                  }
+
+                  contentContainer.appendChild(sourceTitleElement);
+                  contentContainer.appendChild(sourceList);
+                }
+
+                if (methodDetails.validation) {
+                  const validationTitleElement = document.createElement('h5');
+                  validationTitleElement.textContent = 'Validation';
+
+                  const validationLink = document.createElement('a');
+                  validationLink.href = methodDetails.validation;
+                  validationLink.textContent = methodDetails.validation;
+
+                  contentContainer.appendChild(validationTitleElement);
+                  contentContainer.appendChild(validationLink);
                 }
               }
             }
