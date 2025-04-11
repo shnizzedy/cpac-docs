@@ -383,6 +383,8 @@ dropdown li {
   gap: 1rem;
   padding: 1rem;
   background-color: var(--background-color);
+  max-width: 50%;
+  max-height: 50%;
 }
 
 .grid-item {
