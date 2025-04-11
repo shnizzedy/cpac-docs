@@ -24,16 +24,14 @@
 
       const paragraphsContainer = document.getElementById("paragraphsContent");
       const mermaidContainer = document.getElementById("operationsContent");
-      const listContainer = document.getElementById("listContent");
 
-      if (!paragraphsContainer || !mermaidContainer || !listContainer) {
-        console.error("One or more required containers are missing in the DOM.");
+      if (!paragraphsContainer || !mermaidContainer) {
+        console.error("Required content containers are missing in the DOM.");
         return;
       }
 
       paragraphsContainer.innerHTML = "";
       mermaidContainer.innerHTML = "";
-      listContainer.innerHTML = "";
 
       if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
         readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer);
@@ -41,10 +39,6 @@
 
       if (yamlData.mermaid) {
         renderMermaidFromYAML(yamlData.mermaid, mermaidContainer);
-      }
-
-      if (yamlData.list && Array.isArray(yamlData.list)) {
-        renderYAMLList(yamlData.list, listContainer);
       }
 
     } catch (error) {
@@ -102,25 +96,53 @@
     mermaid.init(undefined, mermaidDiagram);
   }
 
-  function renderYAMLList(listData, container) {
-    listData.forEach((item) => {
-      const section = document.createElement("div");
-      section.classList.add("list-section");
+  async function dropdown(yamlFile = "../assets/content/pages/support/support.yaml") {
+    try {
+      const response = await fetch(yamlFile);
+      const yamlText = await response.text();
+      const yamlData = jsyaml.load(yamlText);
 
-      const title = document.createElement("h4");
-      title.textContent = item.title;
+      if (!yamlData.dropdown || !Array.isArray(yamlData.dropdown)) {
+        console.warn("No valid dropdown data found in YAML.");
+        return;
+      }
 
-      const list = document.createElement("ul");
-      item.items.forEach((listItem) => {
-        const li = document.createElement("li");
-        li.textContent = listItem;
-        list.appendChild(li);
+      const dropdownContainer = document.querySelector("dropdown");
+      if (!dropdownContainer) {
+        console.error("<dropdown> element not found in HTML.");
+        return;
+      }
+
+      const wrapper = document.createElement("div");
+      wrapper.className = "dropdown-wrapper";
+
+      yamlData.dropdown.forEach((item, index) => {
+        const details = document.createElement("details");
+        details.className = "dropdown-item";
+
+        const summary = document.createElement("summary");
+        summary.textContent = item.dropdown_title || `Item ${index + 1}`;
+        details.appendChild(summary);
+
+        if (Array.isArray(item.dropdown_details)) {
+          const list = document.createElement("ul");
+          item.dropdown_details.forEach((detail) => {
+            const li = document.createElement("li");
+            li.textContent = detail;
+            list.appendChild(li);
+          });
+          details.appendChild(list);
+        }
+
+        wrapper.appendChild(details);
       });
 
-      section.appendChild(title);
-      section.appendChild(list);
-      container.appendChild(section);
-    });
+      dropdownContainer.innerHTML = "";
+      dropdownContainer.appendChild(wrapper);
+
+    } catch (error) {
+      console.error(`Error rendering dropdown from ${yamlFile}:`, error);
+    }
   }
 
   document.addEventListener("DOMContentLoaded", function () {
@@ -129,6 +151,7 @@
 
   window.addEventListener("load", function () {
     toggleScrolled();
-    loadYAML("assets/content/pages/index/index.yaml");
+    loadYAML("../assets/content/pages/support/support.yaml");
+    dropdown();
   });
 })();

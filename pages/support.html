@@ -9,7 +9,12 @@
   <script src="../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
-  <script src="../assets/js/main.js"></script>
+  <script src="../assets/js/support.js"></script>
+
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
 
 </head>
 
@@ -65,67 +70,21 @@
 
     <div class="title"> User Support </div>
 
-      <div class="container text-center">
-        <div class="row">
-          <div class="col">
-            <p>This is a beta version of C-PAC, which means that it is still under active development. As such, although we have done our best to ensure a stable pipeline, there will likely still be a few bugs that we did not catch. </p>
-            <p>For a troubleshooting guide, please refer to the C-PAC Error Triage Flow.  For more questions or comments about C-PAC, we invite you to contribute to the C-PAC Neurostars discussion forum. </p>
-          </div>
-
-          <div class="col">
-            <center><h4 style="padding-bottom: 20px;">Neurostars</h4></center>
-            <center><img src="../assets/img/ns.png" width="50" height="50"></center>
-            <center><a href="https://neurostars.org/tag/cpac" class="btn">submit a neurostars question</a></center>
-          </div>
-      </div>
+    <div class="container">
+      <div id="paragraphsContent"></div> 
+      <center><h4 style="padding-bottom: 20px;">Neurostars</h4></center>
+      <center><img src="../assets/img/ns.png" width="50" height="50"></center>
+      <center><a href="https://neurostars.org/tag/cpac" class="btn">submit a neurostars question</a></center>
+    </div>
+      
+    <div class="container">
+      <center><div id="operationsContent"></div> </center>
     </div>
 
-    <div class="row">
-
-      <div class="col">
-        <center><h4 style="padding-bottom: 20px;">C-PAC Triage Error Flow</h4></center>
-
-          <center>
-            <div class="mermaid">
-            graph TD;
-            A[Start] --> B{Error Message Prefix};
-            B -->|Killed| C[Provide more memory or talk to sysadmin];
-            B -->|Docker daemon| D[Check startup, reboot, or Docker access];
-            B -->|Other| E[Look in log directory];
-        
-            E --> F{Are there crash files?};
-            F -->|Yes| G[Nipype issue];
-            F -->|No| H[Continue];
-        
-            G --> I[Identify earliest failure in pipeline];
-            G --> J{input not specified or does not exist};
-            J -->|Check for all input data| K[Verify dataset completeness];
-        
-            G --> L[Enter Docker container to run c-pac];
-            L --> M[Run `singularity shell c-pac IMAGE.sif`];
-            L --> N[Run `docker ps` to find running containers];
-            L --> O[Find target container in NAMES column];
-            L --> P[Run `docker exec -it container_name bash`];
-        
-            A --> Q{Missing Resource};
-            Q -->|LookupError| R[Mismatch between node block docstring input and strat_pool.get_data call];
-            Q -->|RuntimeError| S[Workflow did not execute cleanly. Check logs];
-            S --> T[May lead to FileNotFound Error - file does not exist!];
-        
-            A --> U{Other};
-            U -->|data is a directory| V[Possible error binding directory to Docker];
-            U -->|Docker with entry point| W[No bindings after container name];
-          </div>
-
-          <!--<div id="yamlContent" style="padding: 20px"> </div>-->
-
-          <h4>Reminders & Memory-Joggers</h4>
-
-          <div id="dropdownContent"></div>
-
-        </center>
-
-      </div>
+    <div class="container">
+      <center><h4 style="padding-bottom: 20px;"> Reminders & Memory-Joggers</h4></center>
+      <dropdown></dropdown>
+    </div>
 
 
     </div>

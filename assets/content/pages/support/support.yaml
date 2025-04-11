@@ -1,34 +1,42 @@
 # this is a C-PAC Docs content file
 
-operations:
-  graph TD;
-    A[Start] --> B{Error Message Prefix};
-    B -->|Killed| C[Provide more memory or talk to sysadmin];
-    B -->|Docker daemon| D[Check startup, reboot, or Docker access];
-    B -->|Other| E[Look in log directory];
+paragraphs:
+    - title: null
+      paragraphs:
+      - This is a beta version of C-PAC, which means that it is still under active development. As such, although we have done our best to ensure a stable pipeline, there will likely still be a few bugs that we did not catch.
+      - For a troubleshooting guide, please refer to the C-PAC Error Triage Flow. For more questions or comments about C-PAC, we invite you to contribute to the C-PAC Neurostars discussion forum.
 
-    E --> F{Are there crash files?};
-    F -->|Yes| G[Nipype issue];
-    F -->|No| H[Continue];
+mermaid:
+  title: Error Triage Flow
+  operations:
+    graph TD;
+      A[Start] --> B{Error Message Prefix};
+      B -->|Killed| C[Provide more memory or talk to sysadmin];
+      B -->|Docker daemon| D[Check startup, reboot, or Docker access];
+      B -->|Other| E[Look in log directory];
 
-    G --> I[Identify earliest failure in pipeline];
-    G --> J{input not specified or does not exist};
-    J -->|Check for all input data| K[Verify dataset completeness];
+      E --> F{Are there crash files?};
+      F -->|Yes| G[Nipype issue];
+      F -->|No| H[Continue];
 
-    G --> L[Enter Docker container to run c-pac];
-    L --> M[Run `singularity shell c-pac IMAGE.sif`];
-    L --> N[Run `docker ps` to find running containers];
-    L --> O[Find target container in NAMES column];
-    L --> P[Run `docker exec -it container_name bash`];
+      G --> I[Identify earliest failure in pipeline];
+      G --> J{input not specified or does not exist};
+      J -->|Check for all input data| K[Verify dataset completeness];
 
-    A --> Q{Missing Resource};
-    Q -->|LookupError| R[Mismatch between node block docstring input and strat_pool.get_data call];
-    Q -->|RuntimeError| S[Workflow did not execute cleanly. Check logs];
-    S --> T[May lead to FileNotFound Error - file does not exist!];
+      G --> L[Enter Docker container to run c-pac];
+      L --> M[Run `singularity shell c-pac IMAGE.sif`];
+      L --> N[Run `docker ps` to find running containers];
+      L --> O[Find target container in NAMES column];
+      L --> P[Run `docker exec -it container_name bash`];
 
-    A --> U{Other};
-    U -->|data is a directory| V[Possible error binding directory to Docker];
-    U -->|Docker with entry point| W[No bindings after container name];
+      A --> Q{Missing Resource};
+      Q -->|LookupError| R[Mismatch between node block docstring input and strat_pool.get_data call];
+      Q -->|RuntimeError| S[Workflow did not execute cleanly. Check logs];
+      S --> T[May lead to FileNotFound Error - file does not exist!];
+
+      A --> U{Other};
+      U -->|data is a directory| V[Possible error binding directory to Docker];
+      U -->|Docker with entry point| W[No bindings after container name];
 
 
 dropdown:
