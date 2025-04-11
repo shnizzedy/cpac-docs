@@ -297,7 +297,7 @@ section, .section {
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   color: var(--text-color);
   z-index: 1000;
-  max-height: 300px; /* Adjust as needed */
+  max-height: 300px; 
   overflow-y: auto;
 }
 
