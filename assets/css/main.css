@@ -333,6 +333,9 @@ dropdown .dropdown-wrapper {
   max-width: 800px;
   margin: 2rem auto;
   color: var(--text-color);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 dropdown .dropdown-item {
@@ -368,12 +371,19 @@ dropdown ul {
   margin-top: 0.5rem;
   padding-left: 1.5rem;
   color: var(--text-color);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
 
 dropdown li {
   margin-bottom: 0.4rem;
   line-height: 1.5;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  white-space: normal;
 }
+
 
 /* ------------------------ GRID ---------------------------- */
 
