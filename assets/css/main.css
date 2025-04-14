@@ -229,6 +229,7 @@ section, .section {
   grid-template-columns: repeat(2, 1fr);
   gap: 20px; 
   justify-items: center; 
+  padding: 25px;
 }
 
 /* -------------------------- PARAGRAPH STYLES ---------------------------- */

@@ -1,1 +1,121 @@
-# this is a C-PAC Docs content file (placeholder)
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: The C-PAC Mission
+    subparagraphs:
+      - paragraph: Once a distant goal, discovery science for the human connectome is now a reality. Researchers who previously struggled to obtain neuroimaging data from 20-30 participants are now exploring the functional connectome using data acquired from thousands of participants, made publicly available through the 1000 Functional Connectomes Project and the International Neuroimaging Data-sharing Initiative (INDI). However, in addition to access to data, scientists need access to tools that will facilitate data exploration. Such tools are particularly important for those who are inexperienced with the nuances of fMRI image analysis, or those who lack the programming support necessary for handling and analyzing large-scale datasets.
+      - paragraph: The Configurable Pipeline for the Analysis of Connectomes (C-PAC) is a configurable, open-source, Nipype-based, automated processing pipeline for resting state functional MRI (R-fMRI) data, for use by both novice and expert users. C-PAC was designed to bring the power, flexibility and elegance of the Nipype platform to users in a plug and play fashion—without requiring the ability to program. Using an easy to read, text-editable configuration file or a graphical user interface, C-PAC users can rapidly orchestrate automated R-fMRI processing procedures, including
+        details:
+          - standard quality assurance measurements
+          - standard image preprocessing based upon user specified preferences
+          - generation of functional connectivity maps
+          - customizable extraction of time-series data
+          - generation of graphical representations of the connectomes at various scales
+          - generation of local R-fMRI measures
+
+  - paragraph: C-PAC Specifications
+    subparagraphs:
+      - paragraph: C-PAC makes it possible to use a single configuration file to launch a factorial number of pipelines.  Such pipelines may differ with respect to specific processing steps (e.g., spatial/temporal filter settings, global correction strategies, motion correction strategies, group analysis models).  Additional noteworthy features include the ability to easily -
+        details:
+          - customize C-PAC to handle any systematic directory organization
+          - specify Nipype distributed processing settings
+
+      - paragraph: C-PAC maintains key Nipype strengths, including the ability to -
+        details:
+          - interface with different software packages (e.g., FSL, AFNI, ANTS)
+          - protect against redundant computation and/or storage
+          - automatically carry out input checking, bug tracking and reporting
+
+      - paragraph: Future updates will include more configurability, advanced analytic features, and diffusion tensor imaging (DTI) capabilities.
+      - paragraph: For more information and additional tutorials, check out our YouTube channel and previous presentations
+        details:
+          - CPAC Connectome Analysis in the Cloud
+          - Open science resources for ‘Big Data’ Analyses of the human connectome
+          - Computational approaches for mapping the human connectome
+
+
+
+
+list:
+  - title: Latest Version - 1.8.7 Beta (May 03, 2024)
+    bullets:
+      - bullet: New Features
+        sub-bullets:
+          - sub-bullet: Newly-Integrated Packages - these functionalities are now accessible via the cpac command-line wrapper
+            level-three-bullets:
+              - cpac tsconcat - Timeseries Concatenation via the DAIR group’s [tsconcat]
+              - cpac gradients - Gradients via the DAIR group’s [ba-timeseries-gradients]
+          - sub-bullet: The FSL-BET brain mask generation option in C-PAC now has an optional RobustFOV sub-workflow to crop images ensuring removal of neck regions that may appear in the skull-stripped images for some harder-to-skullstrip data.
+          - sub-bullet: C-PAC can now throttle memory usage of workflow steps to mitigate excessive memory usage, an issue which can cause C-PAC runs to be canceled when users pass a memory usage limit on a shared cluster.
+            level-three-bullets:
+              - For these throttled steps, C-PAC will allocate all available resources to each such step, so a multithreaded pipeline will run linearly at each of these steps.
+      - bullet: Improvements
+        sub-bullets:
+          - sub-bullet: Ingress of FreeSurfer outputs into C-PAC is now much more convenient, with the new ability to provide the FreeSurfer output directory path to C-PAC directly from the command line. This also facilitates easier automation of large-scale runs with many different FreeSurfer paths.
+          - sub-bullet: Writing out the DVARS motion measure output is now optional.
+      - bullet: Contributor Improvements
+        sub-bullets:
+          - sub-bullet: Autoversioning and the documentation auto-updating of pipeline configuration files have been moved from the CI infrastructure to pre-commit.
+            level-three-bullets:
+              - In addition to simplifying the auto-updating process, this also keeps the versioning, config documentation, and Dockerfile setup updates within the same commit as the original contribution.
+      - bullet: Bug Fixes
+        sub-bullets:
+          - sub-bullet: Fixed a bug where ingressing fmriprep outputs into C-PAC with a blank nuisance confounds field in the C-PAC pipeline configuration file would cause a crash.
+          - sub-bullet: Fixed a bug where spatial smoothing and z-scoring of final outputs would sometimes fail to run when running a C-PAC pipeline that would ingress fmriprep outputs.
+          - sub-bullet: Fixed a bug where ingress of distortion correction-related field map metadata would sometimes fail to recognize both echo times, when there were two present, leading to an error message claiming an echo time is missing.
+          - sub-bullet: Changed an extraneous default pipeline configuration setting - surface_connectivity is now disabled in the default configuration as intended.
+          - sub-bullet: Updated the FSL-BET configuration options to automatically default -mask-boolean flag as on, and removed all mask-boolean keys from configs. This error caused the possibility of masking the brain too early in the pipeline which could have led to crashes when a downstream node expected a binary mask.
+
+  - title: The C-PAC Team
+    bullets:
+      - bullet: Primary Development Team
+        sub-bullets:
+          - sub-bullet: Michael Milham (Founder, Co-Principal Investigator)
+          - sub-bullet: Greg Kiar (Co-Principal Investigator)
+          - sub-bullet: Steven Giavasis (Lead Developer)
+          - sub-bullet: Jon Cluce (Developer)
+          - sub-bullet: Biraj Shrestha (Developer)
+          - sub-bullet: Tamsin Rogers (Technical Support & Documentation)
+
+      - bullet: Project Alumni
+        sub-bullets:
+          - sub-bullet: Cameron Craddock (Co-Principal Investigator)
+          - sub-bullet: Lei Ai
+          - sub-bullet: Brian Cheung
+          - sub-bullet: Daniel Clark
+          - sub-bullet: Carol Froehlich
+          - sub-bullet: Anibal Solon Heinsfeld
+          - sub-bullet: Hecheng Jin
+          - sub-bullet: Elizabeth Kenneally
+          - sub-bullet: Ranjit Khanuja
+          - sub-bullet: Xinhui Li
+          - sub-bullet: Qingyang Li
+          - sub-bullet: Daniel Lurie
+          - sub-bullet: Amalia MacDonald
+          - sub-bullet: David O’Connor
+          - sub-bullet: John Pellman
+          - sub-bullet: Nanditha Rajamani
+          - sub-bullet: Zarrar Shehzad
+          - sub-bullet: Sharad Sikka
+          - sub-bullet: Krishna Somandepali
+          - sub-bullet: Rosalia Tungaraza
+          - sub-bullet: Aimi Watanabe
+          - sub-bullet: Alison Walensky
+
+      - bullet: Other Contributors
+        sub-bullets:
+          - sub-bullet: Bharat Biswal
+          - sub-bullet: F. Xavier Castellanos
+          - sub-bullet: Adriana Di Martino
+          - sub-bullet: Sebastian Urchs
+          - sub-bullet: Joshua Vogelstein
+          - sub-bullet: Chao-Gan Yan
+          - sub-bullet: Google Summer of Code
+            level-three-bullets:
+              - Asier Erramuzpe
+              - Florian Gesser
+              - Ivan J. Roijals-Miras
+
+  - title: Funding Acknowledgements
+    bullets:
+      - bullet: Primary support for the work by Michael P. Milham, Cameron Craddock and the INDI team was provided by gifts from Joseph P. Healey and the Stavros Niarchos Foundation to the Child Mind Institute, as well as by NIMH awards to Dr. Milham (R03MH096321) and F.X. Castellanos (R01MH083246).

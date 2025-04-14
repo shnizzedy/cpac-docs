@@ -31,28 +31,29 @@ mermaid:
 
 list:
   - title: Preprocessing Options
-    items:
-      - Skull Stripping
-      - Template-Based Registration
-      - Automatic Tissue Segmentation
-      - Anatomical / Functional Coregistration
-      - Volume Realignment
-      - Slice Timing Correction
-      - Intensity Normalization
-      - Temporal Filtering
-      - Nuisance Signal Correction
-      - Median Angle Correction
-      - Spatial Smoothing
-      - Motion Scrubbing
+    bullets:
+      - bullet: Skull Stripping
+      - bullet: Template-Based Registration
+      - bullet: Automatic Tissue Segmentation
+      - bullet: Anatomical / Functional Coregistration
+      - bullet: Volume Realignment
+      - bullet: Slice Timing Correction
+      - bullet: Intensity Normalization
+      - bullet: Temporal Filtering
+      - bullet: Nuisance Signal Correction
+      - bullet: Median Angle Correction
+      - bullet: Spatial Smoothing
+      - bullet: Motion Scrubbing
+
   - title: Analytic Tools
-    items:
-      - Seed-based Correlation Analysis
-      - Amplitude of Low Frequency Fluctuations (ALFF) and fALFF
-      - Regional Homogeneity
-      - Voxel-Mirrored Homotopic Connectivity
-      - Timeseries Extraction
-      - Network Centrality
-      - Connectome-Wide Association Studies
-      - Dual Regression
-      - Bootstrap Analysis of Stable Clusters
-      - Group Comparisons
+    bullets:
+      - bullet: Seed-based Correlation Analysis
+      - bullet: Amplitude of Low Frequency Fluctuations (ALFF) and fALFF
+      - bullet: Regional Homogeneity
+      - bullet: Voxel-Mirrored Homotopic Connectivity
+      - bullet: Timeseries Extraction
+      - bullet: Network Centrality
+      - bullet: Connectome-Wide Association Studies
+      - bullet: Dual Regression
+      - bullet: Bootstrap Analysis of Stable Clusters
+      - bullet: Group Comparisons

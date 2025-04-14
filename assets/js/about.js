@@ -9,7 +9,6 @@
   }
 
   document.addEventListener("scroll", toggleScrolled);
-  window.addEventListener("load", toggleScrolled);
 
   async function loadYAML(filename) {
     if (!filename) {
@@ -23,24 +22,13 @@
       const yamlData = jsyaml.load(yamlText);
 
       const paragraphsContainer = document.getElementById("paragraphsContent");
-      const mermaidContainer = document.getElementById("operationsContent");
       const listContainer = document.getElementById("listContent");
 
-      if (!paragraphsContainer || !mermaidContainer || !listContainer) {
-        console.error("One or more required containers are missing in the DOM.");
-        return;
-      }
-
       paragraphsContainer.innerHTML = "";
-      mermaidContainer.innerHTML = "";
       listContainer.innerHTML = "";
 
       if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
         readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer);
-      }
-
-      if (yamlData.mermaid) {
-        renderMermaidFromYAML(yamlData.mermaid, mermaidContainer);
       }
 
       if (yamlData.list && Array.isArray(yamlData.list)) {
@@ -56,50 +44,48 @@
     }
   }
 
-  function readYAMLparagraphs(contentData, container) {
-    contentData.forEach((item) => {
+  function readYAMLparagraphs(paragraphs, container, isTopLevel = false) {
+    paragraphs.forEach(item => {
       const section = document.createElement("div");
       section.classList.add("paragraph-section");
 
-      const title = document.createElement("h3");
-      title.textContent = item.title;
-      section.appendChild(title);
+      if (item.paragraph) {
+        const heading = document.createElement(isTopLevel ? "h4" : "h5");
+        heading.textContent = item.paragraph;
 
-      if (Array.isArray(item.paragraphs)) {
-        item.paragraphs.forEach((paraText) => {
-          const para = document.createElement("p");
-          para.textContent = paraText;
-          section.appendChild(para);
+        if (isTopLevel) {
+          heading.style.fontWeight = "bold";
+        } else {
+          heading.style.fontWeight = "normal";
+          heading.style.fontStyle = "italic";
+        }
+
+        section.appendChild(heading);
+      }
+
+      if (Array.isArray(item.details)) {
+        const ul = document.createElement("ul");
+        ul.classList.add("paragraph-details-list");
+
+        item.details.forEach(detailText => {
+          const li = document.createElement("li");
+          li.textContent = detailText || "(detail)";
+          li.classList.add("paragraph-detail");
+          ul.appendChild(li);
         });
-      } else {
-        const para = document.createElement("p");
-        para.textContent = item.paragraphs || "";
-        section.appendChild(para);
+
+        section.appendChild(ul);
+      }
+
+      if (Array.isArray(item.subparagraphs) && item.subparagraphs.length > 0) {
+        const subContainer = document.createElement("div");
+        subContainer.classList.add("subparagraphs-container");
+        readYAMLparagraphs(item.subparagraphs, subContainer, false);
+        section.appendChild(subContainer);
       }
 
       container.appendChild(section);
     });
-  }
-
-  function renderMermaidFromYAML(mermaidData, container) {
-    if (!mermaidData || !mermaidData.operations) {
-      console.error("renderMermaidFromYAML: Invalid mermaid data format.");
-      return;
-    }
-
-    if (mermaidData.title) {
-      const title = document.createElement("h4");
-      title.textContent = mermaidData.title;
-      container.appendChild(title);
-    }
-
-    const mermaidDiagram = document.createElement("div");
-    mermaidDiagram.classList.add("mermaid");
-    mermaidDiagram.textContent = mermaidData.operations;
-
-    container.appendChild(mermaidDiagram);
-
-    mermaid.init(undefined, mermaidDiagram);
   }
 
   function renderYAMLList(listData, container) {
@@ -154,14 +140,9 @@
     });
   }
   
-  
 
-  document.addEventListener("DOMContentLoaded", function () {
-    mermaid.initialize({ startOnLoad: false });
-  });
-
-  window.addEventListener("load", function () {
+  window.addEventListener("load", () => {
     toggleScrolled();
-    loadYAML("assets/content/pages/index/index.yaml");
+    loadYAML("../assets/content/pages/about/about.yaml");
   });
 })();
