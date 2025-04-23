@@ -463,3 +463,46 @@ dropdown li {
   pointer-events: none;
   text-align: center;
 }
+
+/* ------------------------------- LINK BAR ------------------------------- */
+ul.horizontal-list {
+  list-style: none;
+  padding: 25px;
+  margin: 0;
+  display: flex;
+  flex-wrap: wrap; 
+  gap: 1rem;
+  justify-content: center; 
+}
+
+ul.horizontal-list li {
+  flex: 0 1 auto; 
+  max-width: calc(25% - 1rem); 
+  display: inline-block; 
+}
+
+ul.horizontal-list li a {
+  display: inline-flex; 
+  justify-content: center; 
+  align-items: center; 
+  padding: 0rem 1.5rem;
+  background-color: var(--surface-color);
+  border: 1px solid var(--accent-color);
+  border-radius: 12px;
+  color: var(--accent-color);
+  font-weight: bold;
+  text-decoration: none;
+  transition: transform 0.2s, background-color 0.2s;
+  width: auto;
+}
+
+ul.horizontal-list li a:hover {
+  background-color: var(--highlight-color);
+  transform: translateY(-3px);
+}
+
+
+/* ------------------------------- PARAGRAPHS ------------------------------- */
+#paragraphsContent {
+  padding: 25px;
+}
