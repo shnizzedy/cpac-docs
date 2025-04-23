@@ -1,32 +1,43 @@
-:root { 
-  --background-color: #ffffff; 
-  --text-color: #000000; 
-  --accent-color: #0864a4; 
-  --surface-color: #e3fbfd; 
+:root {
+  --background-color: #ffffff;
+  --text-color: #000000;
+  --accent-color: #0864a4;
+  --surface-color: #e3fbfd;
   --highlight-color: rgb(253, 253, 206);
   scroll-behavior: smooth;
-} 
+}
 
-/* -------------------------- GENERAL TEXT STYLES ----------------------------- */
+/* ------------------------ GENERAL TEXT STYLES ------------------------ */
 * { font-family: Arial; }
+
+body, section, .section {
+  color: var(--text-color);
+  background-color: var(--background-color);
+}
 
 h1, h2, h3, h4, h5, h6, p, a {
   padding: 5px;
 }
 
-body { color: var(--text-color); background-color: var(--background-color); }
+a {
+  color: var(--accent-color);
+  text-decoration: none;
+}
 
-a { color: var(--accent-color); text-decoration: none; }
-a:hover { color: color-mix(in srgb, var(--accent-color), transparent 25%); }
+a:hover {
+  color: color-mix(in srgb, var(--accent-color), transparent 25%);
+}
 
-.no-bullets, .no-bullets li { list-style-type: none; }
+.no-bullets, .no-bullets li {
+  list-style-type: none;
+}
 
 .highlight-target:target {
   background-color: var(--highlight-color);
   transition: background-color 1s ease-out;
 }
 
-/* ----------------------------- HEADER STYLES ----------------------------- */
+/* --------------------------- HEADER STYLES --------------------------- */
 .header {
   color: var(--text-color);
   background-color: var(--surface-color);
@@ -44,7 +55,7 @@ a:hover { color: color-mix(in srgb, var(--accent-color), transparent 25%); }
   .header .navmenu { order: 2; }
 }
 
-/* ---------------------------- NAV MENU STYLES ----------------------------- */
+/* -------------------------- NAV MENU STYLES -------------------------- */
 @media (min-width: 1200px) {
   .navmenu ul {
     display: flex;
@@ -53,10 +64,12 @@ a:hover { color: color-mix(in srgb, var(--accent-color), transparent 25%); }
     margin: 0;
     padding: 0;
   }
+
   .navmenu li {
     padding: 15px 14px;
     white-space: nowrap;
   }
+
   .navmenu a {
     color: var(--text-color);
     font-size: 15px;
@@ -64,19 +77,72 @@ a:hover { color: color-mix(in srgb, var(--accent-color), transparent 25%); }
     display: flex;
     align-items: center;
   }
-  .navmenu li:hover>a, .navmenu .active {
+
+  .navmenu li:hover > a,
+  .navmenu .active {
     color: var(--accent-color);
   }
 }
 
-/* ---------------------------- PAGE TITLE STYLES ---------------------------- */
+.navmenu li.dropdown {
+  position: relative;
+}
+
+.navmenu li.dropdown .dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  padding: 0;
+  background-color: var(--surface-color);
+  border-radius: 1rem;
+  border: 1px solid var(--accent-color);
+  font-family: "Segoe UI", sans-serif;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  color: var(--text-color);
+  z-index: 1000;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.navmenu li.dropdown:hover .dropdown-menu {
+  display: block;
+}
+
+.navmenu li.dropdown .dropdown-menu li {
+  border-bottom: 1px solid var(--accent-color);
+  line-height: 1.5;
+}
+
+.navmenu li.dropdown .dropdown-menu li:last-child {
+  border-bottom: none;
+}
+
+.navmenu li.dropdown .dropdown-menu li a {
+  padding: 0;
+  color: var(--text-color);
+  text-decoration: none;
+  display: block;
+  transition: background-color 0.3s ease;
+  border-radius: 0.5rem;
+}
+
+.navmenu li.dropdown .dropdown-menu li a:hover {
+  background-color: var(--highlight-color);
+}
+
+/* ------------------------- PAGE TITLE STYLES ------------------------- */
 .page-title {
   color: var(--accent-color);
   background-color: var(--background-color);
   padding: 25px 0;
 }
 
-.page-title h1 { font-size: 24px; font-weight: 400; }
+.page-title h1 {
+  font-size: 24px;
+  font-weight: 400;
+}
 
 .page-title .breadcrumbs ol {
   display: flex;
@@ -85,16 +151,14 @@ a:hover { color: color-mix(in srgb, var(--accent-color), transparent 25%); }
   font-size: 14px;
 }
 
-.page-title .breadcrumbs ol li+li::before {
+.page-title .breadcrumbs ol li + li::before {
   content: "/";
   padding-right: 10px;
   color: color-mix(in srgb, var(--text-color), transparent 70%);
 }
 
-/* --------------------------- SECTION STYLES ----------------------------- */
+/* -------------------------- SECTION STYLES -------------------------- */
 section, .section {
-  color: var(--text-color);
-  background-color: var(--background-color);
   padding: 60px 0;
   scroll-margin-top: 100px;
 }
@@ -106,7 +170,7 @@ section, .section {
   font-weight: 700;
 }
 
-/* ---------------------------- BANNER STYLES ----------------------------- */
+/* -------------------------- BANNER STYLES --------------------------- */
 .banner {
   width: 100%;
   min-height: calc(100vh - 82px);
@@ -118,14 +182,16 @@ section, .section {
 }
 
 @media (max-width: 1200px) {
-  .banner { min-height: calc(100vh - 68px); }
+  .banner {
+    min-height: calc(100vh - 68px);
+  }
 }
 
 .banner img {
   position: absolute;
   inset: 0;
   width: 100%;
-  height: 100%; /* Ensure the image takes up the full height */
+  height: 100%;
   object-fit: cover;
   z-index: 1;
   padding: 25px;
@@ -134,8 +200,8 @@ section, .section {
 .banner .container {
   position: relative;
   z-index: 3;
-  text-align: center; /* Centers text horizontally */
-  padding: 0 20px; /* Add some padding to avoid text being too close to the edges */
+  text-align: center;
+  padding: 0 20px;
 }
 
 .banner h2 {
@@ -145,21 +211,24 @@ section, .section {
 }
 
 .banner p {
-  margin-top: 10px;
+  margin: 10px 0 0 0;
   font-size: 24px;
-  margin-bottom: 0;
 }
 
-/* ---------------------------- CONTAINER STYLES ---------------------------- */
-.container .row { padding-bottom: 50px; }
-
-.container .col { padding-left: 50px; padding-right: 50px; }
-
+/* ------------------------- CONTAINER STYLES -------------------------- */
 .container {
   padding: 25px;
 }
 
-/* --------------------------- FOOTER STYLES ---------------------------- */
+.container .row {
+  padding-bottom: 50px;
+}
+
+.container .col {
+  padding: 0 50px;
+}
+
+/* -------------------------- FOOTER STYLES --------------------------- */
 .footer {
   background-color: var(--surface-color);
   font-size: 14px;
@@ -168,7 +237,7 @@ section, .section {
   width: 100%;
 }
 
-/* -------------------------- BUTTON STYLES ---------------------------- */
+/* -------------------------- BUTTON STYLES --------------------------- */
 .btn {
   color: var(--accent-color);
   background: var(--background-color);
@@ -191,7 +260,7 @@ section, .section {
 /* --------------------------- ICON STYLES ---------------------------- */
 .bi { padding: 15px; }
 
-/* --------------------------- HIDDEN STYLES ---------------------------- */
+/* -------------------------- UTILITY STYLES -------------------------- */
 .hidden { display: none; }
 
 .nodeblock { text-align: left; }
@@ -222,21 +291,17 @@ section, .section {
   cursor: pointer;
 }
 
-
-/* -------------------------- LIST CONTENT STYLES ---------------------------- */
+/* ------------------------ LIST CONTENT STYLES ------------------------ */
 #listContent {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: 20px; 
-  justify-items: center; 
-  padding: 25px;
+  gap: 20px;
+  justify-items: center;
 }
 
-/* -------------------------- PARAGRAPH STYLES ---------------------------- */
+/* ------------------------ PARAGRAPH STYLES -------------------------- */
 .paragraph-section {
-  margin-bottom: 30px;
-  margin-left: 50px;
-  margin-right: 50px;
+  margin: 0 50px 30px 50px;
 }
 
 .paragraph-detail {
@@ -245,59 +310,14 @@ section, .section {
   margin-bottom: 6px;
 }
 
-/* ------------------------ NAV MENU DROPDOWN STYLES ---------------------------- */
-.navmenu li.dropdown {
-  position: relative;
+/* ------------------------ NODEBLOCK STYLES -------------------------- */
+.nodeblocks {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-.navmenu li.dropdown .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 200px;
-  padding: 0;
-  background-color: var(--surface-color);
-  border-radius: 1rem;
-  border: 1px solid var(--accent-color);
-  font-family: "Segoe UI", sans-serif;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  color: var(--text-color);
-  z-index: 1000;
-  max-height: 300px; 
-  overflow-y: auto;
-}
-
-.navmenu li.dropdown:hover .dropdown-menu {
-  display: block;
-}
-
-.navmenu li.dropdown .dropdown-menu li {
-  border-bottom: 1px solid var(--accent-color);
-  line-height: 1.5;
-}
-
-.navmenu li.dropdown .dropdown-menu li:last-child {
-  border-bottom: none;
-}
-
-.navmenu li.dropdown .dropdown-menu li a {
-  padding: 0px 0px;
-  color: var(--text-color);
-  text-decoration: none;
-  display: block;
-  transition: background-color 0.3s ease;
-  border-radius: 0.5rem;
-}
-
-.navmenu li.dropdown .dropdown-menu li a:hover {
-  background-color: var(--highlight-color);
-}
-
-/* ------------------------ NODEBLOCK STYLES ---------------------------- */
-.nodeblocks { padding: 20px; max-width: 1200px; margin: 0 auto; }
-
-/* --------------------------- MERMAID CHART STYLES ---------------------------- */
+/* ---------------------- MERMAID CHART STYLES ------------------------ */
 .mermaid {
   display: block;
   max-width: 100%;
@@ -317,13 +337,12 @@ section, .section {
   padding: 4px;
 }
 
+/* --------------------------- OPERATIONS ----------------------------- */
 #operationsContent {
   padding: 20px;
 }
 
-
-/* ------------------------ DROPDOWN ---------------------------- */
-
+/* ---------------------------- DROPDOWN ------------------------------ */
 dropdown .dropdown-wrapper {
   background-color: var(--surface-color);
   border-radius: 1rem;
@@ -368,26 +387,24 @@ dropdown details[open] summary {
   color: var(--text-color);
 }
 
-dropdown ul {
-  margin-top: 0.5rem;
-  padding-left: 1.5rem;
+dropdown ul, dropdown li {
   color: var(--text-color);
   word-wrap: break-word;
   overflow-wrap: break-word;
   white-space: normal;
 }
 
+dropdown ul {
+  margin-top: 0.5rem;
+  padding-left: 1.5rem;
+}
+
 dropdown li {
   margin-bottom: 0.4rem;
   line-height: 1.5;
-  word-wrap: break-word;
-  overflow-wrap: break-word;
-  white-space: normal;
 }
 
-
-/* ------------------------ GRID ---------------------------- */
-
+/* ------------------------------- GRID ------------------------------- */
 .grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -401,7 +418,7 @@ dropdown li {
 .grid-item {
   position: relative;
   width: 100%;
-  aspect-ratio: 1 / 1; /* Enforces a perfect square */
+  aspect-ratio: 1 / 1;
   background-color: var(--surface-color);
   border: 1px solid var(--accent-color);
   border-radius: 12px;
@@ -430,12 +447,11 @@ dropdown li {
   object-fit: cover;
   border-radius: 12px;
   display: block;
-  opacity: 0.2; 
+  opacity: 0.2;
 }
 
-/* Overlay text centered on the image */
 .grid-item a::after {
-  content: attr(data-label); /* Use the label as overlay text */
+  content: attr(data-label);
   position: absolute;
   top: 50%;
   left: 50%;
