@@ -24,4 +24,18 @@ paragraphs:
 
 mermaid:
   title: null
-  operations: null
+  operations: |
+    graph TD
+      A[Input Structural MRI - T1-weighted] --> B[Skull-Stripping - AFNI 3dSkullStrip];
+      B --> C[Linear Registration to MNI Space - FSL FLIRT];
+      C --> D[Apply Standard Atlas - e.g., Desikan-Killiany];
+      D --> E[Construct Connectome Graph - ndmg_graph];
+
+      subgraph Optional Steps
+          F[Input Diffusion MRI] --> G[Minimal Preprocessing & QC];
+          G --> H[Linear Registration to MNI Space];
+          H --> I[Tractography & Edge Definition];
+          I --> E;
+      end
+
+      E --> J[Output: ndmg_graph Adjacency Matrix];

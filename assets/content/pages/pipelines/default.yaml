@@ -36,4 +36,25 @@ paragraphs:
 
 mermaid:
   title: null
-  operations: null
+  operations: |
+    graph TD;
+      A[Anatomical Preprocessing] --> B[Conform data to RPI orientation];
+      B --> C[Remove orientation header information];
+      C --> D[Non-linear transform to MNI template using ANTs];
+      D --> E[Skull-stripping using FSL BET];
+      E --> F[Segmentation using FSL FAST - WM, GM, CSF];
+      F --> G[Multiply WM mask with WM prior map];
+      G --> H[Multiply CSF mask with ventricle map];
+      H --> I[Write skull-stripped images and GM tissue maps into MNI space];
+      
+      A2[Functional Preprocessing] --> J[Resample data to RPI orientation];
+      J --> K[Slice timing correction];
+      K --> L[Motion correction with 2-stage approach - AFNI 3dvolreg];
+      L --> M[Coregister to mean fMRI, calculate new mean, second coregistration];
+      M --> N[7 DOF linear transform using FSL boundary-based registration];
+      N --> O[Nuisance variable regression using 2nd order polynomial, motion regressors, CompCor, and CSF];
+      O --> P[Extract WM and CSF signals using masks, transform fMRI to 2mm space];
+      P --> Q[Perform NVR with and without global signal];
+      Q --> R[Process residuals with and without bandpass filtering - 0.01Hz < f < 0.1Hz];
+      R --> S[Write residuals into MNI space at 3mm resolution];
+      S --> T[Smooth using 6mm FWHM kernel];

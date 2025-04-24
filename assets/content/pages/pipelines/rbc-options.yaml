@@ -21,4 +21,25 @@ paragraphs:
 
 mermaid:
   title: null
-  operations: null
+  operations: |
+    graph TD
+      A[Start] --> B[Structural MRI Processing];
+      B --> C[FreeSurfer for Cortical Reconstruction];
+      C --> D[Volumetric Segmentation];
+      D --> E[Functional MRI Preprocessing];
+      E --> F[NiWorkflows for Reference Image Estimation];
+      F --> G[Boundary-Based Registration FLIRT];
+      G --> H[Motion Correction - FSL-MCFLIRT];
+      H --> I[Distortion Correction - FSL-FUGUE or FSL-TOPUP];
+      I --> J[Denoising Strategies];
+      J --> K[Global Signal Regression Options];
+      K --> L[Parcellation and Connectivity Analysis];
+      L --> M[Multiple Parcellation Schemes];
+      M --> N[Connectivity Measures];
+      N --> O[Quality Assurance];
+      O --> P[Motion Statistics Calculation];
+      P --> Q[Mean Functional Image Generation - AFNI 3dTstat];
+      Q --> R[Reproducibility and Flexibility];
+      R --> S[Open-Source Tools and Execution Records];
+      S --> T[Customizable Processing Steps];
+      T --> U[End];

@@ -20,4 +20,22 @@ paragraphs:
 
 mermaid:
   title: null
-  operations: null
+  operations: |
+    flowchart TD
+    A[Start: Raw BOLD & T1w Images] --> B[Anatomical Preprocessing];
+    B --> B1[Skull-stripping - AFNI 3dSkullStrip];
+    B1 --> B2[Tissue Segmentation - FSL FAST];
+    B2 --> B3[Linear Registration to MNI - FSL FLIRT];
+    B3 --> B4[Nonlinear Registration to MNI - FSL FNIRT];
+
+    A --> C[Functional Preprocessing];
+    C --> C1[Slice Timing Correction];
+    C1 --> C2[Motion Correction];
+    C2 --> C3[Coregistration to Anatomical - BOLD to T1];
+    C3 --> C4[Apply Anatomical Transforms to MNI];
+    C4 --> C5[Nuisance Regression  - WM, CSF, etc ];
+    C5 --> C6[Bandpass Filtering - e.g., 0.01–0.1 Hz];
+    C6 --> C7[Spatial Smoothing - e.g., 6mm FWHM];
+
+    B4 --> D[Outputs in MNI Space];
+    C7 --> D;

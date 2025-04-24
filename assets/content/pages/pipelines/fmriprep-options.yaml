@@ -25,4 +25,30 @@ paragraphs:
 
 mermaid:
   title: null
-  operations: null
+  operations: |
+    flowchart TD;
+      A[Raw BOLD & T1w Images] --> B[Anatomical Preprocessing];
+      B --> B1[Skull-stripping];
+      B --> B2[Bias Field Correction - N4];
+      B --> B3[Tissue Segmentation - CSF, WM, GM];
+      B --> B4[Spatial Normalization to MNI];
+
+      A --> C[Functional Preprocessing];
+      C --> C1[Slice Timing Correction - optional];
+      C --> C2[Motion Correction];
+      C --> C3[Distortion Correction - Fieldmap/SyN];
+      C --> C4[Co-registration - BBR];
+      C4 --> C5[Apply Normalization Warp];
+
+      C5 --> D[Confound Extraction];
+      D --> D1[Motion Parameters];
+      D --> D2[aCompCor Components];
+      D --> D3[Framewise Displacement];
+
+      B4 --> E[Output Generation];
+      C5 --> E;
+      D3 --> E;
+
+      E --> F[Outputs in BIDS-Derivatives Format];
+
+      F --> G[End];

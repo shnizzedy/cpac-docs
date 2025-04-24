@@ -23,4 +23,24 @@ paragraphs:
 
 mermaid:
   title: null
-  operations: null
+  operations: |
+    flowchart TD
+      A1[Start] --> A2[Anatomical Preprocessing];
+
+      A2 --> A3[Brain Extraction - U-Net];
+      A3 --> A4[Tissue Segmentation - ANTs-Prior Based];
+      A4 --> A5[Registration to Template - ANTs/ITK];
+
+      A5 --> F1[Functional Preprocessing];
+
+      F1 --> F2[Despiking];
+      F2 --> F3[Slice-Timing Correction];
+      F3 --> F4[Motion Estimation & Correction];
+      F4 --> F5[EPI N4 Bias Correction];
+      F5 --> F6[Brain Extraction - Anatomical-Refined];
+      F6 --> F7[Co-Registration to Structural];
+      F7 --> F8[Nuisance Correction & Filtering];
+      F8 --> F9[Registration to Template - ANTs/ITK];
+      F9 --> F10[Spatial Smoothing];
+
+      F10 --> End[End];

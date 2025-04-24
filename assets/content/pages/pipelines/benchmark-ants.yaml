@@ -46,4 +46,18 @@ paragraphs:
 
 mermaid:
   title: null
-  operations: null
+  operations: |
+    graph TD
+      A[Anatomical Processing and Registration] --> B[Skull-Stripping];
+      B --> C[Tissue Segmentation];
+      C --> D[Functional Preprocessing];
+      D --> E[Nuisance Regression];
+      E --> F[Spatial Smoothing and Temporal Filtering];
+      F --> G[Functional Connectivity Derivatives];
+      G --> H[Use Case and Stability Testing];
+      
+      A[Anatomical Processing and Registration] -->|Registration to Template| I[ANTs/ITK];
+      D[Functional Preprocessing] -->|Coregistration to Anatomical Space| I[ANTs/ITK];
+      E[Nuisance Regression] -->|Global Signal Regression| J[CompCor, Friston 24];
+      F[Spatial Smoothing and Temporal Filtering] -->|Gaussian Kernel and Temporal Bandpass| K[Filter];
+      G[Functional Connectivity Derivatives] -->|ROI Time Series, ALFF/fALFF| L[Functional Connectivity Analysis];
