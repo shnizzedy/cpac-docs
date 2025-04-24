@@ -41,15 +41,11 @@
       section.classList.add("paragraph-section");
 
       if (item.paragraph) {
-        const heading = document.createElement(isTopLevel ? "h4" : "h5");
+        const heading = document.createElement(isTopLevel ? "h6" : "h6");
         heading.textContent = item.paragraph;
 
-        if (isTopLevel) {
-          heading.style.fontWeight = "bold";
-        } else {
-          heading.style.fontWeight = "normal";
-          heading.style.fontStyle = "italic";
-        }
+        heading.style.fontWeight = "normal";
+        heading.style.fontStyle = "italic";
 
         section.appendChild(heading);
       }

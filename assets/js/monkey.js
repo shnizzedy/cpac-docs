@@ -50,7 +50,7 @@
       section.classList.add("paragraph-section");
 
       if (item.paragraph) {
-        const heading = document.createElement(isTopLevel ? "h4" : "h5");
+        const heading = document.createElement(isTopLevel ? "h6" : "h6");
         heading.textContent = item.paragraph;
 
         heading.style.fontWeight = "normal";

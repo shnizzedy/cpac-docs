@@ -3,7 +3,25 @@
 paragraphs:
   - paragraph: null
     details:
-    - The RBC-options pipeline was built and integrated in C-PAC based on the Reproducible Brain Charts initiative, which aims to aggregate and harmonize phenotypic and neuroimage data to delineate node mechanisms regarding developmental basis of psychopathology in youth and yield reproducible growth charts of brain development.
+    - The RBC-options pipeline is a preconfigured workflow within the Configurable Pipeline for the Analysis of Connectomes (C-PAC), specifically designed to support the objectives of the Reproducible Brain Charts (RBC) initiative. This initiative aims to aggregate and harmonize phenotypic and neuroimaging data to delineate neural mechanisms underlying the developmental basis of psychopathology in youth and to produce reproducible growth charts of brain development.
+
+  - paragraph: The RBC-options pipeline integrates multiple neuroimaging tools and methodologies to ensure standardized and reproducible processing of structural and functional MRI data. Key components include
+    subparagraphs:
+      - paragraph: Structural MRI Processing
+        details:
+        - Utilizes FreeSurfer for cortical reconstruction and volumetric segmentation, providing detailed anatomical information.
+      - paragraph: Functional MRI Preprocessing
+        details:
+        - Employs C-PAC's reimplementation of NiWorkflows for reference image estimation, followed by boundary-based registration to MNI152NLin6ASym template space using FSL-FLIRT. Motion correction is performed with FSL-MCFLIRT, and distortion correction is applied using FSL-FUGUE or FSL-TOPUP when field maps are available.
+      - paragraph: Denoising Strategies
+        details:
+        - Implements high-performance denoising pipelines both with and without global signal regression (GSR), allowing researchers to assess the impact of GSR on derived features.
+      - paragraph: Parcellation and Connectivity Analysis
+        details:
+        - Supports multiple parcellation schemes and connectivity measures, facilitating comprehensive analysis of brain networks.
+      - paragraph: Quality Assurance
+        details:
+        - Incorporates rigorous quality assurance protocols, including the calculation of motion statistics and the generation of mean functional images using AFNI 3dTstat.
 
 mermaid:
   title: null
