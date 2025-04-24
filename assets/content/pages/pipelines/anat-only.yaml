@@ -1,0 +1,14 @@
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: null
+    subparagraphs:
+      - paragraph: Based on the preprocessing decisions of the default pipeline, this preconfiguration allows you to immediately kick off a run with only anatomical preprocessing selected. This includes
+        details:
+          - Brain extraction (via AFNI 3dSkullStrip)
+          - Tissue segmentation (via FSL FAST
+          - Registration to template (via ANTs/ITK)
+
+mermaid:
+  title: null
+  operations: null

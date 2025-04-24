@@ -1,0 +1,12 @@
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: null
+    details:
+    - This pipeline is based on registration-to-template using the ANTs/ITK toolset, as this decision impacts many other aspects of the pipeline further downstream.
+    - It is designed to test a wide range of pipeline options.
+    - The benchmark pipeline has remained mostly unchanged since the project’s inception, and is used at the end of each release cycle to ensure the results of C-PAC’s key outputs have not changed.
+
+mermaid:
+  title: null
+  operations: null

@@ -1,0 +1,13 @@
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: null
+    details:
+    - This pipeline is the result of Neurodata’s study to converge upon the intersection of pipeline configuration decisions that maximizes discriminability between participants’ data, drawing from the connectome graphs produced (labeled ‘ndmg_graph’ in the C-PAC output directory).
+    - This pipeline invokes a minimal set of preprocessing.
+    - Note, the ‘ndmg_graph’ connectome graph outputs are always produced by C-PAC. This pipeline configuration simply replicates the preprocessing methods described in the paper, linked below.
+        
+
+mermaid:
+  title: null
+  operations: null

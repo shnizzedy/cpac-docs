@@ -1,7 +1,7 @@
 # this is a C-PAC Docs content file (placeholder)
 
 mermaid:
-  title: General C-PAC Flow
+  title: null
   operations: |
     flowchart TD
         A[Raw Data];

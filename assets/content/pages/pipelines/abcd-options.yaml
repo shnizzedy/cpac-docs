@@ -1,0 +1,10 @@
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: null
+    details:
+    - Based off of the HPC pipeline.
+
+mermaid:
+  title: null
+  operations: null

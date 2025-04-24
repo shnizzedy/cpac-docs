@@ -1,0 +1,30 @@
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: null
+    details:
+    - This pipeline is based on the work of Xu et al. and the hp-ABCD-BIDS-pipeline.
+  
+  - paragraph: Based on the preprocessing decisions of the default pipeline, this preconfiguration allows for the preprocessing of macaque data, including
+
+    subparagraphs:
+      - paragraph: Anatomical Preprocessing
+        details:
+        - Brain extraction (via U-Net)
+        - Tissue segmentation (via ANTs-prior based)
+        - Registration to template (via ANTs/ITK)
+      - paragraph: Functional Preprocessing
+        details:
+          - Despiking
+          - Slice-Timing Correction
+          - Motion Estimation & Correction
+          - EPI N4 Bias Correction
+          - Brain Extraction (Anatomical-refined)
+          - Co-Registration to Structural
+          - Nuisance Correction & Filtering
+          - Registration to Template (via ANTs/ITK)
+          - Spatial Smoothing
+
+mermaid:
+  title: null
+  operations: null

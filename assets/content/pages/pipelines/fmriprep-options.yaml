@@ -1,0 +1,10 @@
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: null
+    details:
+    - This pipeline is designed to increase reproducibility with the preprocessing results of the fmriprep pipeline package [24] produced by the Poldrack Lab at Stanford University.
+
+mermaid:
+  title: null
+  operations: null
