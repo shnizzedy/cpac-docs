@@ -14,7 +14,7 @@ paragraphs:
 mermaid:
   title: General C-PAC Flow
   operations: 
-    graph TD;
+  graph TD;
       A[Input Data] -->|Short| B[Anatomical Preprocessing];
       B -->|Medium| C[Tissue Segmentation];
       A -->|Medium| D[Functional Preprocessing];

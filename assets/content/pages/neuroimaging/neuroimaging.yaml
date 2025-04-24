@@ -1,4 +1,19 @@
 # this is a C-PAC Docs content file (placeholder)
 
-paragraphs:
-  - paragraph: null
+mermaid:
+  title: General C-PAC Flow
+  operations: |
+    flowchart TD
+        A[Raw Data];
+
+        A --> B[Anatomical Preprocessing;<br/>Skull stripping, bias correction;];
+        B --> C[Tissue Segmentation;<br/>Identify gray matter, white matter, CSF;];
+        C --> D[Registration;<br/>Align anatomical to standard space;];
+        D --> E[Cortical Surface Preprocessing;<br/>Generate surface models of cortex;];
+        A --> F[Distortion Correction;<br/>Correct geometric distortions in fMRI;];
+        F --> G[Functional Preprocessing;<br/>Slice timing, motion correction, smoothing;];
+        G --> H[Functional Co-Registration;<br/>Align functional to anatomical space;];
+        H --> I[Preprocessed Data Ready for Analysis;];
+
+        E --> H;
+        D --> H;

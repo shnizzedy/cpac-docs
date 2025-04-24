@@ -9,6 +9,7 @@
   }
 
   document.addEventListener("scroll", toggleScrolled);
+  window.addEventListener("load", toggleScrolled);
 
   async function loadYAML(filename) {
     if (!filename) {
@@ -21,65 +22,45 @@
       const yamlText = await response.text();
       const yamlData = jsyaml.load(yamlText);
 
-      const paragraphsContainer = document.getElementById("paragraphsContent");
-      paragraphsContainer.innerHTML = "";
+      const mermaidContainer = document.getElementById("operationsContent");
 
-      if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
-        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer, true);
+      mermaidContainer.innerHTML = "";
+
+      if (yamlData.mermaid) {
+        renderMermaidFromYAML(yamlData.mermaid, mermaidContainer);
       }
 
     } catch (error) {
       console.error(`Error loading YAML from ${filename}:`, error);
-      const container = document.getElementById("paragraphsContent");
-      container.textContent = `Failed to load YAML from ${filename}: ${error.message}`;
     }
   }
 
-  function readYAMLparagraphs(paragraphs, container, isTopLevel = false) {
-    paragraphs.forEach(item => {
-      const section = document.createElement("div");
-      section.classList.add("paragraph-section");
+  function renderMermaidFromYAML(mermaidData, container) {
+    if (!mermaidData || !mermaidData.operations) {
+      console.error("renderMermaidFromYAML: Invalid mermaid data format.");
+      return;
+    }
 
-      if (item.paragraph) {
-        const heading = document.createElement(isTopLevel ? "h4" : "h5");
-        heading.textContent = item.paragraph;
+    if (mermaidData.title) {
+      const title = document.createElement("h4");
+      title.textContent = mermaidData.title;
+      container.appendChild(title);
+    }
 
-        if (isTopLevel) {
-          heading.style.fontWeight = "bold";
-        } else {
-          heading.style.fontWeight = "normal";
-          heading.style.fontStyle = "italic";
-        }
+    const mermaidDiagram = document.createElement("div");
+    mermaidDiagram.classList.add("mermaid");
+    mermaidDiagram.textContent = mermaidData.operations;
 
-        section.appendChild(heading);
-      }
+    container.appendChild(mermaidDiagram);
 
-      if (Array.isArray(item.details)) {
-        const ul = document.createElement("ul");
-        ul.classList.add("paragraph-details-list");
-
-        item.details.forEach(detailText => {
-          const li = document.createElement("li");
-          li.textContent = detailText || "(detail)";
-          li.classList.add("paragraph-detail");
-          ul.appendChild(li);
-        });
-
-        section.appendChild(ul);
-      }
-
-      if (Array.isArray(item.subparagraphs) && item.subparagraphs.length > 0) {
-        const subContainer = document.createElement("div");
-        subContainer.classList.add("subparagraphs-container");
-        readYAMLparagraphs(item.subparagraphs, subContainer, false);
-        section.appendChild(subContainer);
-      }
-
-      container.appendChild(section);
-    });
+    mermaid.init(undefined, mermaidDiagram);
   }
 
-  window.addEventListener("load", () => {
+  document.addEventListener("DOMContentLoaded", function () {
+    mermaid.initialize({ startOnLoad: false });
+  });
+
+  window.addEventListener("load", function () {
     toggleScrolled();
     loadYAML("../assets/content/pages/neuroimaging/neuroimaging.yaml");
   });
