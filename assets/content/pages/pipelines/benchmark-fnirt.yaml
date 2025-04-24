@@ -1,12 +1,22 @@
 # this is a C-PAC Docs content file 
 
 paragraphs:
-  - paragraph: null
-    details:
-    - This pipeline is based on registration-to-template using the FSL FLIRT & FNIRT, as this decision impacts many other aspects of the pipeline further downstream.
-    - It is designed to test a wide range of pipeline options.
-    - The benchmark pipeline has remained mostly unchanged since the project’s inception, and is used at the end of each release cycle to ensure the results of C-PAC’s key outputs have not changed.
-          
+  - paragraph: The benchmark-FNIRT pipeline is centered around anatomical registration using FSL's FLIRT (linear) and FNIRT (nonlinear) tools. This choice influences downstream processes, ensuring a consistent spatial normalization framework. The pipeline is structured to test a wide range of preprocessing options, providing a comprehensive assessment of the pipeline's performance and stability.​
+    subparagraphs:
+    - paragraph: Anatomical Preprocessing
+      details:
+      - Brain Extraction - Utilizes AFNI’s 3dSkullStrip to remove non-brain tissues from anatomical images.
+      - Tissue Segmentation - Employs FSL's FAST to segment the brain into white matter (WM), gray matter (GM), and cerebrospinal fluid (CSF) compartments.
+      - Spatial Normalization - Applies FSL's FLIRT for initial linear registration, followed by FNIRT for nonlinear warping to align individual anatomical images to the MNI152 standard space.
+    - paragraph: Functional Preprocessing
+      details:
+      - Motion Correction - Corrects for head motion artifacts in functional MRI data.
+      - Slice Timing Correction - Adjusts for timing differences in slice acquisition.
+      - Coregistration - Aligns functional images to the anatomical reference using boundary-based registration techniques.
+      - Normalization - Warps functional data into MNI space using the transforms derived from anatomical preprocessing.
+      - Nuisance Regression - Performs regression to remove confounding signals, including options for global signal regression.
+      - Temporal Filtering - Applies bandpass filtering (e.g., 0.01–0.1 Hz) to isolate relevant frequency components.
+      - Spatial Smoothing - Applies a Gaussian kernel (e.g., 6mm FWHM) to smooth the data spatially.
 
 mermaid:
   title: null

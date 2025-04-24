@@ -1,11 +1,48 @@
 # this is a C-PAC Docs content file 
 
 paragraphs:
-  - paragraph: null
-    details:
-    - This pipeline is based on registration-to-template using the ANTs/ITK toolset, as this decision impacts many other aspects of the pipeline further downstream.
-    - It is designed to test a wide range of pipeline options.
-    - The benchmark pipeline has remained mostly unchanged since the project’s inception, and is used at the end of each release cycle to ensure the results of C-PAC’s key outputs have not changed.
+  - paragraph: The benchmark-ants pipeline is a standardized, reference configuration that leverages the ANTs/ITK (Advanced Normalization Tools/Insight Toolkit) suite for image registration. This pipeline has served as a cornerstone of C-PAC since its inception and remains largely unchanged across releases. Its primary purpose is regression testing—to verify the stability and consistency of C-PAC's key outputs across updates by comparing results against known benchmarks.
+    subparagraphs:
+    - paragraph: Anatomical Processing and Registration
+      details:
+      - The pipeline performs nonlinear registration to a standard template using ANTs. Specifically, anatomical images are aligned to the MNI152 template using SyN (Symmetric Normalization), a robust algorithm from ANTs known for its accuracy. This choice of registration tool influences subsequent steps like functional-to-anatomical alignment and standard space projection.
+    - paragraph: Skull-Stripping
+      details:
+      - Skull-stripping is executed using ANTs-based tools, ensuring consistency with the registration methodology. This helps remove non-brain tissues from anatomical images, which is crucial for accurate alignment and segmentation.
+    - paragraph: Tissue Segmentation
+      details:
+      - Segmentation of anatomical images into tissue classes (gray matter, white matter, and CSF) is conducted using FSL’s FAST. These segmentations are foundational for nuisance regression and mask generation later in the workflow.
+    - paragraph: Functional Preprocessing
+      details:
+      - Functional images undergo standard preprocessing steps including
+      subparagraphs:
+      - paragraph: null
+        details:
+        - Slice-timing correction
+        - Motion correction using FSL's MCFLIRT
+        - Coregistration of functional images to anatomical space (also using ANTs tools)
+        - Projection to standard space based on the anatomical-to-template warp fields computed earlier
+    - paragraph: Nuisance Regression
+      details:
+      - The pipeline supports multiple denoising strategies, including
+      subparagraphs:
+      - paragraph: null
+        details:
+        - CompCor (both anatomical and temporal variants)
+        - Global signal regression
+        - Friston 24 motion parameters These options help remove confounds from the BOLD signal, aiding in isolating neural signal fluctuations.
+    - paragraph: Spatial Smoothing and Temporal Filtering
+      details:
+      - Spatial smoothing is applied using a configurable Gaussian kernel. Temporal filtering (bandpass) helps reduce low-frequency drift and high-frequency noise, improving signal-to-noise ratio for functional connectivity analysis.
+    - paragraph: Functional Connectivity Derivatives
+      details:
+      - The pipeline generates derivatives such as
+      subparagraphs:
+      - paragraph: null
+        details:
+        - Voxel-wise and ROI-based time series
+        - Functional connectivity matrices
+        - ALFF/fALFF and ReHo maps These outputs are essential for downstream analyses in resting-state fMRI research.
 
 mermaid:
   title: null

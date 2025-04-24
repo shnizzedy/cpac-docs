@@ -1,12 +1,26 @@
 # this is a C-PAC Docs content file 
 
 paragraphs:
-  - paragraph: null
-    details:
-    - This pipeline is the result of Neurodata’s study to converge upon the intersection of pipeline configuration decisions that maximizes discriminability between participants’ data, drawing from the connectome graphs produced (labeled ‘ndmg_graph’ in the C-PAC output directory).
-    - This pipeline invokes a minimal set of preprocessing.
-    - Note, the ‘ndmg_graph’ connectome graph outputs are always produced by C-PAC. This pipeline configuration simply replicates the preprocessing methods described in the paper, linked below.
-        
+  - paragraph: The NDMG (NeuroData's MRI Graphs) preconfigured pipeline in C-PAC (Configurable Pipeline for the Analysis of Connectomes) is a minimal preprocessing pipeline specifically designed to replicate the configuration and methodology described in NeuroData’s study on connectomic discriminability. This pipeline aims to maximize inter-individual discriminability based on connectome-derived features by standardizing the preprocessing steps that yield the most reliable and distinct connectivity profiles across participants.
+  - paragraph: The pipeline’s design focuses on aligning C-PAC's preprocessing strategy with the methodology underlying the original NDMG project, targeting the generation of connectome graphs—referred to as ndmg_graph in the C-PAC output structure. While C-PAC always outputs ndmg_graph connectomes regardless of pipeline configuration, this specific configuration mirrors the preprocessing steps used in NeuroData’s analysis to ensure compatibility and reproducibility.
+    subparagraphs:
+    - paragraph: Anatomical Preprocessing
+      details:
+      - Skull-Stripping - Extraction of brain tissue from T1-weighted images using AFNI's 3dSkullStrip, ensuring standardized brain masks for subsequent alignment and parcellation.
+      - Linear Registration - Alignment of anatomical images to MNI space using linear (affine) transformations via FSL’s FLIRT. This step avoids nonlinear warping to preserve native spatial characteristics of individual brains.
+
+    - paragraph: Functional Preprocessing (Minimal Use)
+      details:
+      - While not a focus of the NDMG pipeline, basic motion correction and coregistration may be applied if the dataset includes functional MRI. However, the primary use case for the NDMG pipeline is with diffusion or structural data.
+
+    - paragraph: Diffusion Preprocessing (if applicable)
+      details:
+      - Includes minimal processing for quality control and registration of diffusion data, preparing it for tractography-based connectome construction.
+
+    - paragraph: Parcellation and Graph Generation
+      details:
+      - The brain is parcellated into predefined regions using a standard atlas (e.g., Desikan-Killiany), and edges are defined based on the number of streamlines or other tractography-based measures connecting each pair of regions.
+      - The output is a connectome graph in adjacency matrix format (ndmg_graph), which encodes the pairwise connectivity across regions.
 
 mermaid:
   title: null

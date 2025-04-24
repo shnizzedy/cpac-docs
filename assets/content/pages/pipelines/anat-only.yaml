@@ -1,13 +1,18 @@
 # this is a C-PAC Docs content file 
 
 paragraphs:
-  - paragraph: null
+  - paragraph: The anat-only preconfigured pipeline is a streamlined configuration designed specifically for anatomical data preprocessing. It is derived from the decisions and structure of C-PAC’s default pipeline, but isolates and enables only the anatomical processing steps, making it ideal for workflows that require structural preprocessing without functional data dependencies.
     subparagraphs:
-      - paragraph: Based on the preprocessing decisions of the default pipeline, this preconfiguration allows you to immediately kick off a run with only anatomical preprocessing selected. This includes
+    - paragraph: Brain Extraction
+      details:
+      - Utilizes AFNI’s 3dSkullStrip tool to isolate brain tissue from non-brain structures in the anatomical image. This is a crucial first step for reducing computational noise and improving the accuracy of subsequent processing stages.
+      subparagraphs:
+      - paragraph: Tissue Segmentation
         details:
-          - Brain extraction (via AFNI 3dSkullStrip)
-          - Tissue segmentation (via FSL FAST
-          - Registration to template (via ANTs/ITK)
+        -  Employs FSL’s FAST (FMRIB's Automated Segmentation Tool) to segment the brain into tissue classes—typically gray matter, white matter, and cerebrospinal fluid (CSF). These segmentations are often required for both quality control and downstream applications like cortical thickness estimation or nuisance signal regression.
+      - paragraph: Registration to Template
+        details:
+        - Performs anatomical normalization using ANTs/ITK-based nonlinear registration. This aligns individual subjects’ anatomical images to a standardized template space
 
 mermaid:
   title: null
