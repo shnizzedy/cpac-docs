@@ -11,9 +11,14 @@
   <link href="../../assets/css/main.css" rel="stylesheet">
   <script src="../../assets/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
   <script src="../../assets/js/cortical.js"></script>
 
-
+  <script type="module">
+    import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.esm.min.mjs';
+    mermaid.initialize({ startOnLoad: true });
+  </script>
   
 </head>
 
@@ -62,7 +67,10 @@
       <li><a href="../neuroimaging/functional_coregistration.html">Functional Co-Registration</a></li>
     </ul>
 
-    <div id="paragraphsContent"></div> 
+    <div class="container">
+      <center><h4 style="padding-bottom: 20px;"> Cortical Surface Preprocessing Nodeblocks</h4></center>
+      <dropdown></dropdown>
+    </div>
 
   </main>
 
