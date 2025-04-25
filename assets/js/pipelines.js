@@ -64,22 +64,8 @@
       });
     }
   
-    function setupDropdownMenu() {
-      const dropdown = document.querySelector(".navmenu li.dropdown");
-      const dropdownMenu = dropdown.querySelector(".dropdown-menu");
-  
-      dropdown.addEventListener("mouseenter", function() {
-        dropdownMenu.style.display = "block";
-      });
-  
-      dropdown.addEventListener("mouseleave", function() {
-        dropdownMenu.style.display = "none";
-      });
-    }
-  
     window.addEventListener("load", function () {
       toggleScrolled();
       loadYAML("../assets/content/pages/pipelines/pipelines.yaml");
-      setupDropdownMenu();
     });
   })();
