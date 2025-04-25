@@ -9,6 +9,7 @@
   }
 
   document.addEventListener("scroll", toggleScrolled);
+  window.addEventListener("load", toggleScrolled);
 
   async function loadYAML(filename) {
     if (!filename) {
@@ -21,11 +22,11 @@
       const yamlText = await response.text();
       const yamlData = jsyaml.load(yamlText);
 
-      const paragraphsContainer = document.getElementById("paragraphsContent");
-      paragraphsContainer.innerHTML = "";
+      const container = document.getElementById("paragraphsContent");
+      container.innerHTML = "";
 
-      if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
-        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer, true);
+      if (yamlData.steps) {
+        renderNodeblockSteps(yamlData.steps, container);
       }
 
     } catch (error) {
@@ -35,48 +36,76 @@
     }
   }
 
-  function readYAMLparagraphs(paragraphs, container, isTopLevel = false) {
-    paragraphs.forEach(item => {
-      const section = document.createElement("div");
-      section.classList.add("paragraph-section");
+  function renderNodeblockSteps(steps, container) {
+    Object.entries(steps).forEach(([stepName, stepData]) => {
+      const stepDiv = document.createElement("div");
+      stepDiv.classList.add("step-section");
 
-      if (item.paragraph) {
-        const heading = document.createElement(isTopLevel ? "h6" : "h6");
-        heading.textContent = item.paragraph;
+      const stepHeader = document.createElement("h4");
+      const strongTitle = document.createElement("strong");
+      strongTitle.textContent = stepName;
+      stepHeader.appendChild(strongTitle);
+      stepDiv.appendChild(stepHeader);
 
-        heading.style.fontWeight = "normal";
-        heading.style.fontStyle = "italic";
-
-        section.appendChild(heading);
+      if (stepData.description) {
+        const descEl = renderDescription(stepData.description);
+        stepDiv.appendChild(descEl);
       }
 
-      if (Array.isArray(item.details)) {
-        const ul = document.createElement("ul");
-        ul.classList.add("paragraph-details-list");
+      if (stepData.methods) {
+        Object.entries(stepData.methods).forEach(([methodName, methodData]) => {
+          const methodDiv = document.createElement("div");
+          methodDiv.classList.add("method-section");
 
-        item.details.forEach(detailText => {
-          const li = document.createElement("li");
-          li.textContent = detailText || "(detail)";
-          li.classList.add("paragraph-detail");
-          ul.appendChild(li);
+          const methodHeader = document.createElement("h5");
+          methodHeader.textContent = methodName;
+          methodDiv.appendChild(methodHeader);
+
+          if (methodData.description) {
+            const descEl = renderDescription(methodData.description);
+            methodDiv.appendChild(descEl);
+          }
+
+          if (methodData.operations) {
+            const mermaidDiv = document.createElement("div");
+            mermaidDiv.classList.add("mermaid");
+            mermaidDiv.textContent = methodData.operations;
+            mermaidDiv.style.paddingBottom = "20px";
+            methodDiv.appendChild(mermaidDiv);
+          }
+
+          stepDiv.appendChild(methodDiv);
         });
-
-        section.appendChild(ul);
       }
 
-      if (Array.isArray(item.subparagraphs) && item.subparagraphs.length > 0) {
-        const subContainer = document.createElement("div");
-        subContainer.classList.add("subparagraphs-container");
-        readYAMLparagraphs(item.subparagraphs, subContainer, false);
-        section.appendChild(subContainer);
-      }
-
-      container.appendChild(section);
+      container.appendChild(stepDiv);
     });
+
+    mermaid.init();
   }
+
+  function renderDescription(desc) {
+    if (Array.isArray(desc)) {
+      const ul = document.createElement("ul");
+      desc.forEach(item => {
+        const li = document.createElement("li");
+        li.textContent = item;
+        ul.appendChild(li);
+      });
+      return ul;
+    } else {
+      const p = document.createElement("p");
+      p.textContent = desc;
+      return p;
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    mermaid.initialize({ startOnLoad: false });
+  });
 
   window.addEventListener("load", () => {
     toggleScrolled();
-    loadYAML("../../assets/content/pages/neuroimaging/anatomical_preprocessing.yaml");
+    loadYAML("../../assets/content/pages/neuroimaging/nodeblock_descriptors/anat_preproc.yaml");
   });
 })();

@@ -1,13 +1,91 @@
 # This is a C-PAC nodeblock descriptor file. (to be pulled from C-PAC/CPAC/nodeblock)
 
 steps:
-  Non-Local Means (NLM) Filtering:
-    description: Performs non-local means filtering on structural data.
+
+  anatomical_init:
+    description: null
+    references: null
+    methods:
+      anatomical_init():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  acpc_alignment_head:
+    description: null
+    references: null
+    methods:
+      acpc_align_head():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  acpc_alignment_head_with_mask:
+    description: null
+    references: null
+    methods:
+      acpc_align_head_with_mask():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+      
+  acpc_alignment_brain:
+    description: null
+    references: null
+    methods:
+      acpc_align_brain():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  acpc_alignment_brain_with_mask:
+    description: null
+    references: null
+    methods:
+      acpc_align_brain_with_mask():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  registration_T2w_to_T1w:
+    description: null
+    references: null
+    methods:
+      registration_T2w_to_T1w():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+  
+  nlm_filtering:
+    description: 
+    - Performs non-local means filtering on structural data using ANTSDenoiseImage.
+    - Non-local means filtering reduces noise by averaging pixel intensities based on similarity, not just proximity, preserving important structural details like edges and fine anatomical features.
+    - Unlike traditional smoothing methods (e.g., Gaussian smoothing), which blur the image and reduce sharpness, NLM compares patches of the image to identify similar regions, even if they are spatially distant.
+    - This approach is particularly beneficial for structural MRI, where fine details and boundaries between tissues must remain clear.
+    - This can possibly improve registration or tissue segmentation results.
     references:
       - https://en.wikipedia.org/wiki/Non-local_means
     methods:
-      nlm_filtering:
-        description: Uses ANTs DenoiseImage.
+      non_local_means():
+        description: null
         references:
           - https://manpages.debian.org/experimental/ants/DenoiseImage.1.en.html
         config: null
@@ -26,47 +104,41 @@ steps:
           Nipype: https://github.com/FCP-INDI/C-PAC/blob/rc/v1.8.7/CPAC/anat_preproc/anat_preproc.py#L1528-L1537
         validation: s3://path/to/gold/standard
 
-  T1w Brain Mask Generation:
-    description: Generates a binary brain mask of a T1w structural image.
+  n4_bias_correction:
+    description: 
+    - The bias field is a low-frequency artifact in MRI images that results in uneven signal intensity across the image, unrelated to the actual tissue.
+    - This method will remove the bias field while preserving the true anatomical contrast in the image.
+    - Can be used to improve tissue contrast in MRI images, which can possibly improve registration or tissue segmentation results.
+    - If you see a gradient of voxel intensity difference spanning over the length of the image (ex. very light at one end of the head, very dark at the other, with a smooth transition in between that is not related to anatomical boundaries), using this technique may work particularly well with that specific data.
     references: null
     methods:
-      brain_mask_fsl:
-        description: Uses FSL BET.
-        references:
-          - links to manuals
-          - links to papers
-          - etc.
-        config:
-          Robustfov: Off
-          frac: 0.5
-          mesh_boolean: Off
-          outline: Off
-          padding: Off
-          radius: 0
-          reduce_bias: Off
-          remove_eyes: Off
-          robust: Off
-          skull: Off
-          surfaces: Off
-          threshold: Off
-          vertical_gradient: 0.0
-        operations: |
-          graph TD;
-              brain_mask_fsl["brain_mask_fsl"];
-              fsl_brain_connector["fsl_brain_connector"];
-
-              desc_preproc_T1w["desc-preproc_T1w"] -->|input| brain_mask_fsl;
-              brain_mask_fsl -->|calls| fsl_brain_connector;
-              fsl_brain_connector -->|output| space_T1w_desc_brain_mask["space-T1w_desc-brain_mask"];
+      n4_bias_correction():
+        description: null
+        references: null
+        config: null
+        operations: null
         source: null
         validation: null
 
-      brain_mask_afni:
-        description: Uses AFNI 3dSkullStrip.
-        references:
-          - links to manuals
-          - links to papers
-          - etc.
+  t1t2_bias_correction:
+    description: null
+    references: null
+    methods:
+      t1t2_bias_correction():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+  
+  brain_mask_afni:
+    description: Uses AFNI 3dSkullStrip.
+    references: null
+    methods:
+      brain_mask_afni():
+        description: null
+        references: null
         config:
           shrink_factor: 0.6
           var_shrink_fac: On
@@ -99,52 +171,498 @@ steps:
         source: null
         validation: null
 
-  ACPC Alignment:
-    description: ACPC alignment is meant to ... etc.
-    references:
-      - links to pages/tutorials generically about ACPC alignment
+  brain_mask_acpc_afni:
+    description: null
+    references: null
     methods:
-      acpc_alignment_head:
-        description: More specific info (if needed)
-        references: null
-        config: null
-        operations: |
-          graph TD;
-              acpc_align_head["acpc_align_head"];
-              acpc_alignment["acpc_alignment"];
-
-              desc_head_T1w["desc-head_T1w"] -->|input| acpc_align_head;
-              desc_preproc_T1w["desc-preproc_T1w"] -->|input| acpc_align_head;
-              T1w_ACPC_template["T1w-ACPC-template"] -->|template input| acpc_align_head;
-
-              acpc_align_head -->|calls| acpc_alignment;
-
-              acpc_alignment -->|output| desc_head_T1w_out["desc-head_T1w"];
-              acpc_alignment -->|output| desc_preproc_T1w_out["desc-preproc_T1w"];
-              acpc_alignment -->|output| from_T1w_to_ACPC_xfm["from-T1w_to-ACPC_mode-image_desc-aff2rig_xfm"];
-        source: null
-        validation: null
-
-      acpc_alignment_head_with_mask:
+      brain_mask_acpc_afni():
         description: null
         references: null
         config: null
-        operations: |
-          graph TD;
-              acpc_align_head_with_mask["acpc_align_head_with_mask"];
-              acpc_alignment["acpc_alignment"];
-
-              desc_head_T1w["desc-head_T1w"] -->|input| acpc_align_head_with_mask;
-              desc_preproc_T1w["desc-preproc_T1w"] -->|input| acpc_align_head_with_mask;
-              T1w_ACPC_template["T1w-ACPC-template"] -->|template input| acpc_align_head_with_mask;
-              T1w_brain_ACPC_template["T1w-brain-ACPC-template"] -->|brain template input| acpc_align_head_with_mask;
-              space_T1w_desc_brain_mask["space-T1w_desc-brain_mask"] -->|mask input| acpc_align_head_with_mask;
-
-              acpc_align_head_with_mask -->|calls| acpc_alignment;
-
-              acpc_alignment -->|output| desc_head_T1w_out["desc-head_T1w"];
-              acpc_alignment -->|output| desc_preproc_T1w_out["desc-preproc_T1w"];
-              acpc_alignment -->|output| space_T1w_desc_brain_mask_out["space-T1w_desc-brain_mask"];
-              acpc_alignment -->|output| from_T1w_to_ACPC_xfm["from-T1w_to-ACPC_mode-image_desc-aff2rig_xfm"];
+        operations: null
         source: null
         validation: null
+
+  brain_mask_fsl:
+    description: Generates a binary brain mask of a T1w structural image.  Skull-stripping is the removal of skull and other non-brain tissue like dura and eyes from anatomical images, which could otherwise complicate co-registration and normalization steps.
+    references: null
+    methods:
+      brain_mask_fsl():
+        description: Uses FSL BET.
+        references:
+          - links to manuals
+          - links to papers
+          - etc.
+        config:
+          Robustfov: Off
+          frac: 0.5
+          mesh_boolean: Off
+          outline: Off
+          padding: Off
+          radius: 0
+          reduce_bias: Off
+          remove_eyes: Off
+          robust: Off
+          skull: Off
+          surfaces: Off
+          threshold: Off
+          vertical_gradient: 0.0
+        operations: |
+          graph TD;
+              brain_mask_fsl["brain_mask_fsl"];
+              fsl_brain_connector["fsl_brain_connector"];
+
+              desc_preproc_T1w["desc-preproc_T1w"] -->|input| brain_mask_fsl;
+              brain_mask_fsl -->|calls| fsl_brain_connector;
+              fsl_brain_connector -->|output| space_T1w_desc_brain_mask["space-T1w_desc-brain_mask"];
+        source: null
+        validation: null
+
+  brain_mask_acpc_fsl:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_fsl():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  brain_mask_niworkflows_ants:
+    description: null
+    references: null
+    methods:
+      brain_mask_niworkflows_ants():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  brain_mask_acpc_niworkflows_ants:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_niworkflows_ants():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  brain_mask_unet:
+    description: null
+    references: null
+    methods:
+      brain_mask_unet():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  brain_mask_acpc_unet:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_unet():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  brain_mask_freesurfer:
+    description: null
+    references: null
+    methods:
+      brain_mask_freesurfer():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  brain_mask_freesurfer_abcd:
+    description: null
+    references: null
+    methods:
+      brain_mask_freesurfer_abcd():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  brain_mask_freesurfer_fsl_tight:
+    description: null
+    references: null
+    methods:
+      brain_mask_freesurfer_fsl_tight():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  brain_mask_acpc_freesurfer_abcd:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_freesurfer_abcd():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  brain_mask_freesurfer_fsl_loose:
+    description: null
+    references: null
+    methods:
+      brain_mask_freesurfer_fsl_loose():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_acpc_freesurfer_fsl_tight:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_freesurfer_fsl_tight():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  brain_mask_acpc_freesurfer_fsl_loose:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_freesurfer_fsl_loose():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  brain_extraction:
+    description: null
+    references: null
+    methods:
+      brain_extraction():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  brain_extraction_temp:
+    description: null
+    references: null
+    methods:
+      brain_extraction_temp():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  anatomical_init_T2:
+    description: null
+    references: null
+    methods:
+      anatomical_init_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  acpc_alignment_head_T2:
+    description: null
+    references: null
+    methods:
+      acpc_alignment_head_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+
+  acpc_alignment_head_with_mask_T2:
+    description: null
+    references: null
+    methods:
+      acpc_alignment_head_with_mask_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null    
+
+  acpc_alignment_brain_T2:
+    description: null
+    references: null
+    methods:
+      acpc_alignment_brain_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  acpc_align_brain_with_mask_T2:
+    description: null
+    references: null
+    methods:
+      acpc_align_brain_with_mask_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  nlm_filtering_T2:
+    description: null
+    references: null
+    methods:
+      non_local_means_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  n4_bias_correction_T2:
+    description: null
+    references: null
+    methods:
+      n4_bias_correction_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_afni_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_afni_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_acpc_afni_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_afni_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_fsl_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_fsl_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_acpc_fsl_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_fsl_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_niworkflows_ants_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_niworkflows_ants_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_acpc_niworkflows_ants_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_niworkflows_ants_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_unet_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_unet_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_acpc_unet_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_unet_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_mask_acpc_T2:
+    description: null
+    references: null
+    methods:
+      brain_mask_acpc_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_extraction_T2:
+    description: null
+    references: null
+    methods:
+      brain_extraction_T2:
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  brain_extraction_temp_T2:
+    description: null
+    references: null
+    methods:
+      brain_extraction_temp_T2():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  freesurfer_abcd_preproc:
+    description: null
+    references: null
+    methods:
+      freesurfer_abcd_preproc():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  freesurfer_reconall:
+    description: null
+    references: null
+    methods:
+      freesurfer_reconall():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+      fnirt_based_brain_extraction():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+      fast_bias_field_correction():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  correct_restore_brain_intensity_abcd:
+    description: null
+    references: null
+    methods:
+      correct_restore_brain_intensity_abcd():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
