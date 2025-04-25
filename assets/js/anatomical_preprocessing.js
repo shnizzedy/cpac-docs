@@ -22,34 +22,54 @@
       const yamlText = await response.text();
       const yamlData = jsyaml.load(yamlText);
 
-      const container = document.getElementById("paragraphsContent");
-      container.innerHTML = "";
+      const dropdownContainer = document.querySelector("dropdown");
+
+      if (!dropdownContainer) {
+        console.error("<dropdown> element not found in HTML.");
+        return;
+      }
+
+      dropdownContainer.innerHTML = ""; // Clear existing content
+
+      // Create a wrapper to apply the dropdown styling
+      const wrapper = document.createElement("div");
+      wrapper.classList.add("dropdown-wrapper");
 
       if (yamlData.steps) {
-        renderNodeblockSteps(yamlData.steps, container);
+        renderNodeblockSteps(yamlData.steps, wrapper);
       }
+
+      dropdownContainer.appendChild(wrapper); // Append wrapper to dropdown
+
+      // Initialize mermaid diagrams after adding them to the DOM
+      mermaid.init();
 
     } catch (error) {
       console.error(`Error loading YAML from ${filename}:`, error);
-      const container = document.getElementById("paragraphsContent");
-      container.textContent = `Failed to load YAML from ${filename}: ${error.message}`;
+      const container = document.querySelector("dropdown");
+      if (container) {
+        container.textContent = `Failed to load YAML from ${filename}: ${error.message}`;
+      }
     }
   }
 
   function renderNodeblockSteps(steps, container) {
     Object.entries(steps).forEach(([stepName, stepData]) => {
       const stepDiv = document.createElement("div");
-      stepDiv.classList.add("step-section");
+      stepDiv.classList.add("dropdown-item"); // Add the dropdown-item class for styling
 
-      const stepHeader = document.createElement("h4");
+      // Create dropdown for each step
+      const details = document.createElement("details");
+      const summary = document.createElement("summary");
       const strongTitle = document.createElement("strong");
       strongTitle.textContent = stepName;
-      stepHeader.appendChild(strongTitle);
-      stepDiv.appendChild(stepHeader);
+      summary.appendChild(strongTitle);
+      details.appendChild(summary);
 
+      // Add description to the dropdown
       if (stepData.description) {
         const descEl = renderDescription(stepData.description);
-        stepDiv.appendChild(descEl);
+        details.appendChild(descEl);
       }
 
       if (stepData.methods) {
@@ -69,19 +89,18 @@
           if (methodData.operations) {
             const mermaidDiv = document.createElement("div");
             mermaidDiv.classList.add("mermaid");
-            mermaidDiv.textContent = methodData.operations;
+            mermaidDiv.textContent = methodData.operations; // Add Mermaid diagram text
             mermaidDiv.style.paddingBottom = "20px";
             methodDiv.appendChild(mermaidDiv);
           }
 
-          stepDiv.appendChild(methodDiv);
+          details.appendChild(methodDiv);
         });
       }
 
+      stepDiv.appendChild(details);
       container.appendChild(stepDiv);
     });
-
-    mermaid.init();
   }
 
   function renderDescription(desc) {

@@ -90,7 +90,7 @@ steps:
           - https://manpages.debian.org/experimental/ants/DenoiseImage.1.en.html
         config: null
         operations: |
-          graph TD;
+          graph TD
               nlm_filtering["nlm_filtering"];
               anat_denoise["anat_denoise"];
               
@@ -161,7 +161,7 @@ steps:
           blur_fwhm: 0
           monkey: Off
         operations: |
-          graph TD;
+          graph TD
               brain_mask_afni_T2["brain_mask_afni_T2"];
               afni_brain_connector["afni_brain_connector"];
 
@@ -208,7 +208,7 @@ steps:
           threshold: Off
           vertical_gradient: 0.0
         operations: |
-          graph TD;
+          graph TD
               brain_mask_fsl["brain_mask_fsl"];
               fsl_brain_connector["fsl_brain_connector"];
 

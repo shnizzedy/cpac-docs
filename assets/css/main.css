@@ -376,7 +376,7 @@ dropdown summary {
 }
 
 dropdown summary:hover {
-  background-color: var(--highlight-color);
+  background-color: var(--background-color);
 }
 
 dropdown summary::-webkit-details-marker {
@@ -384,7 +384,7 @@ dropdown summary::-webkit-details-marker {
 }
 
 dropdown details[open] summary {
-  color: var(--text-color);
+  color: var(--accent-color);
 }
 
 dropdown ul, dropdown li {
