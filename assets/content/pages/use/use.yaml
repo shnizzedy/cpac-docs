@@ -1,1 +1,38 @@
-# this is a C-PAC Docs content file (placeholder)
+# this is a C-PAC Docs content file 
+
+paragraphs:
+
+  - paragraph: Ways to Run
+    subparagraphs:
+      - paragraph: Local machine with Docker and/or Singularity
+        details:
+          - The recommended way to run C-PAC is through the use of a container such as Docker or Singularity.
+          - Using these containers can be facilitated by the cpac Python package.
+
+      - paragraph: HPC with Singularity
+        details: null
+
+      - paragraph: AWS
+        details: null
+
+      - paragraph: brainlife.io
+        details: null
+
+      - paragraph: FlyWheel
+        details: null
+
+      - paragraph: Starcluster on AWS or HPC
+        details: null
+
+  - paragraph: C-PAC Quickstart
+    details:
+      - pull from https://fcp-indi.github.io/docs/latest/user/quick
+
+  - paragraph: C-PAC Features
+    subparagraphs:
+      - paragraph: Design a Pipeline
+      - paragraph: Warm Restart
+      - paragraph: Forking
+      - paragraph: Debugging Tools
+        details:
+          - QC
