@@ -72,10 +72,12 @@ a:hover {
 
   .navmenu a {
     color: var(--text-color);
-    font-size: 15px;
+    font-size: 17px;
     text-transform: uppercase;
     display: flex;
     align-items: center;
+    font-weight: bold;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
 
   .navmenu li:hover > a,
@@ -84,53 +86,6 @@ a:hover {
   }
 }
 
-.navmenu li.dropdown {
-  position: relative;
-}
-
-.navmenu li.dropdown .dropdown-menu {
-  display: none;
-  position: absolute;
-  top: 100%;
-  left: 0;
-  min-width: 200px;
-  padding: 0;
-  background-color: var(--surface-color);
-  border-radius: 1rem;
-  border: 1px solid var(--accent-color);
-  font-family: "Segoe UI", sans-serif;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  color: var(--text-color);
-  z-index: 1000;
-  max-height: 300px;
-  overflow-y: auto;
-}
-
-.navmenu li.dropdown:hover .dropdown-menu {
-  display: block;
-}
-
-.navmenu li.dropdown .dropdown-menu li {
-  border-bottom: 1px solid var(--accent-color);
-  line-height: 1.5;
-}
-
-.navmenu li.dropdown .dropdown-menu li:last-child {
-  border-bottom: none;
-}
-
-.navmenu li.dropdown .dropdown-menu li a {
-  padding: 0;
-  color: var(--text-color);
-  text-decoration: none;
-  display: block;
-  transition: background-color 0.3s ease;
-  border-radius: 0.5rem;
-}
-
-.navmenu li.dropdown .dropdown-menu li a:hover {
-  background-color: var(--highlight-color);
-}
 
 /* ------------------------- PAGE TITLE STYLES ------------------------- */
 .page-title {
