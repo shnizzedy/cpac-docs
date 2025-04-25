@@ -13,21 +13,21 @@ paragraphs:
 
 mermaid:
   title: General C-PAC Flow
-  operations: 
-  graph TD;
-      A[Input Data] -->|Short| B[Anatomical Preprocessing];
-      B -->|Medium| C[Tissue Segmentation];
-      A -->|Medium| D[Functional Preprocessing];
-      D -->|Medium| E[Nuisance Regression];
-      A -->|Long| F[Registrations - Calculation of Transforms];
-      C --> F;
-      F -->|Short| G[Application of Transforms];
-      G --> H[Output Data - Template Space];
-      H -->|Varies| I[Group-Level Analyses];
-      I --> J[Statistical Model - if applicable];
-      E -->|Long| K[Connectivity Measures];
-      K --> L[Output Data - Native Space];
-      G --> K;
+  operations: |
+    graph TD
+        A[Input Data] -->|Short| B[Anatomical Preprocessing];
+        B -->|Medium| C[Tissue Segmentation];
+        A -->|Medium| D[Functional Preprocessing];
+        D -->|Medium| E[Nuisance Regression];
+        A -->|Long| F[Registrations - Calculation of Transforms];
+        C --> F;
+        F -->|Short| G[Application of Transforms];
+        G --> H[Output Data - Template Space];
+        H -->|Varies| I[Group-Level Analyses];
+        I --> J[Statistical Model - if applicable];
+        E -->|Long| K[Connectivity Measures];
+        K --> L[Output Data - Native Space];
+        G --> K;
 
 list:
   - title: Preprocessing Options
