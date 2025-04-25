@@ -53,9 +53,6 @@
         const heading = document.createElement(isTopLevel ? "h6" : "h6");
         heading.textContent = item.paragraph;
 
-        heading.style.fontWeight = "normal";
-        heading.style.fontStyle = "italic";
-
         section.appendChild(heading);
       }
 
@@ -89,7 +86,9 @@
       const section = document.createElement("div");
       section.classList.add("list-section");
   
-      const title = document.createElement("h4");
+      const title = document.createElement("h6");
+      title.style.fontWeight = "bold";
+      
       title.textContent = item.title;
       section.appendChild(title);
   

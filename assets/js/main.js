@@ -56,25 +56,37 @@
     }
   }
 
-  function readYAMLparagraphs(contentData, container) {
-    contentData.forEach((item) => {
+  function readYAMLparagraphs(paragraphs, container, isTopLevel = false) {
+    paragraphs.forEach(item => {
       const section = document.createElement("div");
       section.classList.add("paragraph-section");
 
-      const title = document.createElement("h3");
-      title.textContent = item.title;
-      section.appendChild(title);
+      if (item.paragraph) {
+        const heading = document.createElement(isTopLevel ? "h6" : "h6");
+        heading.textContent = item.paragraph;
 
-      if (Array.isArray(item.paragraphs)) {
-        item.paragraphs.forEach((paraText) => {
-          const para = document.createElement("p");
-          para.textContent = paraText;
-          section.appendChild(para);
+        section.appendChild(heading);
+      }
+
+      if (Array.isArray(item.details)) {
+        const ul = document.createElement("ul");
+        ul.classList.add("paragraph-details-list");
+
+        item.details.forEach(detailText => {
+          const li = document.createElement("li");
+          li.textContent = detailText || "(detail)";
+          li.classList.add("paragraph-detail");
+          ul.appendChild(li);
         });
-      } else {
-        const para = document.createElement("p");
-        para.textContent = item.paragraphs || "";
-        section.appendChild(para);
+
+        section.appendChild(ul);
+      }
+
+      if (Array.isArray(item.subparagraphs) && item.subparagraphs.length > 0) {
+        const subContainer = document.createElement("div");
+        subContainer.classList.add("subparagraphs-container");
+        readYAMLparagraphs(item.subparagraphs, subContainer, false);
+        section.appendChild(subContainer);
       }
 
       container.appendChild(section);
@@ -88,7 +100,7 @@
     }
 
     if (mermaidData.title) {
-      const title = document.createElement("h4");
+      const title = document.createElement("h6");
       title.textContent = mermaidData.title;
       container.appendChild(title);
     }
@@ -107,8 +119,9 @@
       const section = document.createElement("div");
       section.classList.add("list-section");
   
-      const title = document.createElement("h4");
+      const title = document.createElement("h6");
       title.textContent = item.title;
+      title.style.fontWeight = "bold";
       section.appendChild(title);
   
       const bulletList = document.createElement("ul");
