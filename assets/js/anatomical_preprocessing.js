@@ -125,6 +125,6 @@
 
   window.addEventListener("load", () => {
     toggleScrolled();
-    loadYAML("../../assets/content/pages/neuroimaging/nodeblock_descriptors/anat_preproc.yaml");
+    loadYAML("../../assets/content/pages/neuroimaging/nodeblock_descriptors/anatomical_preprocessing.yaml");
   });
 })();
