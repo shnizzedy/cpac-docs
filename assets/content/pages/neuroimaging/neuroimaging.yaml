@@ -4,16 +4,87 @@ mermaid:
   title: null
   operations: |
     flowchart TD
-        A[Raw Data];
 
-        A --> B[Anatomical Preprocessing;<br/>Skull stripping, bias correction;];
-        B --> C[Tissue Segmentation;<br/>Identify gray matter, white matter, CSF;];
-        C --> D[Registration;<br/>Align anatomical to standard space;];
-        D --> E[Cortical Surface Preprocessing;<br/>Generate surface models of cortex;];
-        A --> F[Distortion Correction;<br/>Correct geometric distortions in fMRI;];
-        F --> G[Functional Preprocessing;<br/>Slice timing, motion correction, smoothing;];
-        G --> H[Functional Co-Registration;<br/>Align functional to anatomical space;];
-        H --> I[Preprocessed Data Ready for Analysis;];
+      StructuralT1w([Structural T1w]);
+      FieldMaps([Field Maps - if acquired]);
+      FunctionalBOLD([Functional BOLD]);
 
-        E --> H;
-        D --> H;
+      subgraph InitialPreprocessingStructural [Initial Preprocessing - Structural]
+          DeobliqueReorient([Deoblique and Reorient]);
+          ACPCAlignment([ACPC Alignment - Optional]);
+          Denoise([Denoise - Optional]);
+          N4Bias([N4 Bias Correction - Optional]);
+      end
+
+      BrainExtraction([Brain Extraction]);
+      TissueSegmentation([Tissue Segmentation]);
+      AnatomicalToTemplate([Anatomical to Template Registration]);
+      AnatomicalToSymmetricTemplate([Anatomical to Symmetric Template Registration - if running VMHC]);
+
+      DistortionCorrection([Distortion Correction - if applicable]);
+
+      subgraph InitialPreprocessingFunctional [Initial Preprocessing - Functional]
+          CalculateMotionStatsBefore([Calculate Motion Statistics - if before STC]);
+          Despike([Despike - Optional]);
+          SliceTimeCorrection([Slice-Time Correction - Optional]);
+          MotionCorrection([Motion Correction]);
+          FunctionalBOLDMasking([Functional BOLD Masking]);
+      end
+
+      CalculateMotionStatsDefault([Calculate Motion Statistics - default location]);
+      FunctionalToAnatomical([Functional to Anatomical Co-Registration]);
+      BoundaryBasedCoReg([Boundary-Based Co-Registration - Optional]);
+      FunctionalToTemplateWarp([Functional to Template Warp]);
+      FunctionalToEPITemplate([Functional to EPI-Template Registration - Optional]);
+      NuisanceRegression([Nuisance Regression - Optional]);
+
+      PreprocessedFunctional([Preprocessed Functional]);
+      ROITimeSeries([ROI Time Series Extraction]);
+
+      %% Derivatives box without title, add manual label below
+      subgraph DerivativesGroup [" "]
+          VMHC([VMHC]);
+          ALFF([ALFF & fALFF]);
+          ReHo([ReHo]);
+          SCA([SCA]);
+          DualRegression([Dual Regression]);
+          NetworkCentrality([Network Centrality]);
+      end
+      DerivativesLabel([Derivatives - Connectivity Measures]);
+
+      %% Connections
+      StructuralT1w --> InitialPreprocessingStructural;
+      InitialPreprocessingStructural --> DeobliqueReorient;
+      DeobliqueReorient --> ACPCAlignment;
+      ACPCAlignment --> Denoise;
+      Denoise --> N4Bias;
+      N4Bias --> BrainExtraction;
+      BrainExtraction --> TissueSegmentation;
+      TissueSegmentation --> AnatomicalToTemplate;
+      AnatomicalToTemplate --> AnatomicalToSymmetricTemplate;
+
+      FieldMaps --> DistortionCorrection;
+
+      FunctionalBOLD --> InitialPreprocessingFunctional;
+      InitialPreprocessingFunctional --> CalculateMotionStatsBefore;
+      CalculateMotionStatsBefore --> Despike;
+      Despike --> SliceTimeCorrection;
+      SliceTimeCorrection --> MotionCorrection;
+      MotionCorrection --> FunctionalBOLDMasking;
+      FunctionalBOLDMasking --> CalculateMotionStatsDefault;
+      DistortionCorrection --> FunctionalToAnatomical;
+      FunctionalBOLDMasking --> FunctionalToAnatomical;
+      FunctionalToAnatomical --> BoundaryBasedCoReg;
+      BoundaryBasedCoReg --> FunctionalToTemplateWarp;
+
+      FunctionalToTemplateWarp --> PreprocessedFunctional;
+      FunctionalToEPITemplate --> ROITimeSeries;
+
+      PreprocessedFunctional --> VMHC;
+      PreprocessedFunctional --> ALFF;
+      PreprocessedFunctional --> ReHo;
+      PreprocessedFunctional --> SCA;
+      PreprocessedFunctional --> DualRegression;
+      PreprocessedFunctional --> NetworkCentrality;
+
+      DerivativesGroup --> DerivativesLabel;
