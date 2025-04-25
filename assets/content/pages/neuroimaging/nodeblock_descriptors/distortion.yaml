@@ -2,11 +2,56 @@
 
 steps:
 
-  name:
+  distcor_phasediff_fsl_fugue:
     description: null
     references: null
     methods:
-      method():
+      distcor_phasediff_fsl_fugue():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+      same_pe_direction_prep():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+      calculate_blip_warp():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+      convert_afni_to_ant():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  distcor_blip_afni_qwarp:
+    description: null
+    references: null
+    methods:
+      distcor_blip_afni_qwarp():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  distcor_blip_fsl_topup:
+    description: null
+    references: null
+    methods:
+      distcor_blip_fsl_topup():
         description: null
         references: null
         config: null
