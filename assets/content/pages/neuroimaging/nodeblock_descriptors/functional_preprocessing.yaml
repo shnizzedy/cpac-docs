@@ -2,14 +2,206 @@
 
 steps:
 
-  name:
+  func_reorient:
     description: null
     references: null
     methods:
-      method():
+      func_reorient():
         description: null
         references: null
         config: null
         operations: null
         source: null
         validation: null
+
+  func_scaling:
+    description: null
+    references: null
+    methods:
+      func_scaling():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  func_truncate:
+    description: null
+    references: null
+    methods:
+      func_truncate():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  func_despike:
+    description: null
+    references: null
+    methods:
+      func_despike():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+  
+  func_despike_template:
+    description: null
+    references: null
+    methods:
+      func_despike_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  func_slice_time:
+    description: null
+    references: null
+    methods:
+      func_slice_time():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  bold_mask_afni:
+    description: null
+    references: null
+    methods:
+      bold_mask_afni():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null       
+
+  bold_mask_fsl:
+    description: null
+    references: null
+    methods:
+      bold_mask_fsl():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  bold_mask_fsl_afni:
+    description: null
+    references: null
+    methods:
+      bold_mask_fsl_afni():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  bold_mask_anatomical_refined:
+    description: null
+    references: null
+    methods:
+      bold_mask_anatomical_refined():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  bold_mask_anatomical_based:
+    description: null
+    references: null
+    methods:
+      bold_mask_fsl_afni():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  bold_mask_anatomical_resampled:
+    description: null
+    references: null
+    methods:
+      bold_mask_anatomical_resampled():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  bold_mask_ccs:
+    description: null
+    references: null
+    methods:
+      bold_mask_ccs():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  bold_masking:
+    description: null
+    references: null
+    methods:
+      bold_masking():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  func_mean:
+    description: null
+    references: null
+    methods:
+      func_mean():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  func_normalize:
+    description: null
+    references: null
+    methods:
+      func_normalize():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null   
+
+  func_mask_normalize:
+    description: null
+    references: null
+    methods:
+      func_mask_normalize():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null  

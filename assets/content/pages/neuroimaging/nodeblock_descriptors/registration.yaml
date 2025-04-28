@@ -2,11 +2,409 @@
 
 steps:
 
-  name:
+  register_FSL_anat_to_template:
     description: null
     references: null
     methods:
-      method():
+      register_FSL_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  register_symmetric_FSL_anat_to_template:
+    description: null
+    references: null
+    methods:
+      register_symmetric_FSL_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  register_FSL_EPI_to_template:
+    description: null
+    references: null
+    methods:
+      register_FSL_EPI_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  register_ANTs_anat_to_template:
+    description: null
+    references: null
+    methods:
+      register_ANTs_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  register_symmetric_ANTs_anat_to_template:
+    description: null
+    references: null
+    methods:
+      register_symmetric_ANTs_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  register_ANTs_EPI_to_template:
+    description: null
+    references: null
+    methods:
+      register_ANTs_EPI_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  overwrite_transform_anat_to_template:
+    description: null
+    references: null
+    methods:
+      overwrite_transform_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  mask_sbref:
+    description: null
+    references: null
+    methods:
+      mask_sbref():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  coregistration_prep_vol:
+    description: null
+    references: null
+    methods:
+      coregistration_prep_vol():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  coregistration_prep_mean:
+    description: null
+    references: null
+    methods:
+      coregistration_prep_mean():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  coregistration_prep_fmriprep:
+    description: null
+    references: null
+    methods:
+      coregistration_prep_fmriprep():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  coregistration:
+    description: null
+    references: null
+    methods:
+      coregistration():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  create_func_to_T1template_xfm:
+    description: null
+    references: null
+    methods:
+      create_func_to_T1template_xfm():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  create_func_to_T1template_symmetric_xfm:
+    description: null
+    references: null
+    methods:
+      create_func_to_T1template_symmetric_xfm():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  apply_phasediff_to_timeseries_separately:
+    description: null
+    references: null
+    methods:
+      apply_phasediff_to_timeseries_separately():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  apply_blip_to_timeseries_separately:
+    description: null
+    references: null
+    methods:
+      apply_blip_to_timeseries_separately():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_whole_head_T1w_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_wholeheadT1_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_T1mask_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_T1mask_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_timeseries_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_timeseries_to_T1template_deriv:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_T1template_deriv():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_timeseries_to_T1template_abcd:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_T1template_abcd():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_timeseries_to_T1template_dcan_nhp:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_T1template_dcan_nhp():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  single_step_resample_stc_timeseries_to_T1template:
+    description: null
+    references: null
+    methods:
+      single_step_resample_stc_timeseries_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_sbref_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_sbref_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_bold_mask_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_bold_mask_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_deriv_mask_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_deriv_mask_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_timeseries_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_bold_mean_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_bold_mean_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_bold_mask_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_bold_mask_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  transform_deriv_mask_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_deriv_mask_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  warp_tissuemask_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_tissuemask_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  warp_tissuemask_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_tissuemask_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+    
+      warp_tissuemask_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+    
+      warp_resource_to_template():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+    
+      _warp_return():
         description: null
         references: null
         config: null

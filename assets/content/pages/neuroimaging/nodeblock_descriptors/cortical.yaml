@@ -2,11 +2,107 @@
 
 steps:
 
-  name:
+  surface_postproc:
     description: null
     references: null
     methods:
-      method():
+      surface_postproc():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  surface_falff:
+    description: null
+    references: null
+    methods:
+      surface_falff():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  surface_alff:
+    description: null
+    references: null
+    methods:
+      surface_alff():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  surface_reho:
+    description: null
+    references: null
+    methods:
+      surface_reho():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  surface_connectivity_matrix:
+    description: null
+    references: null
+    methods:
+      surface_connectivity_matrix():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+      run_surf_falff():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+      run_surf_alff():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+      run_get_cortex():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+      run_mean_timeseries():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+      run_ciftiparcellate():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+      run_cifticorrelation():
         description: null
         references: null
         config: null

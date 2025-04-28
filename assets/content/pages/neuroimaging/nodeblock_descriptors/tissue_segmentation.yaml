@@ -2,11 +2,59 @@
 
 steps:
 
-  name:
+  tissue_seg_fsl_fast:
     description: null
     references: null
     methods:
-      method():
+      tissue_seg_fsl_fast():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  tissue_seg_T1_template_based:
+    description: null
+    references: null
+    methods:
+      tissue_seg_T1_template_based():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  tissue_seg_EPI_template_based:
+    description: null
+    references: null
+    methods:
+      tissue_seg_EPI_template_based():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  tissue_seg_ants_prior:
+    description: null
+    references: null
+    methods:
+      tissue_seg_ants_prior():
+        description: null
+        references: null
+        config: null
+        operations: null
+        source: null
+        validation: null
+
+  tissue_seg_freesurfe:
+    description: null
+    references: null
+    methods:
+      tissue_seg_freesurfe():
         description: null
         references: null
         config: null
