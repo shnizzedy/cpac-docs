@@ -10,7 +10,103 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A1(["freesurfer-subject-dir"]) --> B["surf: post_freesurfer"];
+            A2(["restore T1w images"]) --> B;
+            A3(["space-template T1w"]) --> B;
+            A4(["atlas xfm"]) --> B;
+            A5(["atlas xfm inverse"]) --> B;
+            A6(["atlas-space BOLD"]) --> B;
+            A7(["scout BOLD"]) --> B;
+
+            B --> C1["dtseries"];
+            B --> C2["desikan_killiany_164"];
+            B --> C3["destrieux_164"];
+            B --> C4["desikan_killiany_32"];
+            B --> C5["destrieux_32"];
+            B --> C6["subcortical_atlas"];
+            B --> C7["good_voxels"];
+            B --> C8["ribbon_only"];
+            B --> C9["atlas_roi_func_L"];
+            B --> C10["atlas_roi_func_R"];
+            B --> C11["atlas_roi_shape_L"];
+            B --> C12["atlas_roi_shape_R"];
+            B --> C13["native_L"];
+            B --> C14["native_R"];
+            B --> C15["spec_LR_32k"];
+            B --> C16["spec_native"];
+            B --> C17["areal_distortion_FS_L"];
+            B --> C18["areal_distortion_FS_R"];
+            B --> C19["areal_distortion_FS_dscalar"];
+            B --> C20["areal_distortion_MSMSulc_L"];
+            B --> C21["areal_distortion_MSMSulc_R"];
+            B --> C22["areal_distortion_MSMSulc_dscalar"];
+            B --> C23["edge_distortion_FS_L"];
+            B --> C24["edge_distortion_FS_R"];
+            B --> C25["edge_distortion_FS_dscalar"];
+            B --> C26["edge_distortion_MSMSulc_L"];
+            B --> C27["edge_distortion_MSMSulc_R"];
+            B --> C28["edge_distortion_MSMSulc_dscalar"];
+            B --> C29["curvature_L"];
+            B --> C30["curvature_R"];
+            B --> C31["curvature_dscalar"];
+            B --> C32["flat_L"];
+            B --> C33["flat_R"];
+            B --> C34["32k_inflated_L"];
+            B --> C35["32k_inflated_R"];
+            B --> C36["32k_very_inflated_L"];
+            B --> C37["32k_very_inflated_R"];
+            B --> C38["inflated_L"];
+            B --> C39["inflated_R"];
+            B --> C40["very_inflated_L"];
+            B --> C41["very_inflated_R"];
+            B --> C42["midthickness_L_164"];
+            B --> C43["midthickness_L_32"];
+            B --> C44["midthickness_L_native"];
+            B --> C45["midthickness_R_164"];
+            B --> C46["midthickness_R_32"];
+            B --> C47["midthickness_R_native"];
+            B --> C48["pial_L_32"];
+            B --> C49["pial_L_native"];
+            B --> C50["pial_R_32"];
+            B --> C51["pial_R_native"];
+            B --> C52["sphere_32k_fs_LR_L"];
+            B --> C53["sphere_32k_fs_LR_R"];
+            B --> C54["sphere_MSMSulc_L"];
+            B --> C55["sphere_MSMSulc_R"];
+            B --> C56["sphere_native_L"];
+            B --> C57["sphere_native_R"];
+            B --> C58["sphere_reg_L"];
+            B --> C59["sphere_reg_R"];
+            B --> C60["sphere_reg_reg_LR_L"];
+            B --> C61["sphere_reg_reg_LR_R"];
+            B --> C62["sphere_rot_L"];
+            B --> C63["sphere_rot_R"];
+            B --> C64["StrainJ_FS_L"];
+            B --> C65["StrainJ_FS_R"];
+            B --> C66["StrainJ_FS_dscalar"];
+            B --> C67["StrainJ_MSMSulc_L"];
+            B --> C68["StrainJ_MSMSulc_R"];
+            B --> C69["StrainJ_MSMSulc_dscalar"];
+            B --> C70["StrainR_FS_L"];
+            B --> C71["StrainR_FS_R"];
+            B --> C72["StrainR_FS_dscalar"];
+            B --> C73["StrainR_MSMSulc_L"];
+            B --> C74["StrainR_MSMSulc_R"];
+            B --> C75["StrainR_MSMSulc_dscalar"];
+            B --> C76["sulc_L"];
+            B --> C77["sulc_R"];
+            B --> C78["sulc_dscalar"];
+            B --> C79["thickness_L"];
+            B --> C80["thickness_R"];
+            B --> C81["thickness_dscalar"];
+            B --> C82["white_L_164"];
+            B --> C83["white_L_32"];
+            B --> C84["white_L_native"];
+            B --> C85["white_R_164"];
+            B --> C86["white_R_32"];
+            B --> C87["white_R_native"];
         source: null
         validation: null
 
@@ -22,7 +118,13 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: surface_falff] --> B[Create falff Node with run_surf_falff];
+            B --> C[Set falff.inputs.subject = cfg subject_id];
+            C --> D[Get data: strat_pool.get_data space-fsLR_den-32k_bold];
+            D --> E[Connect node output to falff.dtseries];
+            E --> F[Output: space-fsLR_den-32k_bold_surf_falff: falff, surf_falff];
         source: null
         validation: null
 
@@ -34,7 +136,13 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: surface_alff] --> B[Create alff Node with run_surf_alff];
+            B --> C[Set alff.inputs.subject = cfg subject_id];
+            C --> D[Get data: strat_pool.get_data space-fsLR_den-32k_bold];
+            D --> E[Connect node output to alff.dtseries];
+            E --> F[Output: space-fsLR_den-32k_bold_surf_alff: alff, surf_alff];
         source: null
         validation: null
 
@@ -46,7 +154,48 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: surface_reho] --> B[Create L_cortex_file Node with run_get_cortex];
+            B --> C[Set L_cortex_file.inputs.subject = cfg subject_id];
+            C --> D[Set L_cortex_file.inputs.structure = CORTEX_LEFT];
+            D --> E[Set L_cortex_file.inputs.cortex_filename = L_cortex.func.gii];
+            E --> F[Get data: strat_pool.get_data space-fsLR_den-32k_bold];
+            F --> G[Connect node output to L_cortex_file.dtseries];
+            G --> H[Create R_cortex_file Node with run_get_cortex];
+            H --> I[Set R_cortex_file.inputs.subject = cfg subject_id];
+            I --> J[Set R_cortex_file.inputs.structure = CORTEX_RIGHT];
+            J --> K[Set R_cortex_file.inputs.cortex_filename = R_cortex.func.gii];
+            K --> L[Connect node output to R_cortex_file.dtseries];
+            L --> M[Create mean_timeseries Node with run_mean_timeseries];
+            M --> N[Set mean_timeseries.inputs.subject = cfg subject_id];
+            N --> O[Connect node output to mean_timeseries.dtseries];
+            O --> P[Create L_reho Node with run_surf_reho];
+            P --> Q[Set L_reho.inputs.subject = cfg subject_id];
+            Q --> R[Connect L_cortex_file.L_cortex_file to L_reho.cortex_file];
+            R --> S[Get data: strat_pool.get_data hemi-L_space-fsLR_den-32k_midthickness];
+            S --> T[Connect node output to L_reho.surface_file];
+            T --> U[Get data: strat_pool.get_data hemi-L_space-fsLR_den-32k_desc-atlasroi_mask];
+            U --> V[Connect node output to L_reho.mask];
+            V --> W[Connect mean_timeseries.mean_timeseries to L_reho.mean_timeseries];
+            W --> X[Set L_reho.reho_filename = L_surf_reho.dscalar.nii];
+            X --> Y[Set L_reho.structure_name = CIFTI_STRUCTURE_CORTEX_LEFT];
+            Y --> Z[Get data: strat_pool.get_data space-fsLR_den-32k_bold];
+            Z --> AA[Connect node output to L_reho.dtseries];
+            AA --> AB[Create R_reho Node with run_surf_reho];
+            AB --> AC[Set R_reho.inputs.subject = cfg subject_id];
+            AC --> AD[Connect R_cortex_file.R_cortex_file to R_reho.cortex_file];
+            AD --> AE[Get data: strat_pool.get_data hemi-R_space-fsLR_den-32k_midthickness];
+            AE --> AF[Connect node output to R_reho.surface_file];
+            AF --> AG[Set R_reho.structure_name = CIFTI_STRUCTURE_CORTEX_RIGHT];
+            AG --> AH[Get data: strat_pool.get_data hemi-R_space-fsLR_den-32k_desc-atlasroi_mask];
+            AH --> AI[Connect node output to R_reho.mask];
+            AI --> AJ[Connect mean_timeseries.mean_timeseries to R_reho.mean_timeseries];
+            AJ --> AK[Set R_reho.reho_filename = R_surf_reho.dscalar.nii];
+            AK --> AL[Get data: strat_pool.get_data space-fsLR_den-32k_bold];
+            AL --> AM[Connect node output to R_reho.dtseries];
+            AM --> AN[Output: space-fsLR_den-32k_bold_surf-L_reho: L_reho];
+            AN --> AO[Output: space-fsLR_den-32k_bold_surf-R_reho: R_reho];
         source: null
         validation: null
 
@@ -58,7 +207,17 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: surface_connectivity_matrix] --> B[Create connectivity_parcellation Node with run_ciftiparcellate];
+            B --> C[Set connectivity_parcellation.inputs.subject = cfg subject_id];
+            C --> D[Get data: strat_pool.get_data space-fsLR_den-32k_bold];
+            D --> E[Connect node output to connectivity_parcellation.dtseries];
+            E --> F[Set connectivity_parcellation.inputs.surf_atlaslabel = cfg.surface_analysis surface_connectivity surface_parcellation_template];
+            F --> G[Create correlation_matrix Node with run_cifticorrelation];
+            G --> H[Set correlation_matrix.inputs.subject = cfg subject_id];
+            H --> I[Connect connectivity_parcellation.parcellation_file to correlation_matrix.ptseries];
+            I --> J[Output: space-fsLR_den-32k_bold_surf-correlation_matrix: correlation_matrix];
         source: null
         validation: null
 
@@ -66,7 +225,12 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: run_surf_falff] --> B[Set falff = os.path.join os.getcwd, subject_falff_surf.dscalar.nii];
+            B --> C[Create cmd list: ciftify_falff, dtseries, falff, --min-low-freq, 0.01, --max-low-freq, 0.1];
+            C --> D[Log cmd using log_subprocess];
+            D --> E[Return falff];
         source: null
         validation: null
 
@@ -74,7 +238,12 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: run_surf_alff] --> B[Set alff = os.path.join os.getcwd, subject_alff_surf.dscalar.nii];
+            B --> C[Create cmd list: ciftify_falff, dtseries, alff, --min-low-freq, 0.01, --max-low-freq, 0.1, --calc-alff];
+            C --> D[Log cmd using log_subprocess];
+            D --> E[Return alff];
         source: null
         validation: null
 
@@ -82,7 +251,12 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: run_get_cortex] --> B[Set cortex_file = os.path.join os.getcwd, subject_cortex_filename];
+            B --> C[Create cmd list: wb_command, -cifti-separate, dtseries, COLUMN, -metric, structure, cortex_file];
+            C --> D[Log cmd using log_subprocess];
+            D --> E[Return cortex_file];
         source: null
         validation: null
 
@@ -90,7 +264,12 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: run_mean_timeseries] --> B[Set mean_timeseries = os.path.join os.getcwd, subject_mean.dscalar.nii];
+            B --> C[Create cmd list: wb_command, -cifti-reduce, dtseries, MEAN, mean_timeseries];
+            C --> D[Log cmd using log_subprocess];
+            D --> E[Return mean_timeseries];
         source: null
         validation: null
 
@@ -98,7 +277,12 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: run_ciftiparcellate] --> B[Set parcellation_file = os.path.join os.getcwd, subject_parcellation.ptseries.nii];
+            B --> C[Create cmd list: wb_command, -cifti-parcellate, dtseries, surf_atlaslabel, COLUMN, parcellation_file];
+            C --> D[Log cmd using log_subprocess];
+            D --> E[Return parcellation_file];
         source: null
         validation: null
 
@@ -106,6 +290,11 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[Start: run_cifticorrelation] --> B[Set correlation_matrix = os.path.join os.getcwd, subject_cifti_corr.pconn.nii];
+            B --> C[Create cmd list: wb_command, -cifti-correlation, ptseries, correlation_matrix];
+            C --> D[Log cmd using log_subprocess];
+            D --> E[Return correlation_matrix];
         source: null
         validation: null
