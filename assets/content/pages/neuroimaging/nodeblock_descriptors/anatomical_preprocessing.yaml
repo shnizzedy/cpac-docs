@@ -10,7 +10,21 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[anat_deoblique] --> B[connect T1w to anat_deoblique]
+            A --> C[set anat_deoblique.deoblique to True]
+            B --> D[anat_reorient]
+            D --> E[connect anat_deoblique.out_file to anat_reorient.in_file]
+            D --> F[set anat_reorient.orientation from cfg]
+            D --> G[set anat_reorient.outputtype to NIFTI_GZ]
+            F --> H[outputs]
+            H --> I[desc-preproc_T1w]
+            H --> J[desc-reorient_T1w]
+            H --> K[desc-head_T1w]
+            I --> L[return wf, outputs]
+            J --> L
+            K --> L
         source: null
         validation: null
 
@@ -22,7 +36,21 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[acpc_align] --> B[set acpc_alignment config from cfg]
+            A --> C[set acpc_target from cfg.anatomical_preproc["acpc_alignment"]["acpc_target"]]
+            A --> D[set mask to False]
+            A --> E[set wf_name to acpc_align_{pipe_num}]
+            B --> F[connect desc-preproc_T1w and desc-head_T1w to anat_leaf]
+            F --> G[connect T1w-ACPC-template to template_head_for_acpc]
+            G --> H[outputs]
+            H --> I[desc-head_T1w]
+            H --> J[desc-preproc_T1w]
+            H --> K[from-T1w_to-ACPC_mode-image_desc-aff2rig_xfm]
+            I --> L[return wf, outputs]
+            J --> L
+            K --> L
         source: null
         validation: null
 
@@ -34,11 +62,32 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[acpc_align] --> B[set acpc_alignment config from cfg]
+            A --> C[set acpc_target from cfg.anatomical_preproc["acpc_alignment"]["acpc_target"]]
+            A --> D[set mask to True]
+            A --> E[set wf_name to acpc_align_{pipe_num}]
+            B --> F[connect desc-head_T1w and desc-preproc_T1w to anat_leaf]
+            F --> G[connect T1w-ACPC-template to template_head_for_acpc]
+            G --> H[check if space-T1w_desc-brain_mask exists in strat_pool]
+            H --> I[if exists, connect space-T1w_desc-brain_mask to brain_mask]
+            I --> J[connect T1w-brain-ACPC-template to template_brain_for_acpc]
+            H --> K[else, skip brain_mask and template_brain_for_acpc connections]
+            J --> L[outputs]
+            K --> L
+            L --> M[desc-head_T1w]
+            L --> N[desc-preproc_T1w]
+            L --> O[space-T1w_desc-brain_mask]
+            L --> P[from-T1w_to-ACPC_mode-image_desc-aff2rig_xfm]
+            M --> Q[return wf, outputs]
+            N --> Q
+            O --> Q
+            P --> Q
         source: null
         validation: null
       
-  acpc_alignment_brain:
+  acpc_align_brain:
     description: null
     references: null
     methods:
@@ -46,11 +95,27 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[acpc_align] --> B[set acpc_alignment config from cfg]
+            A --> C[set acpc_target from cfg.anatomical_preproc["acpc_alignment"]["acpc_target"]]
+            A --> D[set mask to False]
+            A --> E[set wf_name to acpc_align_{pipe_num}]
+            B --> F[connect desc-preproc_T1w to anat_leaf]
+            F --> G[connect desc-tempbrain_T1w to anat_brain]
+            G --> H[connect T1w-ACPC-template to template_head_for_acpc]
+            H --> I[connect T1w-brain-ACPC-template to template_brain_for_acpc]
+            I --> J[outputs]
+            J --> K[desc-preproc_T1w]
+            J --> L[desc-acpcbrain_T1w]
+            J --> M[from-T1w_to-ACPC_mode-image_desc-aff2rig_xfm]
+            K --> N[return wf, outputs]
+            L --> N
+            M --> N
         source: null
         validation: null
 
-  acpc_alignment_brain_with_mask:
+  acpc_align_brain_with_mask:
     description: null
     references: null
     methods:
@@ -58,7 +123,26 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[acpc_align] --> B[set acpc_alignment config from cfg]
+            A --> C[set acpc_target from cfg.anatomical_preproc["acpc_alignment"]["acpc_target"]]
+            A --> D[set mask to True]
+            A --> E[set wf_name to acpc_align_{pipe_num}]
+            B --> F[connect desc-preproc_T1w to anat_leaf]
+            F --> G[connect desc-tempbrain_T1w to anat_brain]
+            G --> H[connect space-T1w_desc-brain_mask to brain_mask]
+            H --> I[connect T1w-ACPC-template to template_head_for_acpc]
+            I --> J[connect T1w-brain-ACPC-template to template_brain_for_acpc]
+            J --> K[outputs]
+            K --> L[desc-preproc_T1w]
+            K --> M[desc-acpcbrain_T1w]
+            K --> N[space-T1w_desc-brain_mask]
+            K --> O[space-T1w_desc-prebrain_mask]
+            L --> P[return wf, outputs]
+            M --> P
+            N --> P
+            O --> P
         source: null
         validation: null
 
@@ -70,7 +154,17 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[T2_to_T1_reg] --> B[set wf_name to T2w_to_T1w_Reg_{pipe_num}]
+            A --> C[connect desc-preproc_T1w to T1w]
+            A --> D[connect desc-preproc_T2w to T2w]
+            A --> E[connect desc-acpcbrain_T1w to T1w_brain]
+            A --> F[connect desc-acpcbrain_T2w to T2w_brain]
+            E --> G[outputs]
+            F --> G
+            G --> H[desc-preproc_T2w]
+            H --> I[return wf, outputs]
         source: null
         validation: null
   
@@ -116,7 +210,16 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[n4] --> B[set interface to ants.N4BiasFieldCorrection]
+            A --> C[set shrink_factor from config]
+            C --> D[connect desc-preproc_T1w to input_image]
+            D --> E[outputs]
+            E --> F[desc-preproc_T1w]
+            E --> G[desc-n4_T1w]
+            F --> H[return wf, outputs]
+            G --> H
         source: null
         validation: null
 
@@ -128,7 +231,25 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[t1t2_bias_correction] --> B[set interface to BiasFieldCorrection_sqrtT1wXT1w]
+            A --> C[connect desc-preproc_T1w to inputspec.T1w]
+            A --> D[connect desc-preproc_T2w to inputspec.T2w]
+            A --> E[connect desc-acpcbrain_T1w to inputspec.T1w_brain]
+            C --> F[outputs]
+            D --> F
+            E --> F
+            F --> G[desc-preproc_T1w]
+            F --> H[desc-brain_T1w]
+            F --> I[desc-preproc_T2w]
+            F --> J[desc-brain_T2w]
+            F --> K[desc-biasfield_T1wT2w]
+            G --> L[return wf, outputs]
+            H --> L
+            I --> L
+            J --> L
+            K --> L
         source: null
         validation: null
   
@@ -179,7 +300,11 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_afni] --> B[call afni_brain_connector]
+            B --> C[extract space-T1w_desc-brain_mask]
+            C --> D[return wf, outputs]
         source: null
         validation: null
 
@@ -226,7 +351,11 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_fsl] --> B[call fsl_brain_connector]
+            B --> C[extract space-T1w_desc-brain_mask]
+            C --> D[return wf, outputs]
         source: null
         validation: null
 
@@ -238,7 +367,10 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_niworkflows_ants] --> B[call niworkflows_ants_brain_connector]
+            B --> C[return wf, outputs]
         source: null
         validation: null
 
@@ -250,7 +382,12 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_niworkflows_ants] --> B[call niworkflows_ants_brain_connector]
+            B --> C[return wf, outputs]
+            C --> D[space-T1w_desc-acpcbrain_mask: wf_outputs: space-T1w_desc-brain_mask]
+            C --> E[desc-preproc_T1w: wf_outputs: desc-preproc_T1w]
         source: null
         validation: null
 
@@ -262,7 +399,10 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_unet] --> B[call unet_brain_connector]
+            B --> C[return wf, outputs]
         source: null
         validation: null
 
@@ -274,7 +414,11 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_unet] --> B[call unet_brain_connector]
+            B --> C[return wf, outputs]
+            C --> D[space-T1w_desc-acpcbrain_mask]
         source: null
         validation: null
 
@@ -286,7 +430,10 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_freesurfer] --> B[call freesurfer_brain_connector]
+            B --> C[return wf, outputs]
         source: null
         validation: null    
 
@@ -298,7 +445,10 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_freesurfer_abcd] --> B[call freesurfer_abcd_brain_connector]
+            B --> C[return wf, outputs]
         source: null
         validation: null    
 
@@ -310,7 +460,10 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_freesurfer_fsl_tight] --> B[call freesurfer_fsl_brain_connector]
+            B --> C[return wf, outputs]
         source: null
         validation: null    
 
@@ -322,7 +475,11 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_freesurfer_abcd] --> B[call freesurfer_abcd_brain_connector]
+            B --> C[return wf, outputs]
+            C --> D[space-T1w_desc-acpcbrain_mask]
         source: null
         validation: null    
 
@@ -334,7 +491,10 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_freesurfer_fsl_loose] --> B[call freesurfer_fsl_brain_connector]
+            B --> C[return wf, outputs]
         source: null
         validation: null   
 
@@ -346,7 +506,12 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_freesurfer_fsl_tight] --> B[call freesurfer_fsl_brain_connector]
+            B --> C[extract space-T1w_desc-tight_brain_mask]
+            C --> D[set outputs as space-T1w_desc-tight_acpcbrain_mask]
+            D --> E[return wf, outputs]
         source: null
         validation: null    
 
@@ -358,7 +523,12 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_freesurfer_fsl_loose] --> B[call freesurfer_fsl_brain_connector]
+            B --> C[extract space-T1w_desc-loose_brain_mask]
+            C --> D[set outputs as space-T1w_desc-loose_acpcbrain_mask]
+            D --> E[return wf, outputs]
         source: null
         validation: null    
 
@@ -370,7 +540,17 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_extraction] --> B[create anat_skullstrip_orig_vol node]
+            B --> C[set inputs for anat_skullstrip_orig_vol]
+            C --> D[connect inputnode.brain_mask to anat_skullstrip_orig_vol]
+            D --> E[get T1w data from strat_pool]
+            E --> F[connect T1w data to anat_skullstrip_orig_vol]
+            F --> G[get brain_mask data from strat_pool]
+            G --> H[connect brain_mask data to anat_skullstrip_orig_vol]
+            H --> I[set outputs for desc-preproc_T1w, desc-brain_T1w, and desc-head_T1w]
+            I --> J[return wf, outputs]
         source: null
         validation: null    
 
@@ -382,7 +562,13 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[desc-preproc_T1w] --> B[brain_extraction_temp_{pipe_num} in_file_a]
+            C[space-T1w_desc-brain_mask] --> B[brain_extraction_temp_{pipe_num} in_file_b]
+            D[space-T1w_desc-acpcbrain_mask] --> B[brain_extraction_temp_{pipe_num} in_file_b]
+            B --> E[outputspec.desc-preproc_T1w]
+            B --> F[outputspec.desc-tempbrain_T1w]
         source: null
         validation: null    
 
@@ -394,7 +580,13 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[T2w] --> B[T2_deoblique_{pipe_num} in_file]
+            B --> C[T2_reorient_{pipe_num} in_file]
+            C --> D[outputspec.desc-preproc_T2w]
+            C --> E[outputspec.desc-reorient_T2w]
+            C --> F[outputspec.desc-head_T2w]
         source: null
         validation: null    
 
@@ -406,7 +598,12 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[desc-preproc_T2w] --> B[acpc_align_T2_{pipe_num} anat_leaf]
+            C[T2w-ACPC-template] --> B[acpc_align_T2_{pipe_num} template_head_for_acpc]
+            B --> D[outputspec.acpc_aligned_head]
+            D --> E[desc-preproc_T2w]
         source: null
         validation: null    
 
@@ -419,7 +616,14 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[desc-preproc_T2w] --> B[acpc_align_T2_{pipe_num} anat_leaf]
+            C[T2w-ACPC-template] --> B[acpc_align_T2_{pipe_num} template_head_for_acpc]
+            B --> D[outputspec.acpc_aligned_head]
+            B --> E[outputspec.acpc_brain_mask]
+            D --> F[desc-preproc_T2w]
+            E --> G[space-T2w_desc-brain_mask]
         source: null
         validation: null    
 
@@ -431,7 +635,16 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[desc-preproc_T2w] --> B[acpc_align_T2_{pipe_num} anat_leaf]
+            C[desc-tempbrain_T2w] --> B[acpc_align_T2_{pipe_num} anat_brain]
+            D[T2w-ACPC-template] --> B[acpc_align_T2_{pipe_num} template_head_for_acpc]
+            E[T2w-brain-ACPC-template] --> B[acpc_align_T2_{pipe_num} template_brain_for_acpc]
+            B --> F[outputspec.acpc_aligned_head]
+            B --> G[outputspec.acpc_aligned_brain]
+            F --> H[desc-preproc_T2w]
+            G --> I[desc-acpcbrain_T2w]
         source: null
         validation: null   
 
@@ -443,7 +656,19 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[desc-preproc_T2w] --> B[acpc_align_T2_{pipe_num} anat_leaf]
+            C[desc-tempbrain_T2w] --> B[acpc_align_T2_{pipe_num} anat_brain]
+            D[space-T2w_desc-brain_mask] --> B[acpc_align_T2_{pipe_num} brain_mask]
+            E[T2w-ACPC-template] --> B[acpc_align_T2_{pipe_num} template_head_for_acpc]
+            F[T2w-brain-ACPC-template] --> B[acpc_align_T2_{pipe_num} template_brain_for_acpc]
+            B --> G[outputspec.acpc_aligned_head]
+            B --> H[outputspec.acpc_aligned_brain]
+            B --> I[outputspec.acpc_brain_mask]
+            G --> J[desc-preproc_T2w]
+            H --> K[desc-acpcbrain_T2w]
+            I --> L[space-T2w_desc-brain_mask]
         source: null
         validation: null   
 
@@ -455,7 +680,11 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[desc-preproc_T2w] --> B[anat_denoise_T2_{pipe_num}]
+            B --> C[output_image]
+            C --> D[desc-preproc_T2w]
         source: null
         validation: null   
 
@@ -467,7 +696,11 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[n4_bias_correction_T2] --> B[ants.N4BiasFieldCorrection];
+            A --> C[strat_pool.get_data desc-preproc_T2w];
+            B --> D[output_image];
         source: null
         validation: null   
 
@@ -479,7 +712,9 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_afni_T2] --> B[afni_brain_connector];
         source: null
         validation: null   
 
@@ -491,7 +726,9 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_afni_T2] --> B[afni_brain_connector];
         source: null
         validation: null   
 
@@ -503,7 +740,9 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_fsl_T2] --> B[fsl_brain_connector];
         source: null
         validation: null   
 
@@ -515,7 +754,10 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_fsl_T2] --> B[fsl_brain_connector];
+            B --> C[space-T2w_desc-brain_mask];
         source: null
         validation: null   
 
@@ -527,7 +769,10 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_niworkflows_ants_T2] --> B[niworkflows_ants_brain_connector];
+            B --> C[space-T2w_desc-brain_mask];
         source: null
         validation: null   
 
@@ -539,7 +784,11 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_niworkflows_ants_T2] --> B[niworkflows_ants_brain_connector];
+            B --> C[space-T2w_desc-brain_mask];
+            C --> D[space-T2w_desc-acpcbrain_mask];
         source: null
         validation: null   
 
@@ -551,7 +800,10 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_unet_T2] --> B[unet_brain_connector];
+            B --> C[outputs];
         source: null
         validation: null   
 
@@ -563,7 +815,11 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_unet_T2] --> B[unet_brain_connector];
+            B --> C[wf_outputs];
+            C --> D[output space-T2w_desc-acpcbrain_mask];
         source: null
         validation: null   
 
@@ -575,7 +831,28 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_T2] --> B[mask_T2];
+
+            B --> C{cfg.acpc_alignment.run?};
+
+            C -- No --> D[get desc-reorient_T1w, T1w, desc-preproc_T1w];
+            D --> E[connect to B.inputspec.T1w];
+
+            E --> F[get desc-reorient_T2w, T2w, desc-preproc_T2w];
+            F --> G[connect to B.inputspec.T2w];
+
+            C -- Yes --> H[get desc-preproc_T1w, desc-reorient_T1w, T1w];
+            H --> I[connect to B.inputspec.T1w];
+
+            I --> J[get desc-preproc_T2w, desc-reorient_T2w, T2w];
+            J --> K[connect to B.inputspec.T2w];
+
+            K --> L[get space-T1w_desc-brain_mask, space-T1w_desc-acpcbrain_mask];
+            L --> M[connect to B.inputspec.T1w_mask];
+
+            M --> N[output space-T2w_desc-brain_mask from B.outputspec.T2w_mask];
         source: null
         validation: null   
 
@@ -587,7 +864,16 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_mask_acpc_T2] --> B[mask_T2];
+            B --> C[get desc-reorient_T1w from strat_pool];
+            C --> D[connect to B.inputspec.T1w];
+            D --> E[get desc-reorient_T2w from strat_pool];
+            E --> F[connect to B.inputspec.T2w];
+            F --> G[get space-T1w_desc-acpcbrain_mask, space-T1w_desc-prebrain_mask from strat_pool];
+            G --> H[connect to B.inputspec.T1w_mask];
+            H --> I[output space-T2w_desc-acpcbrain_mask from B.outputspec.T2w_mask];
         source: null
         validation: null   
 
@@ -599,7 +885,19 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_extraction_T2] --> B{cfg.acpc_alignment.run and acpc_target == brain};
+            B -- True --> C[get desc-acpcbrain_T2w from strat_pool];
+            C --> D[output desc-brain_T2w];
+
+            B -- False --> E[anat_skullstrip_orig_vol using afni.Calc];
+            E --> F[set expr to a*step b and outputtype to NIFTI_GZ];
+            F --> G[get desc-preproc_T2w from strat_pool];
+            G --> H[connect to anat_skullstrip_orig_vol.in_file_a];
+            H --> I[get space-T2w_desc-brain_mask from strat_pool];
+            I --> J[connect to anat_skullstrip_orig_vol.in_file_b];
+            J --> K[output desc-brain_T2w from anat_skullstrip_orig_vol.out_file];
         source: null
         validation: null   
 
@@ -611,7 +909,15 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[brain_extraction_temp_T2] --> B[anat_skullstrip_orig_vol using afni.Calc];
+            B --> C[set expr to a*step b and outputtype to NIFTI_GZ];
+            C --> D[get desc-preproc_T2w from strat_pool];
+            D --> E[connect to anat_skullstrip_orig_vol.in_file_a];
+            E --> F[get space-T2w_desc-brain_mask or space-T2w_desc-acpcbrain_mask];
+            F --> G[connect to anat_skullstrip_orig_vol.in_file_b];
+            G --> H[output desc-tempbrain_T2w from anat_skullstrip_orig_vol.out_file];
         source: null
         validation: null   
 
@@ -623,7 +929,39 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[freesurfer_abcd_preproc] --> B[fnirt_based_brain_extraction]
+            B --> C[connect strat_pool desc-preproc_T1w to brain_extraction.anat_data]
+            C --> D[connect template-ref-mask-res-2 to brain_extraction.template-ref-mask-res-2]
+            D --> E[connect T1w-template to brain_extraction.template_skull_for_anat]
+            E --> F[connect T1w-template-res-2 to brain_extraction.template_skull_for_anat_2mm]
+            F --> G[connect T1w-brain-template-mask to brain_extraction.template_brain_mask_for_anat]
+
+            A --> H[fast_bias_field_correction]
+            H --> I[connect desc-preproc_T1w to fast_correction.anat_data]
+            B --> J[connect brain_extraction.anat_brain to fast_correction.anat_brain]
+            B --> K[connect brain_extraction.anat_brain_mask to fast_correction.anat_brain_mask]
+
+            A --> L[resample_head_1mm using fsl.FLIRT]
+            L --> M[connect desc-preproc_T1w to resample_head_1mm.in_file and reference]
+
+            A --> N[applywarp_head_to_head_1mm using fsl.ApplyWarp]
+            N --> O[connect desc-preproc_T1w to applywarp_head_to_head_1mm.in_file]
+            L --> P[connect resample_head_1mm.out_file to applywarp_head_to_head_1mm.ref_file]
+
+            A --> Q[applywarp_brain_to_head_1mm using fsl.ApplyWarp]
+            H --> R[connect anat_brain_restore to applywarp_brain_to_head_1mm.in_file]
+            L --> S[connect resample_head_1mm.out_file to applywarp_brain_to_head_1mm.ref_file]
+
+            A --> T[average_brain using fsl.ImageStats]
+            H --> U[connect anat_brain_restore to average_brain.in_file]
+
+            A --> V[normalize_head using fslmaths_command]
+            N --> W[connect applywarp_head_to_head_1mm.out_file to normalize_head.in_file]
+            T --> X[connect average_brain.out_stat to normalize_head.number]
+
+            V --> Y[define outputs including desc-restore_T1w, restore-brain, bias_field, and ABCDpreproc]
         source: null
         validation: null   
 
@@ -635,7 +973,18 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[freesurfer_reconall] --> B[create reconall node with interface=freesurfer.ReconAll]
+            B --> C[set reconall parameters: skip_timeout, directive, subjects_dir, openmp]
+            C --> D[create freesurfer_subject_dir using working_directory, subject_id, pipe_num]
+            D --> E[check if freesurfer_subject_dir exists]
+            E --> F[create freesurfer_subject_dir if it doesn't exist]
+            F --> G[connect strat_pool to reconall T1_files]
+            G --> H[call freesurfer_hemispheres: wf, reconall, pipe_num]
+            H --> I[connect reconall outputs to hemisphere_outputs]
+            I --> J[define outputs dictionary with freesurfer outputs]
+            J --> K[return wf, outputs]
         source: null
         validation: null   
 
@@ -643,7 +992,41 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[fnirt_based_brain_extraction] --> B[create inputnode with anat_data, template-ref-mask-res-2, template_skull_for_anat, template_skull_for_anat_2mm, template_brain_mask_for_anat]
+            B --> C[create outputnode with anat_brain, anat_brain_mask]
+            C --> D[create linear_reg node]
+            D --> E[set linear_reg parameters: dof, interp, no_search]
+            E --> F[connect anat_data to linear_reg in_file]
+            F --> G[connect template_skull_for_anat_2mm to linear_reg reference]
+            G --> H[create non_linear_reg node]
+            H --> I[set non_linear_reg parameters: field_file, jacobian_file, modulatedref_file, out_intensitymap_file, fieldcoeff_file, config_file]
+            I --> J[connect anat_data to non_linear_reg in_file]
+            J --> K[connect template_skull_for_anat_2mm to non_linear_reg ref_file]
+            K --> L[connect linear_reg to non_linear_reg affine_file]
+            L --> M[connect template-ref-mask-res-2 to non_linear_reg refmask_file]
+            M --> N[create apply_warp node]
+            N --> O[set apply_warp parameters: interp, relwarp]
+            O --> P[connect anat_data to apply_warp in_file]
+            P --> Q[connect template_skull_for_anat to apply_warp ref_file]
+            Q --> R[connect non_linear_reg to apply_warp field_file]
+            R --> S[create inverse_warp node]
+            S --> T[set inverse_warp parameters: output_type]
+            T --> U[connect anat_data to inverse_warp reference]
+            U --> V[connect non_linear_reg to inverse_warp warp]
+            V --> W[create apply_inv_warp node]
+            W --> X[set apply_inv_warp parameters: interp, relwarp]
+            X --> Y[connect template_brain_mask_for_anat to apply_inv_warp in_file]
+            Y --> Z[connect anat_data to apply_inv_warp ref_file]
+            Z --> AA[connect inverse_warp to apply_inv_warp field_file]
+            AA --> AB[connect apply_inv_warp to outputnode anat_brain_mask]
+            AB --> AC[create apply_mask node]
+            AC --> AD[set apply_mask op_string to -mas]
+            AD --> AE[connect anat_data to apply_mask in_file]
+            AE --> AF[connect apply_inv_warp to apply_mask operand_files]
+            AF --> AG[connect apply_mask to outputnode anat_brain]
+            AG --> AH[return preproc]
         source: null
         validation: null   
 
@@ -651,7 +1034,28 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[fast_bias_field_correction] --> B[create inputnode with anat_data, anat_brain, anat_brain_mask]
+            B --> C[create outputnode with anat_restore, anat_brain_restore, bias_field]
+            C --> D[create fast_bias_field_correction node]
+            D --> E[set fast_bias_field_correction parameters: img_type, output_biasfield, output_biascorrected]
+            E --> F[connect anat_brain to fast_bias_field_correction in_files]
+            F --> G[connect restored_image to outputnode anat_brain_restore]
+            G --> H[connect bias_field to outputnode bias_field]
+            H --> I[create inverse_brain_mask node]
+            I --> J[set inverse_brain_mask op_string to -mul -1 -add 1]
+            J --> K[connect anat_brain_mask to inverse_brain_mask in_file]
+            K --> L[create apply_mask node]
+            L --> M[set apply_mask op_string to -mul]
+            M --> N[connect anat_data to apply_mask in_file]
+            N --> O[connect inverse_brain_mask to apply_mask operand_files]
+            O --> P[create anat_restore node]
+            P --> Q[set anat_restore op_string to -add]
+            Q --> R[connect restored_image to anat_restore in_file]
+            R --> S[connect apply_mask to anat_restore operand_files]
+            S --> T[connect anat_restore to outputnode anat_restore]
+            T --> U[return preproc]
         source: null
         validation: null   
 
@@ -663,6 +1067,43 @@ steps:
         description: null
         references: null
         config: null
-        operations: null
+        operations: |
+          graph TD
+            A[correct_restore_brain_intensity_abcd] --> B[create merge_t1_acpc_to_list node]
+            B --> C[connect T1w data to merge_t1_acpc_to_list]
+            C --> D[create merge_t1_acpc node]
+            D --> E[set merge_t1_acpc dimension to t]
+            E --> F[connect merged files to multiply_t1_acpc_by_zero]
+            F --> G[create multiply_t1_acpc_by_zero node]
+            G --> H[set multiply_t1_acpc_by_zero op_string to -mul 0]
+            H --> I[create convertwarp_orig_t1_to_t1 node]
+            I --> J[set convertwarp_orig_t1_to_t1 inputs: relwarp, out_relwarp]
+            J --> K[connect brain_mask data to convertwarp_orig_t1_to_t1 reference]
+            K --> L[connect T1w to ACPC transform to convertwarp_orig_t1_to_t1 premat]
+            L --> M[connect multiplied T1w acpc to convertwarp_orig_t1_to_t1 warp1]
+            M --> N[create applywarp_biasfield node]
+            N --> O[set applywarp_biasfield inputs: relwarp, interp]
+            O --> P[connect biasfield to applywarp_biasfield]
+            P --> Q[connect brain_mask to applywarp_biasfield ref_file]
+            Q --> R[connect transform to applywarp_biasfield field_file]
+            R --> S[create threshold_biasfield node]
+            S --> T[set threshold_biasfield op_string to -thr 0.1]
+            T --> U[create applywarp_t1 node]
+            U --> V[set applywarp_t1 inputs: relwarp, interp]
+            V --> W[connect n4 T1w to applywarp_t1 in_file]
+            W --> X[connect brain_mask to applywarp_t1 ref_file]
+            X --> Y[connect warp field to applywarp_t1 field_file]
+            Y --> Z[create abs_t1 node]
+            Z --> AA[set abs_t1 op_string to -abs]
+            AA --> AB[connect applywarp_t1 to abs_t1]
+            AB --> AC[create div_t1_by_biasfield node]
+            AC --> AD[set div_t1_by_biasfield op_string to -div]
+            AD --> AE[connect abs_t1 to div_t1_by_biasfield in_file]
+            AE --> AF[connect biasfield to div_t1_by_biasfield in_file2]
+            AF --> AG[create apply_mask node]
+            AG --> AH[connect div_t1_by_biasfield to apply_mask in_file]
+            AH --> AI[connect brain_mask to apply_mask mask_file]
+            AI --> AJ[set outputs for desc-restore-brain_T1w]
+            AJ --> AK[return wf, outputs]
         source: null
         validation: null   
