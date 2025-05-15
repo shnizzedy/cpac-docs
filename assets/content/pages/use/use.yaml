@@ -26,7 +26,7 @@ paragraphs:
 
   - paragraph: C-PAC Quickstart
     details:
-      - pull from <a href="https://fcp-indi.github.io/docs/latest/user/quick">C-PAC Quickstart</a>
+      - pull from https://fcp-indi.github.io/docs/latest/user/quick
 
   - paragraph: C-PAC Features
     subparagraphs:

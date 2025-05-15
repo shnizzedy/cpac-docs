@@ -76,6 +76,6 @@
 
   window.addEventListener("load", () => {
     toggleScrolled();
-    loadYAML("../../assets/content/pages/use/use.yaml");
+    loadYAML("../assets/content/pages/use/use.yaml");
   });
 })();
