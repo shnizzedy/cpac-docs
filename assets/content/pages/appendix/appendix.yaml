@@ -1,4 +1,9 @@
 # this is a C-PAC Docs content file 
 
 paragraphs:
-  - paragraph: appendix
+
+  - paragraph: Meta-Documentation
+    subparagraphs:
+      - paragraph: null
+        details:
+          - null
