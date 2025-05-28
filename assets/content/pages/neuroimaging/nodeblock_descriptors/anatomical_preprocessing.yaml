@@ -1,7 +1,6 @@
 # This is a C-PAC nodeblock descriptor file. (to be pulled from C-PAC/CPAC/nodeblock)
 
 steps:
-
   anatomical_init:
     description: null
     references: null
@@ -29,7 +28,7 @@ steps:
         validation: null
 
   acpc_alignment_head:
-    description: null
+    description: Transforms image to bring into alignment with the plane of the anterior and posterior commissures (ACPC)
     references: null
     methods:
       acpc_align_head():
@@ -86,7 +85,7 @@ steps:
             P --> Q
         source: null
         validation: null
-      
+
   acpc_align_brain:
     description: null
     references: null
@@ -167,14 +166,14 @@ steps:
             H --> I[return wf, outputs]
         source: null
         validation: null
-  
+
   nlm_filtering:
-    description: 
-    - Performs non-local means filtering on structural data using ANTSDenoiseImage.
-    - Non-local means filtering reduces noise by averaging pixel intensities based on similarity, not just proximity, preserving important structural details like edges and fine anatomical features.
-    - Unlike traditional smoothing methods (e.g., Gaussian smoothing), which blur the image and reduce sharpness, NLM compares patches of the image to identify similar regions, even if they are spatially distant.
-    - This approach is particularly beneficial for structural MRI, where fine details and boundaries between tissues must remain clear.
-    - This can possibly improve registration or tissue segmentation results.
+    description:
+      - Performs non-local means filtering on structural data using ANTSDenoiseImage.
+      - Non-local means filtering reduces noise by averaging pixel intensities based on similarity, not just proximity, preserving important structural details like edges and fine anatomical features.
+      - Unlike traditional smoothing methods (e.g., Gaussian smoothing), which blur the image and reduce sharpness, NLM compares patches of the image to identify similar regions, even if they are spatially distant.
+      - This approach is particularly beneficial for structural MRI, where fine details and boundaries between tissues must remain clear.
+      - This can possibly improve registration or tissue segmentation results.
     references:
       - https://en.wikipedia.org/wiki/Non-local_means
     methods:
@@ -199,11 +198,11 @@ steps:
         validation: s3://path/to/gold/standard
 
   n4_bias_correction:
-    description: 
-    - The bias field is a low-frequency artifact in MRI images that results in uneven signal intensity across the image, unrelated to the actual tissue.
-    - This method will remove the bias field while preserving the true anatomical contrast in the image.
-    - Can be used to improve tissue contrast in MRI images, which can possibly improve registration or tissue segmentation results.
-    - If you see a gradient of voxel intensity difference spanning over the length of the image (ex. very light at one end of the head, very dark at the other, with a smooth transition in between that is not related to anatomical boundaries), using this technique may work particularly well with that specific data.
+    description:
+      - The bias field is a low-frequency artifact in MRI images that results in uneven signal intensity across the image, unrelated to the actual tissue.
+      - This method will remove the bias field while preserving the true anatomical contrast in the image.
+      - Can be used to improve tissue contrast in MRI images, which can possibly improve registration or tissue segmentation results.
+      - If you see a gradient of voxel intensity difference spanning over the length of the image (ex. very light at one end of the head, very dark at the other, with a smooth transition in between that is not related to anatomical boundaries), using this technique may work particularly well with that specific data.
     references: null
     methods:
       n4_bias_correction():
@@ -252,7 +251,7 @@ steps:
             K --> L
         source: null
         validation: null
-  
+
   brain_mask_afni:
     description: Uses AFNI 3dSkullStrip.
     references: null
@@ -435,7 +434,7 @@ steps:
             A[brain_mask_freesurfer] --> B[call freesurfer_brain_connector]
             B --> C[return wf, outputs]
         source: null
-        validation: null    
+        validation: null
 
   brain_mask_freesurfer_abcd:
     description: null
@@ -450,7 +449,7 @@ steps:
             A[brain_mask_freesurfer_abcd] --> B[call freesurfer_abcd_brain_connector]
             B --> C[return wf, outputs]
         source: null
-        validation: null    
+        validation: null
 
   brain_mask_freesurfer_fsl_tight:
     description: null
@@ -465,7 +464,7 @@ steps:
             A[brain_mask_freesurfer_fsl_tight] --> B[call freesurfer_fsl_brain_connector]
             B --> C[return wf, outputs]
         source: null
-        validation: null    
+        validation: null
 
   brain_mask_acpc_freesurfer_abcd:
     description: null
@@ -481,7 +480,7 @@ steps:
             B --> C[return wf, outputs]
             C --> D[space-T1w_desc-acpcbrain_mask]
         source: null
-        validation: null    
+        validation: null
 
   brain_mask_freesurfer_fsl_loose:
     description: null
@@ -496,7 +495,7 @@ steps:
             A[brain_mask_freesurfer_fsl_loose] --> B[call freesurfer_fsl_brain_connector]
             B --> C[return wf, outputs]
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_acpc_freesurfer_fsl_tight:
     description: null
@@ -513,7 +512,7 @@ steps:
             C --> D[set outputs as space-T1w_desc-tight_acpcbrain_mask]
             D --> E[return wf, outputs]
         source: null
-        validation: null    
+        validation: null
 
   brain_mask_acpc_freesurfer_fsl_loose:
     description: null
@@ -530,7 +529,7 @@ steps:
             C --> D[set outputs as space-T1w_desc-loose_acpcbrain_mask]
             D --> E[return wf, outputs]
         source: null
-        validation: null    
+        validation: null
 
   brain_extraction:
     description: null
@@ -552,7 +551,7 @@ steps:
             H --> I[set outputs for desc-preproc_T1w, desc-brain_T1w, and desc-head_T1w]
             I --> J[return wf, outputs]
         source: null
-        validation: null    
+        validation: null
 
   brain_extraction_temp:
     description: null
@@ -570,7 +569,7 @@ steps:
             B --> E[outputspec.desc-preproc_T1w]
             B --> F[outputspec.desc-tempbrain_T1w]
         source: null
-        validation: null    
+        validation: null
 
   anatomical_init_T2:
     description: null
@@ -588,7 +587,7 @@ steps:
             C --> E[outputspec.desc-reorient_T2w]
             C --> F[outputspec.desc-head_T2w]
         source: null
-        validation: null    
+        validation: null
 
   acpc_alignment_head_T2:
     description: null
@@ -605,8 +604,7 @@ steps:
             B --> D[outputspec.acpc_aligned_head]
             D --> E[desc-preproc_T2w]
         source: null
-        validation: null    
-
+        validation: null
 
   acpc_alignment_head_with_mask_T2:
     description: null
@@ -625,7 +623,7 @@ steps:
             D --> F[desc-preproc_T2w]
             E --> G[space-T2w_desc-brain_mask]
         source: null
-        validation: null    
+        validation: null
 
   acpc_alignment_brain_T2:
     description: null
@@ -646,7 +644,7 @@ steps:
             F --> H[desc-preproc_T2w]
             G --> I[desc-acpcbrain_T2w]
         source: null
-        validation: null   
+        validation: null
 
   acpc_align_brain_with_mask_T2:
     description: null
@@ -670,7 +668,7 @@ steps:
             H --> K[desc-acpcbrain_T2w]
             I --> L[space-T2w_desc-brain_mask]
         source: null
-        validation: null   
+        validation: null
 
   nlm_filtering_T2:
     description: null
@@ -686,7 +684,7 @@ steps:
             B --> C[output_image]
             C --> D[desc-preproc_T2w]
         source: null
-        validation: null   
+        validation: null
 
   n4_bias_correction_T2:
     description: null
@@ -702,7 +700,7 @@ steps:
             A --> C[strat_pool.get_data desc-preproc_T2w];
             B --> D[output_image];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_afni_T2:
     description: null
@@ -716,7 +714,7 @@ steps:
           graph TD
             A[brain_mask_afni_T2] --> B[afni_brain_connector];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_acpc_afni_T2:
     description: null
@@ -730,7 +728,7 @@ steps:
           graph TD
             A[brain_mask_acpc_afni_T2] --> B[afni_brain_connector];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_fsl_T2:
     description: null
@@ -744,7 +742,7 @@ steps:
           graph TD
             A[brain_mask_fsl_T2] --> B[fsl_brain_connector];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_acpc_fsl_T2:
     description: null
@@ -759,7 +757,7 @@ steps:
             A[brain_mask_acpc_fsl_T2] --> B[fsl_brain_connector];
             B --> C[space-T2w_desc-brain_mask];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_niworkflows_ants_T2:
     description: null
@@ -774,7 +772,7 @@ steps:
             A[brain_mask_niworkflows_ants_T2] --> B[niworkflows_ants_brain_connector];
             B --> C[space-T2w_desc-brain_mask];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_acpc_niworkflows_ants_T2:
     description: null
@@ -790,7 +788,7 @@ steps:
             B --> C[space-T2w_desc-brain_mask];
             C --> D[space-T2w_desc-acpcbrain_mask];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_unet_T2:
     description: null
@@ -805,7 +803,7 @@ steps:
             A[brain_mask_unet_T2] --> B[unet_brain_connector];
             B --> C[outputs];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_acpc_unet_T2:
     description: null
@@ -821,7 +819,7 @@ steps:
             B --> C[wf_outputs];
             C --> D[output space-T2w_desc-acpcbrain_mask];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_T2:
     description: null
@@ -854,7 +852,7 @@ steps:
 
             M --> N[output space-T2w_desc-brain_mask from B.outputspec.T2w_mask];
         source: null
-        validation: null   
+        validation: null
 
   brain_mask_acpc_T2:
     description: null
@@ -875,7 +873,7 @@ steps:
             G --> H[connect to B.inputspec.T1w_mask];
             H --> I[output space-T2w_desc-acpcbrain_mask from B.outputspec.T2w_mask];
         source: null
-        validation: null   
+        validation: null
 
   brain_extraction_T2:
     description: null
@@ -899,7 +897,7 @@ steps:
             I --> J[connect to anat_skullstrip_orig_vol.in_file_b];
             J --> K[output desc-brain_T2w from anat_skullstrip_orig_vol.out_file];
         source: null
-        validation: null   
+        validation: null
 
   brain_extraction_temp_T2:
     description: null
@@ -919,7 +917,7 @@ steps:
             F --> G[connect to anat_skullstrip_orig_vol.in_file_b];
             G --> H[output desc-tempbrain_T2w from anat_skullstrip_orig_vol.out_file];
         source: null
-        validation: null   
+        validation: null
 
   freesurfer_abcd_preproc:
     description: null
@@ -963,7 +961,7 @@ steps:
 
             V --> Y[define outputs including desc-restore_T1w, restore-brain, bias_field, and ABCDpreproc]
         source: null
-        validation: null   
+        validation: null
 
   freesurfer_reconall:
     description: null
@@ -986,7 +984,7 @@ steps:
             I --> J[define outputs dictionary with freesurfer outputs]
             J --> K[return wf, outputs]
         source: null
-        validation: null   
+        validation: null
 
       fnirt_based_brain_extraction():
         description: null
@@ -1028,7 +1026,7 @@ steps:
             AF --> AG[connect apply_mask to outputnode anat_brain]
             AG --> AH[return preproc]
         source: null
-        validation: null   
+        validation: null
 
       fast_bias_field_correction():
         description: null
@@ -1057,7 +1055,7 @@ steps:
             S --> T[connect anat_restore to outputnode anat_restore]
             T --> U[return preproc]
         source: null
-        validation: null   
+        validation: null
 
   correct_restore_brain_intensity_abcd:
     description: null
@@ -1106,4 +1104,4 @@ steps:
             AI --> AJ[set outputs for desc-restore-brain_T1w]
             AJ --> AK[return wf, outputs]
         source: null
-        validation: null   
+        validation: null
