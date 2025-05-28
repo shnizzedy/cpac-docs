@@ -223,7 +223,9 @@ steps:
         validation: null
 
   t1t2_bias_correction:
-    description: null
+    description:
+      - T1w/T2w maps contain individual B1+ (RF transmit field) biases which may be correlated with variables of interest
+      - Estimate and correct bias fields using T1w/T2w maps
     references: null
     methods:
       t1t2_bias_correction():
