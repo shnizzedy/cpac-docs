@@ -1,5 +1,7 @@
 # this is a C-PAC Docs content file 
 
+meta:
+  copyright: "&copy; Copyright 2025 C-PAC Team"
 paragraphs:
   - paragraph: The C-PAC Mission
     subparagraphs:

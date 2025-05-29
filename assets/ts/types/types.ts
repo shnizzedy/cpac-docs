@@ -3,7 +3,9 @@
 // Edit the TypeScript file, not the compiled JavaScript file.
 
 type _MetaData = {
+  copyright?: string;
   title?: string | null;
+  subtitle?: boolean;
 };
 
 type _ParagraphsData = {
@@ -17,9 +19,27 @@ type _ParagraphData = string;
 
 type _DetailsData = string[];
 
+export type GridData = {
+  page: string;
+  image?: string | URL;
+}
+
 export type ParagraphsList = (_ParagraphData | _ParagraphsData | _DetailsData)[];
 
 export type YamlData = {
   meta?: _MetaData;
   paragraphs?: ParagraphsList;
+  grid?: GridData[];
 };
+
+export type ElementCallback = (
+  data: YamlData,
+  parent?: HTMLElement | null,
+  sibling?: HTMLElement | null
+) => HTMLElement;
+
+export type AsyncElementCallback  = (
+  data: YamlData,
+  parent?: HTMLElement | null,
+  sibling?: HTMLElement | null
+) => Promise<HTMLElement>;

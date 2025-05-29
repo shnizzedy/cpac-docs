@@ -1,12 +1,15 @@
 # this is a C-PAC Docs content file 
 
+meta:
+  title: C-PAC Tutorials
+  subtitle: false
 grid:
-  - tutorial1
-  - tutorial2
-  - tutorial3
-  - tutorial4
-  - tutorial5
-  - tutorial6
-  - tutorial7
-  - tutorial8
-  - tutorial9
+  - page: tutorial1
+  - page: tutorial2
+  - page: tutorial3
+  - page: tutorial4
+  - page: tutorial5
+  - page: tutorial6
+  - page: tutorial7
+  - page: tutorial8
+  - page: tutorial9

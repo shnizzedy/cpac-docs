@@ -28,7 +28,7 @@ export function createHeaderNavDiv(selected: string | null = null): HTMLDivEleme
     { href: "../neuroimaging.html", text: "Neuroimaging", id: "neuroimaging" },
     { href: "../pipelines.html", text: "Pipelines", id: "pipelines" },
     { href: "../use.html", text: "How to Use", id: "use" },
-    { href: "../tutorials.html", text: "Tutorials", id: "tutorials" },
+    { href: "../tutorials", text: "Tutorials", id: "tutorials" },
     { href: "../projects.html", text: "Projects", id: "projects" },
     { href: "../support.html", text: "User Support", id: "support" },
     { href: "../appendix.html", text: "Appendix", id: "appendix" }
