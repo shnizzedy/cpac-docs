@@ -35,7 +35,7 @@ function getData(container_1) {
         if (dataId && !filename) {
             section = getSection(window.location.href);
             const baseUrl = window.location.origin;
-            filename = new URL(`../../assets/content/pages/${section}/${dataId}.yaml`, baseUrl);
+            filename = new URL(`../assets/content/pages/${section}/${dataId}.yaml`, baseUrl);
         }
         if (typeof filename === "string") {
             filename = new URL(filename);
