@@ -11,20 +11,22 @@ steps:
         references: null
         config: null
         operations: |
+          ---
+          title: "anatomical_init"
+          ---
           graph TD
-            A[anat_deoblique] --> B[connect T1w to anat_deoblique]
-            A --> C[set anat_deoblique.deoblique to True]
-            B --> D[anat_reorient]
-            D --> E[connect anat_deoblique.out_file to anat_reorient.in_file]
-            D --> F[set anat_reorient.orientation from cfg]
-            D --> G[set anat_reorient.outputtype to NIFTI_GZ]
-            F --> H[outputs]
-            H --> I[desc-preproc_T1w]
-            H --> J[desc-reorient_T1w]
-            H --> K[desc-head_T1w]
-            I --> L[return wf, outputs]
-            J --> L
-            K --> L
+              subgraph inputs
+                input_t1w[T1w]
+              end
+              inputs --> B[deoblique]
+              B[deoblique] --> C[reorient]
+              C[reorient] --> outputs
+
+              subgraph outputs
+                  output_preproc[desc-preproc_T1w]
+                  output_reorient[desc-reorient_T1w]
+                  output_head[desc-head_T1w]
+              end
         source: null
         validation: null
 
