@@ -39,20 +39,22 @@ steps:
         references: null
         config: null
         operations: |
+          ---
+          title: "acpc_alignment_head"
+          ---
           graph TD
-            A[acpc_align] --> B[set acpc_alignment config from cfg]
-            A --> C[set acpc_target from cfg.anatomical_preproc["acpc_alignment"]["acpc_target"]]
-            A --> D[set mask to False]
-            A --> E[set wf_name to acpc_align_{pipe_num}]
-            B --> F[connect desc-preproc_T1w and desc-head_T1w to anat_leaf]
-            F --> G[connect T1w-ACPC-template to template_head_for_acpc]
-            G --> H[outputs]
-            H --> I[desc-head_T1w]
-            H --> J[desc-preproc_T1w]
-            H --> K[from-T1w_to-ACPC_mode-image_desc-aff2rig_xfm]
-            I --> L[return wf, outputs]
-            J --> L
-            K --> L
+              subgraph inputs
+                  input_head[desc-head_T1w]
+                  input_preproc[desc-preproc_T1w]
+                  input_target[acpc_target]
+              end
+              inputs --> B[acpc_align]
+              B --> outputs
+              subgraph outputs
+                  output_head[desc-head_T1w]
+                  output_preproc[desc-preproc_T1w]
+                  output_xfm[from-T1w_to-ACPC_mode-image_desc-aff2rig_xfm]
+              end
         source: null
         validation: null
 
