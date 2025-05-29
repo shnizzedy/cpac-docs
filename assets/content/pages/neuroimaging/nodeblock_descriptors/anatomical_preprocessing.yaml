@@ -67,27 +67,24 @@ steps:
         references: null
         config: null
         operations: |
+          ---
+          title: "acpc_alignment_head_with_mask"
+          ---
           graph TD
-            A[acpc_align] --> B[set acpc_alignment config from cfg]
-            A --> C[set acpc_target from cfg.anatomical_preproc["acpc_alignment"]["acpc_target"]]
-            A --> D[set mask to True]
-            A --> E[set wf_name to acpc_align_{pipe_num}]
-            B --> F[connect desc-head_T1w and desc-preproc_T1w to anat_leaf]
-            F --> G[connect T1w-ACPC-template to template_head_for_acpc]
-            G --> H[check if space-T1w_desc-brain_mask exists in strat_pool]
-            H --> I[if exists, connect space-T1w_desc-brain_mask to brain_mask]
-            I --> J[connect T1w-brain-ACPC-template to template_brain_for_acpc]
-            H --> K[else, skip brain_mask and template_brain_for_acpc connections]
-            J --> L[outputs]
-            K --> L
-            L --> M[desc-head_T1w]
-            L --> N[desc-preproc_T1w]
-            L --> O[space-T1w_desc-brain_mask]
-            L --> P[from-T1w_to-ACPC_mode-image_desc-aff2rig_xfm]
-            M --> Q[return wf, outputs]
-            N --> Q
-            O --> Q
-            P --> Q
+              subgraph inputs
+                  input_head[desc-head_T1w]
+                  input_mask[space-T1w_desc-brain_mask]
+                  input_preproc[desc-preproc_T1w]
+                  input_target[acpc_target]
+              end
+              inputs --> B[acpc_align]
+              B --> outputs
+              subgraph outputs
+                  output_head[desc-head_T1w]
+                  output_mask[space-T1w_desc-brain_mask]
+                  output_preproc[desc-preproc_T1w]
+                  output_xfm[from-T1w_to-ACPC_mode-image_desc-aff2rig_xfm]
+              end
         source: null
         validation: null
       
