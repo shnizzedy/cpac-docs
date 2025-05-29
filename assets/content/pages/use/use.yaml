@@ -23,6 +23,9 @@ paragraphs:
 
       - paragraph: Starcluster on AWS or HPC
         details: null
+      
+      - paragraph: C-PAC vs cpac
+        details: null
 
   - paragraph: C-PAC Quickstart
     details:
