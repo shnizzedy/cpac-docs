@@ -1,4 +1,6 @@
 # this is a C-PAC Docs content file 
 
+meta:
+  title: Reading Provenance
 paragraphs:
   - paragraph: tutorial

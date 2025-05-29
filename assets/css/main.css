@@ -60,6 +60,18 @@ a:hover {
 }
 
 /* -------------------------- NAV MENU STYLES -------------------------- */
+.navmenu a {
+  color: var(--text-color);
+  text-transform: uppercase;
+  font-weight: bold;
+  font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+}
+
+.navmenu li:hover > a,
+.navmenu .active {
+  color: var(--accent-color);
+}
+
 @media (min-width: 1200px) {
   .navmenu ul {
     display: flex;
@@ -82,11 +94,6 @@ a:hover {
     align-items: center;
     font-weight: bold;
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
-  }
-
-  .navmenu li:hover > a,
-  .navmenu .active {
-    color: var(--accent-color);
   }
 }
 
@@ -188,7 +195,7 @@ section, .section {
 }
 
 /* -------------------------- FOOTER STYLES --------------------------- */
-.footer {
+.footer, footer {
   background-color: var(--surface-color);
   font-size: 14px;
   padding: 40px 0;
@@ -476,5 +483,6 @@ under-construction aside {
 
 under-construction aside a {
   color: #0c5460;
+  padding: 0;
   text-decoration: underline;
 }
