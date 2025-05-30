@@ -8,6 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+// Edit the TypeScript file, not the compiled JavaScript file.
 import { createHeaderNavDiv } from './header.js';
 function titleCase(title) {
     return title.charAt(0).toUpperCase() + title.slice(1);

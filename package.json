@@ -1,0 +1,25 @@
+{
+  "name": "cpac-docs",
+  "version": "1.8.8",
+  "description": "cpac-docs",
+  "devDependencies": {
+    "@eslint/js": "^9.27.0",
+    "@tsconfig/recommended": "^1.0.8",
+    "@typescript-eslint/eslint-plugin": "^8.33.0",
+    "@typescript-eslint/parser": "^8.33.0",
+    "eslint": "^9.27.0",
+    "eslint-plugin-typescript": "^0.14.0",
+    "globals": "^16.2.0",
+    "jiti": "^2.4.2",
+    "prettier": "^3.5.3",
+    "typescript": "^5.8.3",
+    "typescript-eslint": "^8.33.0"
+  },
+  "packageManager": "yarn@1.22.22+sha512.a6b2f7906b721bba3d67d4aff083df04dad64c399707841b7acf00f6b133b7ac24255f2652fa22ae3534329dc6180534e98d17432037ff6fd140556e2bb3137e",
+  "scripts": {
+    "build": "tsc assets/ts/*.ts --outDir assets/js/ --target es6",
+    "check-ts": "tsc --target es6 --noEmit",
+    "format": "prettier",
+    "lint": "eslint"
+  }
+}

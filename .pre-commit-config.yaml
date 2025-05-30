@@ -1,24 +1,117 @@
 # See https://pre-commit.com for more information
 # See https://pre-commit.com/hooks.html for more hooks
+
+ci:
+  skip:
+    - yarn-update-installation
+    - lint
+
 repos:
-- repo: https://github.com/pre-commit/pre-commit-hooks
-  rev: v3.2.0
-  hooks:
-  # - id: check-case-conflict
-  # - id: end-of-file-fixer
-  # - id: trailing-whitespace
-  - id: pretty-format-json
-    args:
-    - --autofix
-    - --indent=2
-    - --no-sort-keys
-    exclude_types: [jupyter]
-    types: [file]  # override `types: [json]`
-    files: \.(json|all-contributorsrc)$
-  # - id: check-merge-conflict
-  # - id: check-yaml
-  - id: check-json
-    types: [file]  # override `types: [json]`
-    files: \.(json|all-contributorsrc)$
-  # - id: check-toml
-  # - id: check-added-large-files
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v3.2.0
+    hooks:
+    # - id: check-case-conflict
+    # - id: end-of-file-fixer
+    # - id: trailing-whitespace
+    - id: pretty-format-json
+      args:
+      - --autofix
+      - --indent=2
+      - --no-sort-keys
+      exclude_types: [jupyter]
+      types: [file]  # override `types: [json]`
+      files: \.(json|all-contributorsrc)$
+    # - id: check-merge-conflict
+    # - id: check-yaml
+    - id: check-json
+      types: [file]  # override `types: [json]`
+      files: \.(json|all-contributorsrc)$
+    # - id: check-toml
+    # - id: check-added-large-files
+  - repo: local
+    hooks:
+      - id: yarn-update-installation
+        name: Yarn Install
+        entry: yarn install
+        language: node
+        types_or: [ts, javascript, json]
+        pass_filenames: false
+        additional_dependencies: [yarn]
+        require_serial: true
+
+      - id: check-types
+        name: Type Check
+        entry: yarn check-ts
+        language: node
+        types: [ts]
+        additional_dependencies:
+          - eslint
+          - "@eslint/js"
+          - eslint-plugin-typescript
+          - globals
+          - jiti
+          - "@tsconfig/recommended"
+          - typescript
+          - typescript-eslint
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+          - yarn
+        require_serial: true
+
+      - id: lint
+        name: Lint TypeScript
+        entry: yarn lint
+        language: node
+        types: [ts]
+        additional_dependencies:
+          - eslint
+          - "@eslint/js"
+          - eslint-plugin-typescript
+          - globals
+          - jiti
+          - "@tsconfig/recommended"
+          - typescript
+          - typescript-eslint
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+          - yarn
+        require_serial: true
+
+      - id: format
+        name: Format TypeScript
+        entry: yarn format
+        language: node
+        types: [ts]
+        additional_dependencies:
+          - eslint
+          - "@eslint/js"
+          - eslint-plugin-typescript
+          - globals
+          - jiti
+          - prettier
+          - "@tsconfig/recommended"
+          - typescript
+          - typescript-eslint
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+          - yarn
+        require_serial: true
+
+      - id: compile-ts
+        name: Compile TypeScript
+        entry: yarn build
+        language: node
+        types: [ts]
+        additional_dependencies:
+          - eslint
+          - "@eslint/js"
+          - eslint-plugin-typescript
+          - globals
+          - jiti
+          - "@tsconfig/recommended"
+          - typescript
+          - typescript-eslint
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+          - yarn
+        require_serial: true

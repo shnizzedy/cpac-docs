@@ -1,4 +1,5 @@
 "use strict";
+// Edit the TypeScript file, not the compiled JavaScript file.
 export function createHeaderNavDiv(selected = null) {
     const container = document.createElement("div");
     container.className = "container-fluid position-relative d-flex align-items-center justify-content-between";
