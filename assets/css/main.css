@@ -464,3 +464,7 @@ ul.horizontal-list li a:hover {
 #paragraphsContent {
   padding: 25px;
 }
+
+.paragraph-codeblock {
+  margin-left: 5em;
+}

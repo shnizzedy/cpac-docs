@@ -6,10 +6,14 @@ paragraphs:
     subparagraphs:
       - paragraph: What is C-PAC?
         details:
-          - null
+          - The Configurable Pipeline for the Analysis of Connectomes (C-PAC) is an open-source, modular software pipeline designed to facilitate the analysis of functional and structural brain connectivity using MRI data. Built on top of the Nipype framework, C-PAC offers researchers a flexible and scalable environment for preprocessing, quality assurance, and advanced statistical analysis of neuroimaging data. It supports a wide range of configurable workflows, including motion correction, spatial normalization, nuisance regression, and network modeling, allowing users to tailor the pipeline to their specific research needs. C-PAC is particularly valuable for large-scale studies and reproducible neuroscience, as it integrates with standardized data formats like BIDS and promotes transparency in neuroimaging analysis workflows.
       - paragraph: C-PAC vs cpac
         details:
-          - null
+          - C-PAC (Configurable Pipeline for the Analysis of Connectomes) is a robust, modular neuroimaging workflow system built on Nipype, designed to support reproducible and scalable analysis of resting-state and task-based fMRI data. It integrates tools from major neuroimaging packages such as AFNI, FSL, and ANTs, offering a comprehensive suite of preprocessing steps including slice timing correction, motion correction, spatial normalization, nuisance regression, and parcellation-based time series extraction. C-PAC is highly configurable via YAML files, supports the Brain Imaging Data Structure (BIDS), and can be deployed in containerized environments for reproducibility. It also supports group-level analyses using model specifications and mixed-effects modeling.
+          - The cpac Python package available on PyPI is a lightweight Python interface that provides programmatic access to some C-PAC functionalities and configuration management, serving more as a utility for scripting or integration within Python workflows. Python packages like cpac are distributed as installable modules via the Python Package Index (PyPI), allowing users to integrate specific components of larger software systems into their custom pipelines without running the full C-PAC application. 
+          - While both share the same ecosystem, the full C-PAC pipeline is designed for end-to-end data processing, whereas the cpac package facilitates modular use and development within the Python programming environment.
+        codeblocks:
+          - this is a codeblock
 
   - paragraph: Ways to Run
     subparagraphs:
@@ -28,6 +32,8 @@ paragraphs:
           - OpenNeuro - Run C-PAC analyses directly through the OpenNeuro platform, which provides a web interface for processing public neuroimaging datasets without local installation.
           - brainlife.io -  Utilize brainlife.io to run C-PAC pipelines in the cloud, benefiting from its user-friendly interface and integration with various neuroimaging tools.
           - Flywheel -  Integrate C-PAC into the FlyWheel platform to manage and process neuroimaging data within a comprehensive data management system.
+        codeblocks:
+          - this is a codeblock
 
   - paragraph: C-PAC Quickstart
     subparagraphs:
@@ -45,13 +51,33 @@ paragraphs:
     subparagraphs:
       - paragraph: BIDS Compliance
         details:
-          - null
+          - C-PAC expects your input data to follow the BIDS (Brain Imaging Data Structure) format, which standardizes how neuroimaging data is organized.
+          - BIDS organizes data by subject and session folders, with standardized filenames and metadata files (.json, .tsv).
+          - BIDS ensures smooth pipeline execution and compatibility with other tools.
+          - Use tools like BIDS Validator (https://bids-standard.github.io/bids-validator/) to verify your dataset's compliance before running C-PAC.
+          - Example directory structure for subject 01.
+        codeblocks:
+          - |
+            ├── dataset
+            ├── sub-01
+            │   ├── anat
+            │   │   └── sub-01_T1w.nii.gz
+            │   └── func
+            │       └── sub-01_task-rest_bold.nii.gz
       - paragraph: Custom Data Formats
         details:
-          - null
+          - If your data does not follow BIDS, you can still run C-PAC by specifying a subject list configuration file (YAML or JSON) to manually point C-PAC to your data locations.
+          - The subject list config file defines the paths to anatomical (T1), functional (bold), and other modalities for each subject.
+          - This flexibility lets you process datasets that don't conform to BIDS without reorganizing files.  However, you must ensure paths and filenames are accurate and consistent across your config.
       - paragraph: Common Data Formatting Pitfalls
         details:
-          - null
+          - Incorrect path references - Paths in the subject list config must be absolute or relative to the config file location; wrong paths cause errors.
+          - Misnaming files or folders-  Mismatched filenames or extensions (e.g., .nii vs .nii.gz) will cause failures.
+          - Missing required data types - Some C-PAC pipelines require both anatomical and functional scans; missing either leads to errors.
+          - Improper subject ID matching - Subject IDs in your config file should match your folder or file naming scheme exactly (case-sensitive).
+          - Inconsistent sessions - If using multi-session data, ensure sessions are clearly specified and consistent in both file structure and config.
+          - Ignoring BIDS metadata files - Lack of .json sidecars or event files can lead to incomplete preprocessing or QC issues.
+          - Spaces or special characters in paths - These may cause command-line parsing errors; avoid or properly escape them.
 
   - paragraph: Select Your Pipeline
     subparagraphs:
@@ -119,6 +145,8 @@ paragraphs:
         details:
           - null
       - paragraph: Quality Control Reports
+        details:
+          - null
 
   - paragraph: Debugging Tools
     subparagraphs:
@@ -129,3 +157,5 @@ paragraphs:
         details:
           - null
       - paragraph: Getting Help
+        details:
+          - null
