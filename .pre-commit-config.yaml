@@ -4,30 +4,40 @@ repos:
       - id: yarn-update-installation
         name: Yarn Install
         entry: yarn install
-        language: system
+        language: node
         types_or: [ts, javascript, json]
         pass_filenames: false
+        additional_dependencies: [yarn]
+        require_serial: true
 
       - id: check-types
         name: Type Check
         entry: yarn check-ts
-        language: system
+        language: node
         types: [ts]
+        additional_dependencies: [yarn]
+        require_serial: true
 
       - id: lint
         name: Lint TypeScript
         entry: yarn lint
-        language: system
+        language: node
         types: [ts]
+        additional_dependencies: [yarn]
+        require_serial: true
 
       - id: format
         name: Format TypeScript
         entry: yarn format
-        language: system
+        language: node
         types: [ts]
+        additional_dependencies: [yarn]
+        require_serial: true
 
       - id: compile-ts
         name: Compile TypeScript
         entry: yarn build
-        language: system
+        language: node
         types: [ts]
+        additional_dependencies: [yarn]
+        require_serial: true
