@@ -23,6 +23,9 @@ paragraphs:
 
       - paragraph: Starcluster on AWS or HPC
         details: null
+      
+      - paragraph: C-PAC vs cpac
+        details: null
 
   - paragraph: C-PAC Quickstart
     details:
@@ -36,3 +39,10 @@ paragraphs:
       - paragraph: Debugging Tools
         details:
           - QC
+
+  - paragraph: Specify Your Data
+  - paragraph: Select Your Pipeline
+  - paragraph: Pre-Process Your Data
+  - paragraph: All Run Options
+  - paragraph: Run Group Analysis
+  - paragraph: Check Your Outputs

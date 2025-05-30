@@ -44,42 +44,50 @@
     }
   }
 
-  function readYAMLparagraphs(paragraphs, container, isTopLevel = false) {
+  function readYAMLparagraphs(paragraphs, container, isTopLevel = false, boldApplied = { done: false }) {
     paragraphs.forEach(item => {
       const section = document.createElement("div");
       section.classList.add("paragraph-section");
-
+  
       if (item.paragraph) {
-        const heading = document.createElement(isTopLevel ? "h6" : "h6");
+        const heading = document.createElement("h6");
         heading.textContent = item.paragraph;
-
+  
+        // Apply bold only if top-level and not already applied
+        if (isTopLevel && !boldApplied.done) {
+          heading.classList.add("bold-heading");
+          boldApplied.done = true; // mark bold applied so next headings won't get bold
+        }
+  
         section.appendChild(heading);
       }
-
+  
       if (Array.isArray(item.details)) {
         const ul = document.createElement("ul");
         ul.classList.add("paragraph-details-list");
-
+  
         item.details.forEach(detailText => {
           const li = document.createElement("li");
           li.textContent = detailText || "(detail)";
           li.classList.add("paragraph-detail");
           ul.appendChild(li);
         });
-
+  
         section.appendChild(ul);
       }
-
+  
       if (Array.isArray(item.subparagraphs) && item.subparagraphs.length > 0) {
         const subContainer = document.createElement("div");
         subContainer.classList.add("subparagraphs-container");
-        readYAMLparagraphs(item.subparagraphs, subContainer, false);
+        // pass same boldApplied object so it tracks globally
+        readYAMLparagraphs(item.subparagraphs, subContainer, false, boldApplied);
         section.appendChild(subContainer);
       }
-
+  
       container.appendChild(section);
     });
   }
+  
 
   function renderYAMLList(listData, container) {
     listData.forEach((item) => {
