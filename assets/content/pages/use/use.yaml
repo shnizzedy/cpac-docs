@@ -12,8 +12,6 @@ paragraphs:
           - C-PAC (Configurable Pipeline for the Analysis of Connectomes) is a robust, modular neuroimaging workflow system built on Nipype, designed to support reproducible and scalable analysis of resting-state and task-based fMRI data. It integrates tools from major neuroimaging packages such as AFNI, FSL, and ANTs, offering a comprehensive suite of preprocessing steps including slice timing correction, motion correction, spatial normalization, nuisance regression, and parcellation-based time series extraction. C-PAC is highly configurable via YAML files, supports the Brain Imaging Data Structure (BIDS), and can be deployed in containerized environments for reproducibility. It also supports group-level analyses using model specifications and mixed-effects modeling.
           - The cpac Python package available on PyPI is a lightweight Python interface that provides programmatic access to some C-PAC functionalities and configuration management, serving more as a utility for scripting or integration within Python workflows. Python packages like cpac are distributed as installable modules via the Python Package Index (PyPI), allowing users to integrate specific components of larger software systems into their custom pipelines without running the full C-PAC application. 
           - While both share the same ecosystem, the full C-PAC pipeline is designed for end-to-end data processing, whereas the cpac package facilitates modular use and development within the Python programming environment.
-        codeblocks:
-          - this is a codeblock
 
   - paragraph: Ways to Run
     subparagraphs:
@@ -22,6 +20,14 @@ paragraphs:
           - Docker - Utilize the official Docker image fcpindi/c-pac to run C-PAC on your local machine. This method ensures a consistent environment and simplifies installation.
           - Singularity/Apptainer - Ideal for HPC environments where Docker may not be available. You can convert the Docker image to a Singularity image or use pre-built Singularity images to run C-PAC.
           - cpac Python package - Install the cpac package via pip to manage and run C-PAC containers. This wrapper simplifies execution and allows for additional functionalities like running extra packages (ba_timeseries_gradients, tsconcat).
+      - paragraph: Shelling Into a Container
+        details:
+        - Shelling into a container allows you to interactively run C-PAC commands within the container environment.  This is useful for debugging, testing configurations, or running ad-hoc analyses.
+        - To shell into a Docker container, use docker run -it fcpindi/c-pac /bin/bash.
+        - For Singularity, use singularity shell cpac_latest.sif.
+        - Once inside the container, you can run C-PAC commands as if you were in a regular terminal environment.
+        - This method provides full access to the C-PAC command-line interface and allows you to explore the container's file system and installed tools.
+        - Remember to mount relevant directories (data, output) when launching the container interactively. 
       - paragraph: High Performance Computing (HPC)
         details:
           - Singularity - Leverage Singularity containers to run C-PAC on HPC systems, ensuring compatibility and ease of deployment.
@@ -32,8 +38,6 @@ paragraphs:
           - OpenNeuro - Run C-PAC analyses directly through the OpenNeuro platform, which provides a web interface for processing public neuroimaging datasets without local installation.
           - brainlife.io -  Utilize brainlife.io to run C-PAC pipelines in the cloud, benefiting from its user-friendly interface and integration with various neuroimaging tools.
           - Flywheel -  Integrate C-PAC into the FlyWheel platform to manage and process neuroimaging data within a comprehensive data management system.
-        codeblocks:
-          - this is a codeblock
 
   - paragraph: C-PAC Quickstart
     subparagraphs:
@@ -116,13 +120,37 @@ paragraphs:
     subparagraphs:
       - paragraph: Visual Pipeline Designer
         details:
-          - null
+          - C-PAC includes a Visual Pipeline Builder (VBP) web interface to help users create and edit pipeline YAMLs without manual editing.
+          - It provides a point-and-click GUI to enable/disable pipeline steps, set key parameters (e.g., spatial smoothing FWHM, temporal filter bands), and choose tool options (e.g., FSL vs. ANTs for registration).
+          - The VPB is accessible via the web browser using cpac gui, or inside Docker/Singularity using appropriate port forwarding.
+          - After configuring the pipeline, you can export the YAML file, which can then be used with the cpac run command.
+          - Using the VPB helps to avoid common YAML syntax errors and makes it easier for new users to get started.
       - paragraph: Forking Pipelines
         details:
-          - null
+          - C-PAC allows you to fork pipelines within a single run configuration, enabling multiple pipelines to process the same data in parallel.
+          - Useful for comparing preprocessing strategies or parameter choices (e.g., with and without global signal regression).
+          - Forking reduces re-computation by reusing cached intermediate results where possible.
+          - Example use case - test effect of different nuisance regression models across the same dataset.
+          - Define forks under pipeline_setup in your YAML file -
+        codeblocks:
+          - |
+              pipeline_setup:
+                pipeline_1:
+                  # config A
+                pipeline_2:
+                  # config B
       - paragraph: Parameter Tweaks
         details:
-          - null
+          - All configurable parameters in C-PAC pipelines are exposed in the YAML.
+          - Parameters are grouped by processing modules, such as anatomical_preproc.
+          - You can fine-tune parameters to suit your dataset’s quality or your scientific questions.
+          - It's best practice to document each version of your pipeline YAML to ensure reproducibility and clarity in group comparisons.
+          - Example: Disable slice-timing correction -
+        codeblocks:
+          - |
+              functional_preproc:
+                slice_timing_correction:
+                  enabled: false
 
   - paragraph: Pre-Process Your Data
     subparagraphs:
@@ -137,13 +165,33 @@ paragraphs:
     subparagraphs:
       - paragraph: Command Line Execution
         details:
-          - null
+          - C-PAC can be launched via the command line using the cpac command.
+          - Basic command structure -
+        codeblocks:
+          - |
+            cpac run --pipeline_file /path/to/pipeline.yml \
+            --subject_list /path/to/subject_list.yml \
+            --output_dir /path/to/output_directory
+          - pipeline_file - specifies the YAML configuration for the preprocessing pipeline
+          - subject_list file - defines the input data paths for each subject
+          - output_dir - where all processed data and logs will be saved
+          - additional options include --working_dir to specify a temporary working directory, --n_procs to set parallel processing threads, and --skip_existing to skip subjects with completed outputs
       - paragraph: YAML Configuration 
         details:
-          - null
+          - C-PAC relies heavily on YAML configuration files to manage workflows.  Two key config files are used during C-PAC runs -
+          - Pipeline config YAML - defines all preprocessing and analysis st options like motion correction, template registration, and analysis outputs (e.g., ALFF, ReHo, FC).
+          - Subject list YAML - specifies the location of anatomical and functional data, with each entry including a subject ID and paths to data.
+          - Use the cpac utils command to generate templates -
+        codeblocks:
+          - |
+            cpac utils generate_pipeline_config --output pipeline_config.yml
+            cpac utils generate_subject_list --output subject_list.yml
       - paragraph: Warm Restart
         details:
-          - null
+          - Warm restart allows you to resume a previously interrupted or partially completed run without reprocessing finished steps.  This is particularly useful when working with HPC jobs that were killed early due to time/resource limits or when debugging a pipeline that failed partway through. 
+          - C-PAC keeps track of completed steps via .pkl files and output directories.
+          - When restarting a run, C-PAC checks for existing outputs and skips any completed steps.
+          - To trigger a warm restart, simply re-run the same cpac command with the same config and output directory.  You can delete or rename output directories to force full reprocessing if needed.
 
   - paragraph: Run Group Analysis
     subparagraphs:
