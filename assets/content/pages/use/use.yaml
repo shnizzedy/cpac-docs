@@ -2,47 +2,160 @@
 
 paragraphs:
 
+  - paragraph: Introduction
+    subparagraphs:
+      - paragraph: What is C-PAC?
+        details:
+          - The Configurable Pipeline for the Analysis of Connectomes (C-PAC) is an open-source, modular software pipeline designed to facilitate the analysis of functional and structural brain connectivity using MRI data. Built on top of the Nipype framework, C-PAC offers researchers a flexible and scalable environment for preprocessing, quality assurance, and advanced statistical analysis of neuroimaging data. It supports a wide range of configurable workflows, including motion correction, spatial normalization, nuisance regression, and network modeling, allowing users to tailor the pipeline to their specific research needs. C-PAC is particularly valuable for large-scale studies and reproducible neuroscience, as it integrates with standardized data formats like BIDS and promotes transparency in neuroimaging analysis workflows.
+      - paragraph: C-PAC vs cpac
+        details:
+          - C-PAC (Configurable Pipeline for the Analysis of Connectomes) is a robust, modular neuroimaging workflow system built on Nipype, designed to support reproducible and scalable analysis of resting-state and task-based fMRI data. It integrates tools from major neuroimaging packages such as AFNI, FSL, and ANTs, offering a comprehensive suite of preprocessing steps including slice timing correction, motion correction, spatial normalization, nuisance regression, and parcellation-based time series extraction. C-PAC is highly configurable via YAML files, supports the Brain Imaging Data Structure (BIDS), and can be deployed in containerized environments for reproducibility. It also supports group-level analyses using model specifications and mixed-effects modeling.
+          - The cpac Python package available on PyPI is a lightweight Python interface that provides programmatic access to some C-PAC functionalities and configuration management, serving more as a utility for scripting or integration within Python workflows. Python packages like cpac are distributed as installable modules via the Python Package Index (PyPI), allowing users to integrate specific components of larger software systems into their custom pipelines without running the full C-PAC application. 
+          - While both share the same ecosystem, the full C-PAC pipeline is designed for end-to-end data processing, whereas the cpac package facilitates modular use and development within the Python programming environment.
+        codeblocks:
+          - this is a codeblock
+
   - paragraph: Ways to Run
     subparagraphs:
-      - paragraph: Local machine with Docker and/or Singularity
+      - paragraph: Container
         details:
-          - The recommended way to run C-PAC is through the use of a container such as Docker or Singularity.
-          - Using these containers can be facilitated by the cpac Python package.
-
-      - paragraph: HPC with Singularity
-        details: null
-
-      - paragraph: AWS
-        details: null
-
-      - paragraph: brainlife.io
-        details: null
-
-      - paragraph: FlyWheel
-        details: null
-
-      - paragraph: Starcluster on AWS or HPC
-        details: null
-      
-      - paragraph: C-PAC vs cpac
-        details: null
+          - Docker - Utilize the official Docker image fcpindi/c-pac to run C-PAC on your local machine. This method ensures a consistent environment and simplifies installation.
+          - Singularity/Apptainer - Ideal for HPC environments where Docker may not be available. You can convert the Docker image to a Singularity image or use pre-built Singularity images to run C-PAC.
+          - cpac Python package - Install the cpac package via pip to manage and run C-PAC containers. This wrapper simplifies execution and allows for additional functionalities like running extra packages (ba_timeseries_gradients, tsconcat).
+      - paragraph: High Performance Computing (HPC)
+        details:
+          - Singularity - Leverage Singularity containers to run C-PAC on HPC systems, ensuring compatibility and ease of deployment.
+          - Starcluster - Use Starcluster to set up and manage HPC clusters on AWS or other HPC environments. This setup allows for parallel processing of multiple subjects, enhancing computational efficiency.
+      - paragraph: Cloud Platforms
+        details:
+          - AWS - Deploy C-PAC using the official Amazon Machine Image (AMI) available on the AWS Marketplace. This option supports both single-instance runs and scalable HPC clusters using Starcluster.
+          - OpenNeuro - Run C-PAC analyses directly through the OpenNeuro platform, which provides a web interface for processing public neuroimaging datasets without local installation.
+          - brainlife.io -  Utilize brainlife.io to run C-PAC pipelines in the cloud, benefiting from its user-friendly interface and integration with various neuroimaging tools.
+          - Flywheel -  Integrate C-PAC into the FlyWheel platform to manage and process neuroimaging data within a comprehensive data management system.
+        codeblocks:
+          - this is a codeblock
 
   - paragraph: C-PAC Quickstart
-    details:
-      - pull from https://fcp-indi.github.io/docs/latest/user/quick
-
-  - paragraph: C-PAC Features
     subparagraphs:
-      - paragraph: Design a Pipeline
-      - paragraph: Warm Restart
-      - paragraph: Forking
-      - paragraph: Debugging Tools
+      - paragraph: Installing and Launching
         details:
-          - QC
+          - null
+      - paragraph: First-Time Run Overview
+        details:
+          - null
+      - paragraph: Troubleshooting Setup
+        details:
+          - null
 
   - paragraph: Specify Your Data
+    subparagraphs:
+      - paragraph: BIDS Compliance
+        details:
+          - C-PAC expects your input data to follow the BIDS (Brain Imaging Data Structure) format, which standardizes how neuroimaging data is organized.
+          - BIDS organizes data by subject and session folders, with standardized filenames and metadata files (.json, .tsv).
+          - BIDS ensures smooth pipeline execution and compatibility with other tools.
+          - Use tools like BIDS Validator (https://bids-standard.github.io/bids-validator/) to verify your dataset's compliance before running C-PAC.
+          - Example directory structure for subject 01.
+        codeblocks:
+          - |
+            ├── dataset
+            ├── sub-01
+            │   ├── anat
+            │   │   └── sub-01_T1w.nii.gz
+            │   └── func
+            │       └── sub-01_task-rest_bold.nii.gz
+      - paragraph: Custom Data Formats
+        details:
+          - If your data does not follow BIDS, you can still run C-PAC by specifying a subject list configuration file (YAML or JSON) to manually point C-PAC to your data locations.
+          - The subject list config file defines the paths to anatomical (T1), functional (bold), and other modalities for each subject.
+          - This flexibility lets you process datasets that don't conform to BIDS without reorganizing files.  However, you must ensure paths and filenames are accurate and consistent across your config.
+      - paragraph: Common Data Formatting Pitfalls
+        details:
+          - Incorrect path references - Paths in the subject list config must be absolute or relative to the config file location; wrong paths cause errors.
+          - Misnaming files or folders-  Mismatched filenames or extensions (e.g., .nii vs .nii.gz) will cause failures.
+          - Missing required data types - Some C-PAC pipelines require both anatomical and functional scans; missing either leads to errors.
+          - Improper subject ID matching - Subject IDs in your config file should match your folder or file naming scheme exactly (case-sensitive).
+          - Inconsistent sessions - If using multi-session data, ensure sessions are clearly specified and consistent in both file structure and config.
+          - Ignoring BIDS metadata files - Lack of .json sidecars or event files can lead to incomplete preprocessing or QC issues.
+          - Spaces or special characters in paths - These may cause command-line parsing errors; avoid or properly escape them.
+
   - paragraph: Select Your Pipeline
+    subparagraphs:
+      - paragraph: Default Pipelines
+        details:
+          - null
+      - paragraph: Custom Pipelines
+        details:
+          - null
+      - paragraph: Important and Modifying Pipelines
+        details:
+          - null
+
+  - paragraph: Design a Pipeline
+    subparagraphs:
+      - paragraph: Visual Pipeline Designer
+        details:
+          - null
+      - paragraph: Forking Pipelines
+        details:
+          - null
+      - paragraph: Parameter Tweaks
+        details:
+          - null
+
   - paragraph: Pre-Process Your Data
+    subparagraphs:
+      - paragraph: Overview of Preprocessing Steps
+        details:
+          - null
+      - paragraph: Selecting and Modifying Preprocessing Modules
+        details:
+          - null
+
   - paragraph: All Run Options
+    subparagraphs:
+      - paragraph: Command Line Execution
+        details:
+          - null
+      - paragraph: YAML Configuration 
+        details:
+          - null
+      - paragraph: Warm Restart
+        details:
+          - null
+
   - paragraph: Run Group Analysis
+    subparagraphs:
+      - paragraph: Setting Up Group-Level Comparisons
+        details:
+          - null
+      - paragraph: Paired and Unpaired Designs
+        details:
+          - null
+      - paragraph: Handling Multiple Sessions
+        details:
+          - null
+
   - paragraph: Check Your Outputs
+    subparagraphs:
+      - paragraph: Output Structure
+        details:
+          - null
+      - paragraph: Interpreting Results
+        details:
+          - null
+      - paragraph: Quality Control Reports
+        details:
+          - null
+
+  - paragraph: Debugging Tools
+    subparagraphs:
+      - paragraph: Understanding Error Logs
+        details:
+          - null
+      - paragraph: Common Runtime Issues
+        details:
+          - null
+      - paragraph: Getting Help
+        details:
+          - null

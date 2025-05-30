@@ -4,12 +4,26 @@
   function toggleScrolled() {
     const b = document.querySelector("body");
     const h = document.querySelector("#header");
-    if (!h.classList.contains("scroll-up-sticky") && !h.classList.contains("sticky-top") && !h.classList.contains("fixed-top")) return;
+    if (
+      !h.classList.contains("scroll-up-sticky") &&
+      !h.classList.contains("sticky-top") &&
+      !h.classList.contains("fixed-top")
+    )
+      return;
     window.scrollY > 100 ? b.classList.add("scrolled") : b.classList.remove("scrolled");
   }
 
   document.addEventListener("scroll", toggleScrolled);
   window.addEventListener("load", toggleScrolled);
+
+  // Helper to replace tree chars with spaces
+  function sanitizeTreeChars(text) {
+    // Replace │ and ├── and └── with spaces to indent properly in YAML
+    return text
+      .replace(/│/g, "    ")   // vertical bar -> 4 spaces
+      .replace(/├──/g, "    ") // branch -> 4 spaces
+      .replace(/└──/g, "    "); // end branch -> 4 spaces
+  }
 
   async function loadYAML(filename) {
     if (!filename) {
@@ -27,8 +41,8 @@
 
       if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
         readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer, true);
+        renderCodeblocksFromYAML(yamlData, "yaml-block");
       }
-
     } catch (error) {
       console.error(`Error loading YAML from ${filename}:`, error);
       const container = document.getElementById("paragraphsContent");
@@ -37,14 +51,13 @@
   }
 
   function readYAMLparagraphs(paragraphs, container, isTopLevel = false) {
-    paragraphs.forEach(item => {
+    paragraphs.forEach((item) => {
       const section = document.createElement("div");
       section.classList.add("paragraph-section");
 
       if (item.paragraph) {
         const heading = document.createElement(isTopLevel ? "h6" : "h6");
         heading.textContent = item.paragraph;
-
         section.appendChild(heading);
       }
 
@@ -52,7 +65,7 @@
         const ul = document.createElement("ul");
         ul.classList.add("paragraph-details-list");
 
-        item.details.forEach(detailText => {
+        item.details.forEach((detailText) => {
           const li = document.createElement("li");
           li.textContent = detailText || "(detail)";
           li.classList.add("paragraph-detail");
@@ -60,6 +73,21 @@
         });
 
         section.appendChild(ul);
+      }
+
+      if (Array.isArray(item.codeblocks)) {
+        const codeContainer = document.createElement("div");
+        codeContainer.classList.add("paragraph-codeblock");
+
+        item.codeblocks.forEach((code) => {
+          const pre = document.createElement("pre");
+          const codeElem = document.createElement("code");
+          codeElem.className = "language-yaml";
+          codeElem.textContent = sanitizeTreeChars(code);
+          pre.appendChild(codeElem);
+          codeContainer.appendChild(pre);
+        });
+        section.appendChild(codeContainer);
       }
 
       if (Array.isArray(item.subparagraphs) && item.subparagraphs.length > 0) {
@@ -73,6 +101,33 @@
     });
   }
 
+  function renderCodeblocksFromYAML(yamlData, targetId) {
+    const sectionCodeblocks = [];
+
+    function collectCodeblocks(items) {
+      items.forEach((item) => {
+        if (Array.isArray(item.codeblocks)) {
+          item.codeblocks.forEach((code) => sectionCodeblocks.push(code));
+        }
+        if (Array.isArray(item.subparagraphs)) {
+          collectCodeblocks(item.subparagraphs);
+        }
+      });
+    }
+
+    if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
+      collectCodeblocks(yamlData.paragraphs);
+    }
+
+    if (sectionCodeblocks.length > 0) {
+      const codeContainer = document.getElementById(targetId);
+      codeContainer.innerHTML = sectionCodeblocks
+        .map((code) => `<pre><code class="language-yaml">${sanitizeTreeChars(code)}</code></pre>`)
+        .join("\n");
+
+      if (window.Prism) Prism.highlightAll(); // optional syntax highlighting
+    }
+  }
 
   window.addEventListener("load", () => {
     toggleScrolled();
