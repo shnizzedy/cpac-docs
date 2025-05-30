@@ -2,47 +2,130 @@
 
 paragraphs:
 
+  - paragraph: Introduction
+    subparagraphs:
+      - paragraph: What is C-PAC?
+        details:
+          - null
+      - paragraph: C-PAC vs cpac
+        details:
+          - null
+
   - paragraph: Ways to Run
     subparagraphs:
-      - paragraph: Local machine with Docker and/or Singularity
+      - paragraph: Container
         details:
-          - The recommended way to run C-PAC is through the use of a container such as Docker or Singularity.
-          - Using these containers can be facilitated by the cpac Python package.
-
-      - paragraph: HPC with Singularity
-        details: null
-
-      - paragraph: AWS
-        details: null
-
-      - paragraph: brainlife.io
-        details: null
-
-      - paragraph: FlyWheel
-        details: null
-
-      - paragraph: Starcluster on AWS or HPC
-        details: null
-      
-      - paragraph: C-PAC vs cpac
-        details: null
+          - Docker - Utilize the official Docker image fcpindi/c-pac to run C-PAC on your local machine. This method ensures a consistent environment and simplifies installation.
+          - Singularity/Apptainer - Ideal for HPC environments where Docker may not be available. You can convert the Docker image to a Singularity image or use pre-built Singularity images to run C-PAC.
+          - cpac Python package - Install the cpac package via pip to manage and run C-PAC containers. This wrapper simplifies execution and allows for additional functionalities like running extra packages (ba_timeseries_gradients, tsconcat).
+      - paragraph: High Performance Computing (HPC)
+        details:
+          - Singularity - Leverage Singularity containers to run C-PAC on HPC systems, ensuring compatibility and ease of deployment.
+          - Starcluster - Use Starcluster to set up and manage HPC clusters on AWS or other HPC environments. This setup allows for parallel processing of multiple subjects, enhancing computational efficiency.
+      - paragraph: Cloud Platforms
+        details:
+          - AWS - Deploy C-PAC using the official Amazon Machine Image (AMI) available on the AWS Marketplace. This option supports both single-instance runs and scalable HPC clusters using Starcluster.
+          - OpenNeuro - Run C-PAC analyses directly through the OpenNeuro platform, which provides a web interface for processing public neuroimaging datasets without local installation.
+          - brainlife.io -  Utilize brainlife.io to run C-PAC pipelines in the cloud, benefiting from its user-friendly interface and integration with various neuroimaging tools.
+          - Flywheel -  Integrate C-PAC into the FlyWheel platform to manage and process neuroimaging data within a comprehensive data management system.
 
   - paragraph: C-PAC Quickstart
-    details:
-      - pull from https://fcp-indi.github.io/docs/latest/user/quick
-
-  - paragraph: C-PAC Features
     subparagraphs:
-      - paragraph: Design a Pipeline
-      - paragraph: Warm Restart
-      - paragraph: Forking
-      - paragraph: Debugging Tools
+      - paragraph: Installing and Launching
         details:
-          - QC
+          - null
+      - paragraph: First-Time Run Overview
+        details:
+          - null
+      - paragraph: Troubleshooting Setup
+        details:
+          - null
 
   - paragraph: Specify Your Data
+    subparagraphs:
+      - paragraph: BIDS Compliance
+        details:
+          - null
+      - paragraph: Custom Data Formats
+        details:
+          - null
+      - paragraph: Common Data Formatting Pitfalls
+        details:
+          - null
+
   - paragraph: Select Your Pipeline
+    subparagraphs:
+      - paragraph: Default Pipelines
+        details:
+          - null
+      - paragraph: Custom Pipelines
+        details:
+          - null
+      - paragraph: Important and Modifying Pipelines
+        details:
+          - null
+
+  - paragraph: Design a Pipeline
+    subparagraphs:
+      - paragraph: Visual Pipeline Designer
+        details:
+          - null
+      - paragraph: Forking Pipelines
+        details:
+          - null
+      - paragraph: Parameter Tweaks
+        details:
+          - null
+
   - paragraph: Pre-Process Your Data
+    subparagraphs:
+      - paragraph: Overview of Preprocessing Steps
+        details:
+          - null
+      - paragraph: Selecting and Modifying Preprocessing Modules
+        details:
+          - null
+
   - paragraph: All Run Options
+    subparagraphs:
+      - paragraph: Command Line Execution
+        details:
+          - null
+      - paragraph: YAML Configuration 
+        details:
+          - null
+      - paragraph: Warm Restart
+        details:
+          - null
+
   - paragraph: Run Group Analysis
+    subparagraphs:
+      - paragraph: Setting Up Group-Level Comparisons
+        details:
+          - null
+      - paragraph: Paired and Unpaired Designs
+        details:
+          - null
+      - paragraph: Handling Multiple Sessions
+        details:
+          - null
+
   - paragraph: Check Your Outputs
+    subparagraphs:
+      - paragraph: Output Structure
+        details:
+          - null
+      - paragraph: Interpreting Results
+        details:
+          - null
+      - paragraph: Quality Control Reports
+
+  - paragraph: Debugging Tools
+    subparagraphs:
+      - paragraph: Understanding Error Logs
+        details:
+          - null
+      - paragraph: Common Runtime Issues
+        details:
+          - null
+      - paragraph: Getting Help
