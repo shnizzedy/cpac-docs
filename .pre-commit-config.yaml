@@ -1,6 +1,7 @@
 ci:
   skip:
     - yarn-update-installation
+    - lint
 
 repos:
   - repo: local
