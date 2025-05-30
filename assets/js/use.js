@@ -40,7 +40,7 @@
       paragraphsContainer.innerHTML = "";
 
       if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
-        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer, true);
+        readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer, 0);
       }
     } catch (error) {
       console.error(`Error loading YAML from ${filename}:`, error);
@@ -49,13 +49,18 @@
     }
   }
 
-  function readYAMLparagraphs(paragraphs, container, isTopLevel = false) {
+  function readYAMLparagraphs(paragraphs, container, level = 0) {
     paragraphs.forEach((item) => {
       const section = document.createElement("div");
       section.classList.add("paragraph-section");
 
       if (item.paragraph) {
-        const heading = document.createElement(isTopLevel ? "h6" : "h6");
+        let headingTag;
+        if (level === 0) headingTag = "h3";
+        else if (level === 1) headingTag = "h5";
+        else headingTag = "h6";
+
+        const heading = document.createElement(headingTag);
         heading.textContent = item.paragraph;
         section.appendChild(heading);
       }
@@ -92,7 +97,7 @@
       if (Array.isArray(item.subparagraphs) && item.subparagraphs.length > 0) {
         const subContainer = document.createElement("div");
         subContainer.classList.add("subparagraphs-container");
-        readYAMLparagraphs(item.subparagraphs, subContainer, false);
+        readYAMLparagraphs(item.subparagraphs, subContainer, level + 1);
         section.appendChild(subContainer);
       }
 
