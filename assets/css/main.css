@@ -87,13 +87,9 @@ a:hover {
   }
 
   .navmenu a {
-    color: var(--text-color);
     font-size: 17px;
-    text-transform: uppercase;
     display: flex;
     align-items: center;
-    font-weight: bold;
-    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
   }
 }
 
@@ -470,6 +466,10 @@ ul.horizontal-list li a:hover {
 /* ------------------------------- PARAGRAPHS ------------------------------- */
 #paragraphsContent {
   padding: 25px;
+}
+
+.paragraph-codeblock {
+  margin-left: 5em;
 }
 
 /* --------------------------------- ASIDES ---------------------------------- */
