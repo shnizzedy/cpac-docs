@@ -83,14 +83,35 @@ paragraphs:
     subparagraphs:
       - paragraph: Default Pipelines
         details:
-          - null
+          - C-PAC comes with several default pipeline configurations, each tailored for common use cases and analysis strategies.
+          - These pipelines can be found here https://fcp-indi.github.io/cpac-docs/pages/pipelines.html, and in the Docker image or GitHub repo under resources/config/pipeline.
+          - These pipelines are useful starting points and can be run as-is or used as templates for custom pipelines.
+          - To use a default pipeline -
+        codeblocks:
+          - cpac run --pipeline_file /path/to/default_pipeline.yml ...
       - paragraph: Custom Pipelines
         details:
-          - null
+          - You can create a custom pipeline by modifying a default pipeline YAML or building one from scratch using C-PAC’s pipeline structure.
+          - Custom pipelines allow you to enable/disable specific steps like skull-stripping, registration, nuisance regression, etc., swap tools (e.g., use FSL instead of ANTs for registration)., and adjust parameters such as smoothing kernel size, motion threshold, or temporal filtering band.
+          - to create a custom pipeline, copy the default pipeline config YAML and modify the relevant sections under the appropraite keys.  Save and reference your modified file using --pipeline_file.
+          - Example modification changing the functional smoothing kernel -
+        codeblocks:
+          - |
+            ├── functional_preproc:
+            │   ├── functional_smoothing:
+            │   │   └── fwhm: 6
       - paragraph: Important and Modifying Pipelines
         details:
-          - null
-
+          - Pipelines are defined in YAML configuration files, which follow a modular, nested structure.
+          - To modify a pipeline, focus on key processing modules, like registration_workflows ad nuisance_regression.
+          - You can define multiple pipelines in one run using the pipeline_setup / pipeline_name / key.
+          - Use include_config in your YAML to import modular settings from another file
+          - Always validate your edited pipeline with a test subject before launching a full run.
+          - Use include_config in your YAML to import modular settings from another file -
+        codeblocks:
+          - |
+            ├── include_config:
+            │   ├── /path/to/base_pipeline.yml
   - paragraph: Design a Pipeline
     subparagraphs:
       - paragraph: Visual Pipeline Designer
@@ -128,34 +149,89 @@ paragraphs:
     subparagraphs:
       - paragraph: Setting Up Group-Level Comparisons
         details:
-          - null
+          - Group-level analyses in C-PAC are performed after preprocessing and individual-level derivatives are complete.
+          - Use the group command-line tool within the C-PAC container to run statistical comparisons across subjects.
+          - Required inputs are (1) a list of subject-level derivative files (e.g., ALFF maps, ReHo maps) and (2) a phenotype or design matrix file (.csv) containing covariates and group labels.
+          - Common workflow- gather the derivative of interest for all subjects -> reate a design matrix CSV (columns = variables, rows = subjects) -> run the appropriate cpac group subcommand (e.g., feat or feat-load).
+          - Outputs include group stattistical maps, contrast maps, and logs.
+          - Example command -
+        codeblocks:
+          - |
+            singularity exec cpac_latest.sif cpac group feat \
+            --data_file subject_alff_paths.txt \
+            --design_file design_matrix.csv \
+            --output_dir /output/group_analysis
       - paragraph: Paired and Unpaired Designs
         details:
-          - null
+          - C-PAC supports both paired and unpaired group comparison designs.
+          - Use the appropriate group command variant.  
+          - group feat for unpaired design (e.g., comparing two independent groups).
+          - group feat-load-paired for  paired design (e.g., pre/post treatment within subjects).
+          - In unpaired design, each subject is treated independently, which is useful for between-group comparisons (like control vs. patient groups).
+          - In paired design, Subjects appear in both conditions (e.g., baseline and follow-up).  The design matrix should reflect pairing by consistent subject IDs or ordering.
+          - Be sure to match the order of subjects and control for subject-specific variability in paired designs.
+          - Example for paired design -
+        codeblocks:
+          - |
+            cpac group feat-load-paired \
+              --group1_files group1_alff_paths.txt \
+              --group2_files group2_alff_paths.txt \
+              --output_dir /output/group_paired
       - paragraph: Handling Multiple Sessions
         details:
-          - null
+          - If subjects have multiple sessions (e.g., test/retest, baseline/follow-up), you can run group analyses in a few ways.  Either trreat sessions as repeated measures (paired analysis), run separate group comparisons for each session, or collapse sessions if appropriate (e.g., average across sessions).
+          - You must manually organize session-specific files and label them accordingly in your subject list or data paths.
+          - You are responsible for ensuring consistent file ordering and accurate session labeling across design and data files.
+          - Always double-check your data structure before running group stats to avoid mismatched inputs.
+          - Example structure for group1_files.txt -
+        codeblocks:
+          - |
+            /output/sub-01/ses-01/alff.nii.gz
+            /output/sub-02/ses-01/alff.nii.gz
 
   - paragraph: Check Your Outputs
     subparagraphs:
       - paragraph: Output Structure
         details:
-          - null
+          - After running C-PAC, outputs are organized inside the output_directory you specify in the config or command line.
+          - The directory structure is hierarchical, grouped by subject_id (e.g., sub-01), session_id (if applicable), and pipeline_name (e.g., default_pipeline)
+          - Inside each pipeline folder, you’ll find subfolders for each preprocessing step and derivative (e.g., func_preproc, regression, derivatives).
+          - A summary CSV file (summary.csv) is often generated containing key QC and processing metrics across subjects.
+          - Example path for a subject’s preprocessed functional data -
+        codeblocks:
+          - output_directory/sub-01/pipeline_name/func_preproc/sub-01_task-rest_bold_preproc.nii.gz
       - paragraph: Interpreting Results
         details:
-          - null
+          - Each output file corresponds to a specific processing step or derivative (e.g., motion-corrected images, normalized data, connectivity matrices).
+          - File naming convention includes subject, task, and processing step for clarity (e.g., sub-01_task-rest_bold_regressors.tsv).
+          - The logs directory contains detailed logs for each subject and pipeline step, useful for troubleshooting errors or unexpected results.
+          - Use the output directory to verify processing completeness and data integrity before downstream analyses.
+          - Inspect CSV summary files for metrics like framewise displacement, number of censored volumes, and data quality indicators.
       - paragraph: Quality Control Reports
         details:
-          - null
+          - C-PAC automatically generates QC reports as HTML or PDF files inside the subject’s output folder, often under qc or reports.
+          - QC reports typically include visualizations of motion correction parameters, time series plots, registration quality images (e.g., alignment of functional to anatomical scans), summary statistics on signal-to-noise ratio (SNR), and other quality metrics.
+          - Reviewing QC reports helps identify data or processing issues early (e.g., excessive motion, misalignment).
+          - Reports provide links or thumbnails to key images for quick visual inspection.  Use these reports to decide whether to exclude or reprocess problematic subjects.
 
   - paragraph: Debugging Tools
     subparagraphs:
       - paragraph: Understanding Error Logs
         details:
-          - null
+          - C-PAC generates log files during runtime that capture detailed information about each pipeline step.
+          - Logs (pypeline.log) are located in the log/ directory within the output directory or next to the working directory.
+          - Error logs include timestamps, module names, and full Python tracebacks, which are key for identifying where and why the pipeline failed.
+          - Look for lines marked ERROR or CRITICAL.
+          - Trace back through the preceding lines to see which step and module caused the failure.
+          - Example log -
+        codeblocks:
+          - 2025-05-30 12:34:56,789 - CPAC.func_preproc - ERROR - File not found /sub-01/func/rest_bold.nii.gz
       - paragraph: Common Runtime Issues
         details:
-          - null
-      - paragraph: Getting Help
-        details:
-          - null
+          - Missing or misnamed input files are the cause of most common errors, especially when using a custom subject list.  Ensure full paths are valid and filenames match exactly.
+          - Incorrect working directory permissions will cause C-PAC to fail if it cannot write to the working or output directory.  Check ownership and permissions using ls -la and chmod/chown if needed.
+          - Docker/Singularity volume binding errors are also common.  Make sure host directories are correctly mounted inside the container and you are using the correct container image for the version of cpac you want to use.
+          - C-PAC is resource-intensive, so failures may occur if insufficient RAM, disk, or swap space is available.
+          - For source installs, Python version/package mismatches can happen.  Using a virtual environment or a container is recommended to prevent dependency conflicts.
+          - Indentation or character errors in your config files can silently cause pipeline misconfigurations.  Use a YAML linter or syntax checker to ensure proper YAML formatting.
+    

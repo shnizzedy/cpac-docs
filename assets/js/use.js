@@ -41,7 +41,6 @@
 
       if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
         readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer, true);
-        renderCodeblocksFromYAML(yamlData, "yaml-block");
       }
     } catch (error) {
       console.error(`Error loading YAML from ${filename}:`, error);
