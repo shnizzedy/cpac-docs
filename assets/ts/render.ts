@@ -32,9 +32,12 @@ async function loadData(filename: URL): Promise<YamlData> {
   if (!("meta" in data)) {
     data.meta = {};
   }
-  if ("meta" in data && !("subtitle" in data.meta)) {
-    data.meta.subtitle = true;
-  }
+  // set defaults
+  ["subtitle", "displayTitle"].forEach(attribute => {
+    if (!(attribute in data.meta)) {
+      data.meta[attribute] = true;
+    }
+  });
   return data;
 }
 
@@ -213,6 +216,17 @@ async function populateGrid(yamlData: YamlData, parent: HTMLElement | null = nul
   return parent;
 }
 
+function populateIframe(yamlData: YamlData, parent: HTMLElement | null = null, sibling: HTMLElement | null = null): HTMLElement {
+  const iframeContainer: HTMLElement = getOrCreateContainer("iframeContent", "div", parent, sibling);
+  if ("iframe" in yamlData && yamlData.iframe) {
+    const iframe = document.createElement("iframe");
+    iframe.setAttribute("src", `${yamlData.iframe}`);
+    iframe.setAttribute("class", "full-view");
+    iframeContainer.appendChild(iframe);
+    return iframeContainer;
+  }
+  return parent;
+}
 
 function populateParagraphs(yamlData: YamlData, parent: HTMLElement | null = null, sibling: HTMLElement | null = null): HTMLElement {
   const paragraphsContainer: HTMLElement = getOrCreateContainer("paragraphsContent", "div", parent, sibling);
@@ -226,6 +240,9 @@ function populateParagraphs(yamlData: YamlData, parent: HTMLElement | null = nul
 
 function populateTitle(yamlData: YamlData, section: string | null, parent: HTMLElement | null = null, sibling: HTMLElement | null = null): HTMLElement {
   if ("meta" in yamlData && yamlData.meta) {
+    if (!yamlData.meta.displayTitle) {
+      return parent || sibling;
+    }
     let title = "";
     if ("title" in yamlData.meta && yamlData.meta.title) {
       title = yamlData.meta.title;
@@ -251,7 +268,7 @@ function populateTitle(yamlData: YamlData, section: string | null, parent: HTMLE
     } else { titleContainer.innerHTML = title; }
     return titleContainer;
   }
-  return parent;
+  return parent || sibling;
 }
 
 
@@ -292,6 +309,7 @@ async function populatePage(): Promise<void> {
   populateHeader(section);
   latestElement = populateTitle(yamlData, section, latestElement);
   latestElement = await asyncPopulate(container, yamlData, latestElement, populateGrid);
+  populate(container, yamlData, latestElement, populateIframe);
   populate(container, yamlData, latestElement, populateParagraphs);
   await populateFooter(yamlData, container);
 }

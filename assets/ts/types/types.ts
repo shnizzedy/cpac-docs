@@ -6,6 +6,7 @@ type _MetaData = {
   copyright?: string;
   title?: string | null;
   subtitle?: boolean;
+  displayTitle?: boolean;
 };
 
 type _ParagraphsData = {
@@ -28,6 +29,7 @@ export type ParagraphsList = (_ParagraphData | _ParagraphsData | _DetailsData)[]
 
 export type YamlData = {
   meta?: _MetaData;
+  iframe?: string | URL;
   paragraphs?: ParagraphsList;
   grid?: GridData[];
 };

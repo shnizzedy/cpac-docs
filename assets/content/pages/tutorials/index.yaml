@@ -5,7 +5,7 @@ meta:
   subtitle: false
 grid:
   - page: tutorial1
-  - page: tutorial2
+  - page: optimize-memory-estimation
   - page: tutorial3
   - page: tutorial4
   - page: tutorial5

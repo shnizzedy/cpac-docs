@@ -35,9 +35,12 @@ function loadData(filename) {
         if (!("meta" in data)) {
             data.meta = {};
         }
-        if ("meta" in data && !("subtitle" in data.meta)) {
-            data.meta.subtitle = true;
-        }
+        // set defaults
+        ["subtitle", "displayTitle"].forEach(attribute => {
+            if (!(attribute in data.meta)) {
+                data.meta[attribute] = true;
+            }
+        });
         return data;
     });
 }
@@ -218,6 +221,17 @@ function populateGrid(yamlData_1) {
         return parent;
     });
 }
+function populateIframe(yamlData, parent = null, sibling = null) {
+    const iframeContainer = getOrCreateContainer("iframeContent", "div", parent, sibling);
+    if ("iframe" in yamlData && yamlData.iframe) {
+        const iframe = document.createElement("iframe");
+        iframe.setAttribute("src", `${yamlData.iframe}`);
+        iframe.setAttribute("class", "full-view");
+        iframeContainer.appendChild(iframe);
+        return iframeContainer;
+    }
+    return parent;
+}
 function populateParagraphs(yamlData, parent = null, sibling = null) {
     const paragraphsContainer = getOrCreateContainer("paragraphsContent", "div", parent, sibling);
     if (yamlData.paragraphs && Array.isArray(yamlData.paragraphs)) {
@@ -229,6 +243,9 @@ function populateParagraphs(yamlData, parent = null, sibling = null) {
 }
 function populateTitle(yamlData, section, parent = null, sibling = null) {
     if ("meta" in yamlData && yamlData.meta) {
+        if (!yamlData.meta.displayTitle) {
+            return parent || sibling;
+        }
         let title = "";
         if ("title" in yamlData.meta && yamlData.meta.title) {
             title = yamlData.meta.title;
@@ -259,7 +276,7 @@ function populateTitle(yamlData, section, parent = null, sibling = null) {
         }
         return titleContainer;
     }
-    return parent;
+    return parent || sibling;
 }
 function toggleScrolled() {
     const b = document.querySelector("body");
@@ -301,6 +318,7 @@ function populatePage() {
         populateHeader(section);
         latestElement = populateTitle(yamlData, section, latestElement);
         latestElement = yield asyncPopulate(container, yamlData, latestElement, populateGrid);
+        populate(container, yamlData, latestElement, populateIframe);
         populate(container, yamlData, latestElement, populateParagraphs);
         yield populateFooter(yamlData, container);
     });
