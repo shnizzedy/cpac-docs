@@ -61,9 +61,8 @@ function constructUrl(dataId: string, ext: string = "yaml", supersection: string
   } else {
     project_slug = `/${project_slug}`;
   }
-  console.log(project_slug, section, dataId, ext, `${new URL(`${project_slug}/${section}/${dataId}.${ext}`, baseUrl)}`);
 
-  return new URL(`/${project_slug}/${section}/${dataId}.${ext}`, baseUrl);
+  return new URL(`${project_slug}/${section}/${dataId}.${ext}`, baseUrl);
 }
 
 async function getData(container: HTMLElement, filename: URL | string | null = null): Promise<[YamlData, string | null]> {
@@ -226,7 +225,6 @@ function populateParagraphs(yamlData: YamlData, parent: HTMLElement | null = nul
 }
 
 function populateTitle(yamlData: YamlData, section: string | null, parent: HTMLElement | null = null, sibling: HTMLElement | null = null): HTMLElement {
-  console.log(yamlData);
   if ("meta" in yamlData && yamlData.meta) {
     let title = "";
     if ("title" in yamlData.meta && yamlData.meta.title) {
@@ -234,7 +232,6 @@ function populateTitle(yamlData: YamlData, section: string | null, parent: HTMLE
     } else {
       title = formatPageTitle(window.location.pathname.split("/").pop().split(".").shift());
     }
-    console.log(title);
     const titleContainer = getOrCreateContainer("title", "div", parent, sibling, {"class": "title"});
     if (yamlData.meta.subtitle) {
       let subtitle: string = "";
