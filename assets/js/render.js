@@ -303,6 +303,7 @@ function populatePage() {
         latestElement = yield asyncPopulate(container, yamlData, latestElement, populateGrid);
         populate(container, yamlData, latestElement, populateParagraphs);
         yield populateFooter(yamlData, container);
+        console.log();
     });
 }
 function populateHeader(section) {

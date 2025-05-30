@@ -1,3 +1,7 @@
+ci:
+  skip:
+    - yarn-update-installation
+
 repos:
   - repo: local
     hooks:
@@ -15,7 +19,18 @@ repos:
         entry: yarn check-ts
         language: node
         types: [ts]
-        additional_dependencies: [yarn]
+        additional_dependencies:
+          - eslint
+          - "@eslint/js"
+          - eslint-plugin-typescript
+          - globals
+          - jiti
+          - "@tsconfig/recommended"
+          - typescript
+          - typescript-eslint
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+          - yarn
         require_serial: true
 
       - id: lint
@@ -23,7 +38,18 @@ repos:
         entry: yarn lint
         language: node
         types: [ts]
-        additional_dependencies: [yarn]
+        additional_dependencies:
+          - eslint
+          - "@eslint/js"
+          - eslint-plugin-typescript
+          - globals
+          - jiti
+          - "@tsconfig/recommended"
+          - typescript
+          - typescript-eslint
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+          - yarn
         require_serial: true
 
       - id: format
@@ -31,7 +57,19 @@ repos:
         entry: yarn format
         language: node
         types: [ts]
-        additional_dependencies: [yarn]
+        additional_dependencies:
+          - eslint
+          - "@eslint/js"
+          - eslint-plugin-typescript
+          - globals
+          - jiti
+          - prettier
+          - "@tsconfig/recommended"
+          - typescript
+          - typescript-eslint
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+          - yarn
         require_serial: true
 
       - id: compile-ts
@@ -39,5 +77,16 @@ repos:
         entry: yarn build
         language: node
         types: [ts]
-        additional_dependencies: [yarn]
+        additional_dependencies:
+          - eslint
+          - "@eslint/js"
+          - eslint-plugin-typescript
+          - globals
+          - jiti
+          - "@tsconfig/recommended"
+          - typescript
+          - typescript-eslint
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+          - yarn
         require_serial: true
