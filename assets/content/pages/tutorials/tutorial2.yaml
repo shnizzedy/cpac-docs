@@ -2,5 +2,5 @@
 
 meta:
   title: Optimize Memory Estimation
-paragraphs:
-  - paragraph: tutorial
+  displayTitle: false
+iframe: https://nbviewer.org/github/FCP-INDI/C-PAC_tutorials/blob/main/observed_usage/index.ipynb
