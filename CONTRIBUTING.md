@@ -4,25 +4,25 @@
   - [Writing a Content-Related PR](#content-pr)
 - [Contributors](#contributors)
 
-For contribution guidelines that may have archived or are currently being moved over to this repo, please refer to [archive/CONTRIBUTING.md](https://github.com/FCP-INDI/cpac-docs/tree/main/archive/CONTRIBUTING.md)
+For contribution guidelines that may have archived or are currently being moved over to this repo, please refer to [archive/CONTRIBUTING.md](./archive/CONTRIBUTING.md)
 
 <!-- /TOC -->
 
 <a id="content" name="content"></a>
 ## Content
 
-In upholding our SSOT goal for this iteration of C-PAC Documentation, the majority of content has been stored in topic-specific `.yamls` in `assets/content`.  To propose a content-related change to these docs, please submit a pull request targeting a specific `.yaml` file in one of the following folders:
+In upholding our SSOT goal for this iteration of C-PAC Documentation, the majority of content has been stored in topic-specific `.yamls` in `src/assets/content`.  To propose a content-related change to these docs, please submit a pull request targeting a specific `.yaml` file in one of the following folders:
 
-- [Index](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/index)
-- [About](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/about)
-- [Neuroimaging](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/neuroimaging)
-- [Pipelines](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/pipelines)
-    - [Nodeblocks](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/pipelines/nodeblock_descriptors)
-- [How to Use](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/use)
-- [Tutorials](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/tutorials)
-- [Projects](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/projects)
-- [User Support](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/support)
-- [Appendix](https://github.com/FCP-INDI/cpac-docs/tree/main/assets/content/pages/appendix)
+- [Index](./src/assets/content/pages/index)
+- [About](./src/assets/content/pages/about)
+- [Neuroimaging](./src/assets/content/pages/neuroimaging)
+- [Pipelines](./src/assets/content/pages/pipelines)
+    - [Nodeblocks](./src/assets/content/pages/pipelines/nodeblock_descriptors)
+- [How to Use](./src/assets/content/pages/use)
+- [Tutorials](./src/assets/content/pages/tutorials)
+- [Projects](./src/assets/content/pages/projects)
+- [User Support](./src/assets/content/pages/support)
+- [Appendix](./src/assets/content/pages/appendix)
 
 <a id="content-pr" name="content-pr"></a>
 ### Writing a Content-Related PR

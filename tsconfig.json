@@ -1,8 +1,17 @@
 {
   "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
-    "noEmit": true,
-    "isolatedModules": true,
-    "allowImportingTsExtensions": true
-  }
+    "outDir": "dist",
+    "rootDir": "src",
+    "strict": true,
+    "module": "ES6",
+    "target": "ES6"
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "dist"
+  ]
 }

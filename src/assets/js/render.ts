@@ -29,35 +29,30 @@ async function loadData(filename: URL): Promise<YamlData> {
   const yamlText: string = await response.text();
   // @ts-expect-error: jsyaml imported from CDN
   const data = jsyaml.load(yamlText);
-  if (!("meta" in data)) {
-    data.meta = {};
-  }
+  data.meta ??= {};
   // set defaults
   ["subtitle", "displayTitle"].forEach(attribute => {
-    if (!(attribute in data.meta)) {
-      data.meta[attribute] = true;
-    }
+    data.meta[attribute] ??= true;
   });
   return data;
 }
 
 function constructUrl(dataId: string, ext: string = "yaml", supersection: string | null = null, subsection: string | null = null, inSection: boolean = true, assets: boolean = true): URL {
   let section: string = "assets"
-  if (!supersection) {
-    supersection = "content/pages";
-  }
+  supersection ??= "content/pages";
   section = assets ? [section, supersection].join("/") : supersection;
   if (inSection) {
-    if (!subsection) {
-      subsection = getSection(window.location.href);
-    }
+    subsection ??= getSection(window.location.href);
     section = [section, subsection].join("/");
   }
   const baseUrl = window.location.origin;
   const pathname = window.location.pathname.split("/");
   let project_slug = "";
-  while (pathname && !project_slug) {
-      project_slug = pathname.shift();
+  while (pathname.length && !project_slug) {
+    const next = pathname.shift();
+    if (next !== undefined) {
+      project_slug = next;
+    }
   }
   if (project_slug === "pages") {
       project_slug = "../..";
@@ -146,13 +141,21 @@ function readYAMLparagraphs(paragraphs: ParagraphsList, container: HTMLElement, 
   });
 }
 
-function getOrCreateContainer(id: string, type: string, parent: HTMLElement | null = null, sibling: HTMLElement | null = null, attributes: object = {}): HTMLElement {
+function checkForDom(parent: HTMLElement | null, sibling: HTMLElement | null): HTMLElement {
+  // sibling takes precedence
+  if (sibling instanceof HTMLElement) {
+    return sibling;
+  }
+  if (parent instanceof HTMLElement) {
+    return parent;
+  }
+  throw new Error("No tree information given.");
+}
+
+function getOrCreateContainer(id: string, type: string, parent: HTMLElement | null = null, sibling: HTMLElement | null = null, attributes: Record<string, string> = {}): HTMLElement {
   // If parent and sibling both given, sibling takes precedence.
   let container = document.getElementById(id);
   let return_container = container;
-  if (!container && !parent && !sibling) {
-    throw new Error("could not find container and no tree information given.");
-  }
   if (!container) {
     container = document.createElement(type);
     container.setAttribute("id", id);
@@ -172,11 +175,11 @@ function getOrCreateContainer(id: string, type: string, parent: HTMLElement | nu
     }
     if (sibling) {
       sibling.after(container);
-    } else {
+    } else if(parent) {
       parent.appendChild(container);
     }
   }
-  return return_container;
+  return return_container ? return_container : checkForDom(parent, sibling);
 }
 
 async function createGridCard(gridContainer: HTMLElement, cardData: GridData, index: number): Promise<HTMLElement> {
@@ -187,20 +190,10 @@ async function createGridCard(gridContainer: HTMLElement, cardData: GridData, in
   gridCard.appendChild(anchor);
   const img = document.createElement("img");
   const pageData = await loadData(constructUrl(cardData.page));
-  let title = cardData.page;
-  if ("meta" in pageData && "title" in pageData.meta) {
-    title = pageData.meta.title;
-  } else {
-    title = formatPageTitle(title);
-  }
+  const title = pageData?.meta?.title ?? formatPageTitle(cardData.page);
   anchor.setAttribute("data-label", title);
   img.setAttribute("alt", title);
-  if ("image" in cardData) {
-    img.setAttribute("src", `${cardData.image}`);
-  } else {
-    const imgUrl = constructUrl(`b${(index % 9) + 1}`, "png", "img", "tiles");
-    img.setAttribute("src", `${imgUrl}`);
-  }
+  img.setAttribute("src", cardData?.image ? `${cardData.image}` : `${constructUrl(`b${(index % 9) + 1}`, "png", "img", "tiles")}`);
   anchor.appendChild(img);
   return gridCard;
 }
@@ -213,7 +206,7 @@ async function populateGrid(yamlData: YamlData, parent: HTMLElement | null = nul
       gridContainer.appendChild(card);
     }
   }
-  return parent;
+  return checkForDom(parent, sibling);
 }
 
 function populateIframe(yamlData: YamlData, parent: HTMLElement | null = null, sibling: HTMLElement | null = null): HTMLElement {
@@ -225,7 +218,7 @@ function populateIframe(yamlData: YamlData, parent: HTMLElement | null = null, s
     iframeContainer.appendChild(iframe);
     return iframeContainer;
   }
-  return parent;
+  return checkForDom(parent, sibling);
 }
 
 function populateParagraphs(yamlData: YamlData, parent: HTMLElement | null = null, sibling: HTMLElement | null = null): HTMLElement {
@@ -235,40 +228,25 @@ function populateParagraphs(yamlData: YamlData, parent: HTMLElement | null = nul
     readYAMLparagraphs(yamlData.paragraphs, paragraphsContainer, true);
     return paragraphsContainer;
   }
-  return parent;
+  return checkForDom(parent, sibling);
 }
 
 function populateTitle(yamlData: YamlData, section: string | null, parent: HTMLElement | null = null, sibling: HTMLElement | null = null): HTMLElement {
   if ("meta" in yamlData && yamlData.meta) {
-    if (!yamlData.meta.displayTitle) {
-      return parent || sibling;
-    }
-    let title = "";
-    if ("title" in yamlData.meta && yamlData.meta.title) {
-      title = yamlData.meta.title;
-    } else {
-      title = formatPageTitle(window.location.pathname.split("/").pop().split(".").shift());
-    }
+    if (!yamlData?.meta?.displayTitle) return checkForDom(parent, sibling);
+    const title = yamlData.meta.title ?? (() => {
+      const basename = window.location.pathname.split("/").pop()?.split(".")[0];
+      return basename ? formatPageTitle(basename) : "";
+    })();
     const titleContainer = getOrCreateContainer("title", "div", parent, sibling, {"class": "title"});
-    if (yamlData.meta.subtitle) {
-      let subtitle: string = "";
-      if (section) {
-        if (section.charAt(section.length -1) == "s") {
-          subtitle = section.slice(0, -1);
-        } else {
-          subtitle = section;
-        }
-        if (subtitle.length) {
-          subtitle = titleCase(subtitle);
-        }
-        subtitle += ": ";
-      }
-      subtitle += title;
-      titleContainer.innerHTML = subtitle;
+    if (yamlData?.meta?.subtitle) {
+      const subtitle = section ? `${section.charAt(section.length - 1) === "s" ? titleCase(section.slice(0, -1)) : titleCase(section)}: `
+    : "";
+      titleContainer.innerHTML = subtitle + title;
     } else { titleContainer.innerHTML = title; }
     return titleContainer;
   }
-  return parent || sibling;
+  return checkForDom(parent, sibling);
 }
 
 
@@ -328,12 +306,9 @@ async function populateFooter(yamlData: YamlData, container: HTMLElement): Promi
     container.after(footer);
   }
   footer.setAttribute("class", "footer");
-  if ("meta" in yamlData && "copyright" in yamlData.meta) {
-    footer.innerHTML = yamlData.meta.copyright;
-  } else {
-    const defaultData = await loadData(constructUrl("about", "yaml", null, "about"));
-    footer.innerHTML = defaultData.meta.copyright;
-  }
+  footer.innerHTML = yamlData?.meta?.copyright
+  ?? (await loadData(constructUrl("about", "yaml", null, "about"))).meta?.copyright
+  ?? "";
 }
 
 const customElementRegistry = window.customElements;
