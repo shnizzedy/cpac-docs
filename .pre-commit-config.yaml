@@ -96,3 +96,11 @@ repos:
           - "@typescript-eslint/parser"
           - yarn
         require_serial: true
+      - id: update-node-requirements
+        name: Update Node requirements in CONTRIBUTING.md
+        entry: dev/update-node-requirements.js
+        language: node
+        files: ^package\.json$|^CONTRIBUTING\.md$
+        additional_dependencies:
+          - fs
+          - path
