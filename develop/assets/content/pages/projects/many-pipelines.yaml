@@ -1,0 +1,56 @@
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: Vision
+    subparagraphs:
+      - paragraph: Many-Pipelines is an initiative to systematically evaluate and leverage variability across neuroimaging processing pipelines to produce more robust and generalizable results in functional neuroimaging research.
+  - paragraph: Mission
+    subparagraphs:
+      - paragraph: To address the reproducibility crisis in functional neuroimaging by developing frameworks that capture, summarize, and minimize bias due to variations in processing strategies and their implementations.
+
+  - paragraph: Core Objectives
+    subparagraphs:
+      - paragraph: Pipeline Space Exploration
+        details:
+          - Generate and evaluate 192 unique pipeline configurations
+          - Systematically analyze the impact of different processing choices
+          - Identify key sources of variation across pipelines
+
+      - paragraph: Consensus Building
+        details:
+          - Develop methods to aggregate results across multiple pipeline configurations
+          - Generate more robust and reliable neuroimaging results
+          - Determine optimal number of pipelines needed for stable results
+
+      - paragraph: Biomarker Development
+        details:
+          - Create robust brain-based biomarkers using ensemble methods
+          - Improve generalizability through pipeline variation
+          - Develop predictive models for cognitive and psychiatric assessments
+
+  - paragraph: Key Innovations
+    details:
+      - Systematic perturbation of analytic pipelines at scale
+      - Machine learning approaches leveraging pipeline variation
+      - Strategy for meaningful pipeline sampling
+      - Extension of configurable pipeline environment
+
+  - paragraph: Expected Impact
+    details:
+      - Paradigm shift in functional neuroimaging analysis
+      - Improved reproducibility and reliability of results
+      - More robust brain-phenotype relationships
+      - Foundation for clinical applications
+
+  - paragraph: Technical Framework
+    details:
+      - Based on C-PAC (Configurable Pipeline for Analysis of Connectomes)
+      - Integration with ABCD Study dataset (N=4,727)
+      - Deployment on high-performance computing infrastructure
+      - Development of open-source tools and frameworks
+
+  - paragraph: Timeline
+    details:
+      - Year 1- Pipeline implementation and initial robustness analysis
+      - Year 2- Consensus development and baseline biomarker construction
+      - Year 3- Advanced biomarker development and generalizability testing

@@ -1,0 +1,45 @@
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: The RBC-options pipeline is a preconfigured workflow within the Configurable Pipeline for the Analysis of Connectomes (C-PAC), specifically designed to support the objectives of the Reproducible Brain Charts (RBC) initiative. This initiative aims to aggregate and harmonize phenotypic and neuroimaging data to delineate neural mechanisms underlying the developmental basis of psychopathology in youth and to produce reproducible growth charts of brain development.  The RBC-options pipeline integrates multiple neuroimaging tools and methodologies to ensure standardized and reproducible processing of structural and functional MRI data. Key components include-
+    subparagraphs:
+      - paragraph: Structural MRI Processing
+        details:
+        - Utilizes FreeSurfer for cortical reconstruction and volumetric segmentation, providing detailed anatomical information.
+      - paragraph: Functional MRI Preprocessing
+        details:
+        - Employs C-PAC's reimplementation of NiWorkflows for reference image estimation, followed by boundary-based registration to MNI152NLin6ASym template space using FSL-FLIRT. Motion correction is performed with FSL-MCFLIRT, and distortion correction is applied using FSL-FUGUE or FSL-TOPUP when field maps are available.
+      - paragraph: Denoising Strategies
+        details:
+        - Implements high-performance denoising pipelines both with and without global signal regression (GSR), allowing researchers to assess the impact of GSR on derived features.
+      - paragraph: Parcellation and Connectivity Analysis
+        details:
+        - Supports multiple parcellation schemes and connectivity measures, facilitating comprehensive analysis of brain networks.
+      - paragraph: Quality Assurance
+        details:
+        - Incorporates rigorous quality assurance protocols, including the calculation of motion statistics and the generation of mean functional images using AFNI 3dTstat.
+
+mermaid:
+  title: null
+  operations: |
+    graph TD
+      A[Start] --> B[Structural MRI Processing];
+      B --> C[FreeSurfer for Cortical Reconstruction];
+      C --> D[Volumetric Segmentation];
+      D --> E[Functional MRI Preprocessing];
+      E --> F[NiWorkflows for Reference Image Estimation];
+      F --> G[Boundary-Based Registration FLIRT];
+      G --> H[Motion Correction - FSL-MCFLIRT];
+      H --> I[Distortion Correction - FSL-FUGUE or FSL-TOPUP];
+      I --> J[Denoising Strategies];
+      J --> K[Global Signal Regression Options];
+      K --> L[Parcellation and Connectivity Analysis];
+      L --> M[Multiple Parcellation Schemes];
+      M --> N[Connectivity Measures];
+      N --> O[Quality Assurance];
+      O --> P[Motion Statistics Calculation];
+      P --> Q[Mean Functional Image Generation - AFNI 3dTstat];
+      Q --> R[Reproducibility and Flexibility];
+      R --> S[Open-Source Tools and Execution Records];
+      S --> T[Customizable Processing Steps];
+      T --> U[End];
