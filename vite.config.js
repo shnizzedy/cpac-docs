@@ -7,6 +7,9 @@ export default defineConfig({
     emptyOutDir: true
   },
   server: {
+    headers: {
+      'Cache-Control': 'no-store'
+    },
     port: 5173
   }
 });

@@ -45,17 +45,24 @@ repos:
         language: node
         types: [ts]
         additional_dependencies:
-          - eslint
+          - "@eslint/eslintrc"
           - "@eslint/js"
+          - "@tsconfig/recommended"
+          - "@typescript-eslint/eslint-plugin"
+          - "@typescript-eslint/parser"
+          - "@yarnpkg/pnpify"
+          - chokidar-cli
+          - concurrently
+          - cpx
+          - eslint
+          - eslint-import-resolver-node
           - eslint-plugin-typescript
           - globals
           - jiti
-          - "@tsconfig/recommended"
+          - marked
           - typescript
           - typescript-eslint
-          - "@typescript-eslint/eslint-plugin"
-          - "@typescript-eslint/parser"
-          - yarn
+          - vite
         require_serial: true
 
       - id: lint

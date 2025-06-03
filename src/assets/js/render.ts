@@ -2,7 +2,9 @@
 // Edit the TypeScript file, not the compiled JavaScript file.
 
 import { createHeaderNavDiv } from './header.js';
-import { AsyncElementCallback, ElementCallback, GridData, ParagraphsList, YamlData } from './types/types.js';
+import { AsyncElementCallback, ElementCallback, GridData, ParagraphsList, trueIfMissing, YamlData } from './types/types.js';
+import { urlExistsWithoutRedirect } from './utils.js';
+import { loadYaml } from './yaml.js';
 
 
 function titleCase(title: string): string {
@@ -24,16 +26,36 @@ class UnderConstruction extends HTMLElement {
   }
 }
 
+function normalizeGridArray(input: GridData[] | (string | URL)[] | string): GridData[] {
+  if (Array.isArray(input)) {
+    if (typeof input[0] === 'string') {
+      return input.map(p => ({ page: p as string }));
+    }
+    if (typeof input[0] === 'object' && input[0] !== null && 'page' in input[0]) {
+      return input as GridData[];
+    }
+  }
+  if (typeof input === 'string') {
+    return [{ page: input }];
+  }
+  return [];
+}
+
+
 async function loadData(filename: URL): Promise<YamlData> {
-  const response: Response = await fetch(filename);
-  const yamlText: string = await response.text();
-  // @ts-expect-error: jsyaml imported from CDN
-  const data = jsyaml.load(yamlText);
+  const data = await loadYaml(filename.href) as YamlData;
   data.meta ??= {};
   // set defaults
-  ["subtitle", "displayTitle"].forEach(attribute => {
-    data.meta[attribute] ??= true;
+  trueIfMissing.forEach(attribute => {
+    if (data?.meta) {
+      if (data.meta[attribute] === undefined) {
+        data.meta[attribute] = true;
+      }
+    }
   });
+  if (data?.grid) {
+    data.grid = normalizeGridArray(data.grid);
+  }
   return data;
 }
 
@@ -44,9 +66,17 @@ function constructUrl(dataId: string, ext: string = "yaml", supersection: string
   if (inSection) {
     subsection ??= getSection(window.location.href);
     section = [section, subsection].join("/");
+    if (section === "assets/content/pages/") {
+      section = "";
+      inSection = false;
+    }
   }
+  
   const baseUrl = window.location.origin;
   const pathname = window.location.pathname.split("/");
+  if (section === "" || section === null && dataId == "versions") {
+    return new URL(ext ? `${baseUrl}/${dataId}.${ext}` : `${baseUrl}/${dataId}`, baseUrl);
+  }
   let project_slug = "";
   while (pathname.length && !project_slug) {
     const next = pathname.shift();
@@ -56,11 +86,13 @@ function constructUrl(dataId: string, ext: string = "yaml", supersection: string
   }
   if (project_slug === "pages") {
       project_slug = "../..";
+  } else if (project_slug === "versions") {
+    project_slug = "";
   } else {
     project_slug = `/${project_slug}`;
   }
-
-  return new URL(`${project_slug}/${section}/${dataId}.${ext}`, baseUrl);
+  
+  return new URL(ext === ""? `${project_slug}/${section}/${dataId}` : `${project_slug}/${section}/${dataId}.${ext}`, baseUrl);
 }
 
 async function getData(container: HTMLElement, filename: URL | string | null = null): Promise<[YamlData, string | null]> {
@@ -75,6 +107,7 @@ async function getData(container: HTMLElement, filename: URL | string | null = n
     filename = new URL(filename);
   }
   if (filename instanceof URL) {
+    
     try {
       yamlData = await loadData(filename);
     } catch (error: unknown) {
@@ -165,13 +198,11 @@ function getOrCreateContainer(id: string, type: string, parent: HTMLElement | nu
     return_container = container;
     if (container.getAttribute("class") == "grid") {
       // Wrap grid in centered container div
-      const grid_container = document.createElement("div");
-      grid_container.setAttribute("class", "container");
-      const center = document.createElement("center")
-      grid_container.appendChild(center);
-      center.appendChild(container);
+      const gridContainer = document.createElement("div");
+      gridContainer.setAttribute("class", "container");
+      gridContainer.appendChild(container);
       return_container = container;
-      container = grid_container;
+      container = gridContainer;
     }
     if (sibling) {
       sibling.after(container);
@@ -182,27 +213,48 @@ function getOrCreateContainer(id: string, type: string, parent: HTMLElement | nu
   return return_container ? return_container : checkForDom(parent, sibling);
 }
 
-async function createGridCard(gridContainer: HTMLElement, cardData: GridData, index: number): Promise<HTMLElement> {
-  const gridCard = document.createElement("div");
-  gridCard.setAttribute("class", "grid-item");
-  const anchor = document.createElement("a");
-  anchor.setAttribute("href", `${constructUrl(cardData.page, "html", "pages", null, true, false)}`);
-  gridCard.appendChild(anchor);
-  const img = document.createElement("img");
-  const pageData = await loadData(constructUrl(cardData.page));
-  const title = pageData?.meta?.title ?? formatPageTitle(cardData.page);
-  anchor.setAttribute("data-label", title);
-  img.setAttribute("alt", title);
-  img.setAttribute("src", cardData?.image ? `${cardData.image}` : `${constructUrl(`b${(index % 9) + 1}`, "png", "img", "tiles")}`);
-  anchor.appendChild(img);
-  return gridCard;
+async function createGridCard(cardData: GridData, index: number, inSection: boolean = true, ext: string = "html"): Promise<HTMLElement> {
+const gridCard = document.createElement("div");
+
+gridCard.setAttribute("class", "grid-item");
+
+const anchor = document.createElement("a");
+const subsection = inSection ? "pages": "";
+anchor.setAttribute("href", `${constructUrl(cardData.page, ext, subsection, null, inSection, false)}`);
+gridCard.appendChild(anchor);
+const img = document.createElement("img");
+let title = cardData.page;
+const dataUrl = constructUrl(cardData.page)
+
+if (await urlExistsWithoutRedirect(dataUrl)) {
+  const pageData = await loadData(dataUrl);
+  title = pageData?.meta?.title ?? formatPageTitle(cardData.page);
+}
+
+anchor.setAttribute("data-label", title);
+img.setAttribute("alt", title);
+img.setAttribute("src", cardData?.image ? `${cardData.image}` : `${constructUrl(`b${(index % 9) + 1}`, "png", "img/tiles", null, false,)}`);
+anchor.appendChild(img);
+
+return gridCard;
+
 }
 
 async function populateGrid(yamlData: YamlData, parent: HTMLElement | null = null, sibling: HTMLElement | null = null): Promise<HTMLElement> {
   if ("grid" in yamlData && yamlData.grid) {
+    
+    let inSection = true;
+    let ext = "html";
+    if (yamlData?.meta?.title === "C-PAC Documentation Versions") {
+      inSection = false;
+      ext = "";
+    }
     const gridContainer: HTMLElement = getOrCreateContainer("index-grid", "div", parent, sibling, {"class": "grid"});
+    
     for (const [index, cardData] of yamlData.grid.entries()) {
-      const card = await createGridCard(gridContainer, cardData, index);
+      
+      const card = await createGridCard(cardData as GridData, index, inSection, ext);
+      
       gridContainer.appendChild(card);
     }
   }
@@ -283,6 +335,7 @@ function populate(container: HTMLElement, data: YamlData, latestElement: HTMLEle
 async function populatePage(): Promise<void> {
   const container = document.getElementsByTagName("main")[0];  // first (hopefully only <main> element)
   const [yamlData, section] = await getData(container);
+  
   let latestElement: HTMLElement = container;
   populateHeader(section);
   latestElement = populateTitle(yamlData, section, latestElement);
@@ -293,10 +346,7 @@ async function populatePage(): Promise<void> {
 }
 
 function populateHeader(section: string | null) {
-  const header = document.getElementById("header");
-  if (header) {
-    header.insertBefore(createHeaderNavDiv(section), header.firstChild);
-  }
+  createHeaderNavDiv(section);
 }
 
 async function populateFooter(yamlData: YamlData, container: HTMLElement): Promise<void> {
