@@ -90,10 +90,14 @@ function constructUrl(dataId, ext = "yaml", supersection = null, subsection = nu
         project_slug = "../..";
     }
     else if (project_slug === "versions") {
-        project_slug = "/develop";
+        project_slug = "";
     }
     else {
         project_slug = `/${project_slug}`;
+    }
+    if (dataId.startsWith("cpac-docs/") && ext != "yaml") {
+        // Get development versions of assets other than version list and index page.
+        project_slug += "/develop";
     }
     return new URL(ext === "" ? `${project_slug}/${section}/${dataId}` : `${project_slug}/${section}/${dataId}.${ext}`, baseUrl);
 }
