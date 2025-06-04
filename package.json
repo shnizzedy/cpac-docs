@@ -29,9 +29,9 @@
   },
   "packageManager": "yarn@4.9.1",
   "scripts": {
-    "build": "tsc --outDir \"${OUTDIR:-./dist}\" --target es6",
+    "build": "tsc --outDir \"${OUTDIR:-./dist/develop}\" --target es6",
     "check-ts": "tsc --target ES2020 --noEmit",
-    "copy": "sh -c 'cpx \"src/**/*.!(ts)\" \"${OUTDIR:-./dist}\"' && sh -c 'cpx \"versions.yaml\" \"./dist\"' && sh -c 'cpx \"index.html\" \"./dist\"'",
+    "copy": "sh -c 'cpx \"src/**/*.!(ts)\" \"${OUTDIR:-./dist/develop}\"' && sh -c 'cpx \"versions.yaml\" \"./dist\"' && sh -c 'cpx \"index.html\" \"./dist\"'",
     "copy-and-build": "yarn copy && yarn build",
     "dev": "vite",
     "watch": "chokidar 'src/**/*' -c 'yarn copy-and-build'",
