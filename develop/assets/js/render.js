@@ -90,7 +90,7 @@ function constructUrl(dataId, ext = "yaml", supersection = null, subsection = nu
         project_slug = "../..";
     }
     else if (project_slug === "versions") {
-        project_slug = "";
+        project_slug = "/develop";
     }
     else {
         project_slug = `/${project_slug}`;
