@@ -95,11 +95,6 @@ function constructUrl(dataId, ext = "yaml", supersection = null, subsection = nu
     else {
         project_slug = `/${project_slug}`;
     }
-    if (dataId.startsWith("cpac-docs/") && ext != "yaml") {
-        // Get development versions of assets other than version list and index page.
-        project_slug += "/develop";
-    }
-    console.log(`constructUrl: ${project_slug}/${section}/${dataId}.${ext}`);
     return new URL(ext === "" ? `${project_slug}/${section}/${dataId}` : `${project_slug}/${section}/${dataId}.${ext}`, baseUrl);
 }
 function getData(container_1) {

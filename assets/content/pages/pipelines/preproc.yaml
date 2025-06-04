@@ -1,0 +1,26 @@
+# this is a C-PAC Docs content file 
+
+paragraphs:
+  - paragraph: C-PAC offers a preproc preconfigured pipeline tailored for preprocessing only, enabling users to prepare neuroimaging data without proceeding to downstream derivative computations. This configuration is ideal for researchers who wish to decouple preprocessing from later analysis stages, allowing for more controlled or customized workflows downstream.  This preconfiguration replicates the core preprocessing decisions of C-PAC’s default pipeline but halts after the preprocessing stage. It includes both anatomical and functional preprocessing components, leveraging a suite of state-of-the-art tools to ensure high-quality data normalization and artifact reduction.
+    subparagraphs:
+    - paragraph: Anatomical Preprocessing
+      details:
+      - Brain Extraction (U-Net-based) - Utilizes a deep learning U-Net model for precise skull stripping, improving robustness across diverse anatomical variations.
+      - Tissue Segmentation (ANTs-prior based) - Applies ANTs-based priors to segment brain tissues (GM, WM, CSF), essential for later nuisance regression and quality control.
+      - Registration to Template (ANTs/ITK) - Employs Advanced Normalization Tools (ANTs) with ITK for high-dimensional nonlinear warping to standard space (e.g., MNI), ensuring anatomical alignment across subjects.
+
+    - paragraph: Functional Preprocessing 
+      details:
+      - Despiking - Reduces the impact of transient signal artifacts by attenuating extreme outlier spikes in the BOLD time series.
+      - Slice-Timing Correction - Adjusts for inter-slice acquisition timing differences using interpolation based on slice order metadata.
+      - Motion Estimation and Correction - Estimates rigid-body motion parameters and corrects volumes accordingly, minimizing motion-induced artifacts.
+      - EPI N4 Bias Correction - Applies the N4ITK bias field correction algorithm to the EPI images to reduce intensity inhomogeneity.
+      - Brain Extraction (Anatomical-Refined) - Refines functional brain masks using anatomical references, enhancing the precision of later functional-to-anatomical co-registration.
+      - Co-Registration to Structural - Aligns functional images to each subject’s anatomical space for improved spatial consistency between modalities.
+      - Nuisance Correction & Filtering - Performs regression of nuisance signals (e.g., motion parameters, WM/CSF signals), temporal filtering, and optional censoring strategies to denoise the time series.
+      - Registration to Template (ANTs/ITK) - Transforms preprocessed functional data to standard space using ANTs-derived warps from the anatomical registration.
+      - Spatial Smoothing - Applies Gaussian smoothing to the functional data to improve SNR and account for inter-subject variability.
+      
+mermaid:
+  title: null
+  operations: null
