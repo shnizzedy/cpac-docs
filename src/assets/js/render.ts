@@ -65,7 +65,7 @@ function constructUrl(dataId: string, ext: string = "yaml", supersection: string
   section = assets ? [section, supersection].join("/") : supersection;
   if (inSection) {
       if (!subsection) {
-          subsection = getSection(window.location.href);
+          subsection ??= getSection(window.location.href);
       }
       section = [section, subsection].join("/");
       if (section === "assets/content/pages/") {
@@ -94,7 +94,7 @@ function constructUrl(dataId: string, ext: string = "yaml", supersection: string
       }
   }
   console.log(project_slug, pathname);
-  if (version === "versions") {
+  if (version === "versions" || version === "index.html") {
       version = "";
   }
   if (project_slug === "pages") {
@@ -267,7 +267,6 @@ async function populateGrid(yamlData: YamlData, parent: HTMLElement | null = nul
     const gridContainer: HTMLElement = getOrCreateContainer("index-grid", "div", parent, sibling, {"class": "grid"});
     
     for (const [index, cardData] of yamlData.grid.entries()) {
-      
       const card = await createGridCard(cardData as GridData, index, subsection, ext);
       
       gridContainer.appendChild(card);
