@@ -67,7 +67,9 @@ function constructUrl(dataId, ext = "yaml", supersection = null, subsection = nu
     supersection !== null && supersection !== void 0 ? supersection : (supersection = "content/pages");
     section = assets ? [section, supersection].join("/") : supersection;
     if (inSection) {
-        subsection !== null && subsection !== void 0 ? subsection : (subsection = getSection(window.location.href));
+        if (!subsection) {
+            subsection !== null && subsection !== void 0 ? subsection : (subsection = getSection(window.location.href));
+        }
         section = [section, subsection].join("/");
         if (section === "assets/content/pages/") {
             section = "";
@@ -76,31 +78,38 @@ function constructUrl(dataId, ext = "yaml", supersection = null, subsection = nu
     }
     const baseUrl = window.location.origin;
     const pathname = window.location.pathname.split("/");
-    if (section === "" || section === null && dataId == "versions") {
+    if (section === "" || section === null && dataId == "cpac-docs/versions") {
         return new URL(ext ? `${baseUrl}/${dataId}.${ext}` : `${baseUrl}/${dataId}`, baseUrl);
     }
     let project_slug = "";
+    let version = undefined;
     while (pathname.length && !project_slug) {
         const next = pathname.shift();
         if (next !== undefined) {
             project_slug = next;
         }
+        if (project_slug === "cpac-docs") {
+            while (pathname.length && !version) {
+                const nextVersion = pathname.shift();
+                version = nextVersion;
+            }
+        }
+    }
+    console.log(project_slug, pathname);
+    if (version === "versions") {
+        version = "";
     }
     if (project_slug === "pages") {
         project_slug = "../..";
     }
     else if (project_slug === "versions") {
-        project_slug = "";
+        project_slug = "cpac-docs";
     }
     else {
         project_slug = `/${project_slug}`;
     }
-    if (dataId.startsWith("cpac-docs/") && ext != "yaml") {
-        // Get development versions of assets other than version list and index page.
-        project_slug += "/develop";
-    }
-    console.log(`constructUrl: ${project_slug}/${section}/${dataId}.${ext}`);
-    return new URL(ext === "" ? `${project_slug}/${section}/${dataId}` : `${project_slug}/${section}/${dataId}.${ext}`, baseUrl);
+    const basePath = (version ? `${project_slug}/${version}/${section}/${dataId}` : `${project_slug}/${section}/${dataId}`).replace(/([^:]\/)\/+/g, "$1");
+    return new URL(ext === "" ? `${basePath}` : `${basePath}.${ext}`, baseUrl);
 }
 function getData(container_1) {
     return __awaiter(this, arguments, void 0, function* (container, filename = null) {
@@ -218,13 +227,12 @@ function getOrCreateContainer(id, type, parent = null, sibling = null, attribute
     return return_container ? return_container : checkForDom(parent, sibling);
 }
 function createGridCard(cardData_1, index_1) {
-    return __awaiter(this, arguments, void 0, function* (cardData, index, inSection = true, ext = "html") {
+    return __awaiter(this, arguments, void 0, function* (cardData, index, subsection = "pages", ext = "html") {
         var _a, _b;
         const gridCard = document.createElement("div");
         gridCard.setAttribute("class", "grid-item");
         const anchor = document.createElement("a");
-        const subsection = inSection ? "pages" : "";
-        anchor.setAttribute("href", `${constructUrl(cardData.page, ext, subsection, null, inSection, false)}`);
+        anchor.setAttribute("href", `${constructUrl(cardData.page, ext, subsection, null, true, false)}`);
         gridCard.appendChild(anchor);
         const img = document.createElement("img");
         let title = cardData.page;
@@ -244,15 +252,15 @@ function populateGrid(yamlData_1) {
     return __awaiter(this, arguments, void 0, function* (yamlData, parent = null, sibling = null) {
         var _a;
         if ("grid" in yamlData && yamlData.grid) {
-            let inSection = true;
+            let subsection = "pages";
             let ext = "html";
             if (((_a = yamlData === null || yamlData === void 0 ? void 0 : yamlData.meta) === null || _a === void 0 ? void 0 : _a.title) === "C-PAC Documentation Versions") {
-                inSection = false;
+                subsection = "";
                 ext = "";
             }
             const gridContainer = getOrCreateContainer("index-grid", "div", parent, sibling, { "class": "grid" });
             for (const [index, cardData] of yamlData.grid.entries()) {
-                const card = yield createGridCard(cardData, index, inSection, ext);
+                const card = yield createGridCard(cardData, index, subsection, ext);
                 gridContainer.appendChild(card);
             }
         }
@@ -359,7 +367,7 @@ function populateFooter(yamlData, container) {
             container.after(footer);
         }
         footer.setAttribute("class", "footer");
-        footer.innerHTML = (_d = (_b = (_a = yamlData === null || yamlData === void 0 ? void 0 : yamlData.meta) === null || _a === void 0 ? void 0 : _a.copyright) !== null && _b !== void 0 ? _b : (_c = (yield loadData(constructUrl("about", "yaml", null, "about"))).meta) === null || _c === void 0 ? void 0 : _c.copyright) !== null && _d !== void 0 ? _d : "";
+        footer.innerHTML = (_d = (_b = (_a = yamlData === null || yamlData === void 0 ? void 0 : yamlData.meta) === null || _a === void 0 ? void 0 : _a.copyright) !== null && _b !== void 0 ? _b : (_c = (yield loadData(constructUrl("about", "yaml", null, "about", true))).meta) === null || _c === void 0 ? void 0 : _c.copyright) !== null && _d !== void 0 ? _d : "";
     });
 }
 const customElementRegistry = window.customElements;
