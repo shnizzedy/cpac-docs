@@ -42,15 +42,11 @@ jobs:
           fetch-depth: 0
           ref: ${{ github.ref }}
 
-      - name: Cache Yarn dependencies
-        uses: actions/cache@v4
+      - name: Use Node.js
+        uses: actions/setup-node@v3
         with:
-          path: |
-            ~/.cache/yarn
-            node_modules
-          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
-          restore-keys: |
-            ${{ runner.os }}-yarn-
+          node-version: 'lts/*'
+          cache: 'yarn'
 
       - name: Install dependencies
         run: yarn install
@@ -59,9 +55,9 @@ jobs:
         run: |
           git clone --branch gh-pages --depth 1 "https://github.com/${{ github.repository }}.git" "$GH_PAGES_DIR"
           cd "$GH_PAGES_DIR"
-          git config user.name "$(git log -1 --pretty=format:'%an' ../)"
-          git config user.email "$(git log -1 --pretty=format:'%ae' ../)"
-          cd ..
+          git config user.name "$(git log -1 --pretty=format:'%an' ${{ github.workspace }}/)"
+          git config user.email "$(git log -1 --pretty=format:'%ae' ${{ github.workspace }}/)"
+          cd ${{ github.workspace }}
 
       - name: Build and copy docs
         run: |
@@ -78,6 +74,6 @@ jobs:
         run: |
           cd "$GH_PAGES_DIR"
           git add .
-          LAST_COMMIT_MSG=$(git --git-dir=../.git log -1 --pretty=%B)
+          LAST_COMMIT_MSG=$(git --git-dir=${{ github.workspace }}/.git log -1 --pretty=%B)
           git commit -m "$LAST_COMMIT_MSG" || echo "No changes to commit"
           git push origin gh-pages
