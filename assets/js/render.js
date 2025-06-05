@@ -96,7 +96,7 @@ function constructUrl(dataId, ext = "yaml", supersection = null, subsection = nu
         }
     }
     console.log(project_slug, pathname);
-    if (version === "versions") {
+    if (version === "versions" || version === "index.html") {
         version = "";
     }
     if (project_slug === "pages") {
