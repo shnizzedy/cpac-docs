@@ -15,6 +15,8 @@ For contribution guidelines that may have archived or are currently being moved 
 
 ## Local development
 
+Some of the automation for GitHub Pages and autoversioned documentation requires this repository be called "cpac-docs".
+
 ### Requirements
 
 - [node](https://nodejs.org/en/download/releases/) `>=18.0.0`

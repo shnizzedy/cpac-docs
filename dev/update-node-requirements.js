@@ -9,6 +9,8 @@ const CONTRIBUTING_MD = path.join(process.cwd(), "CONTRIBUTING.md");
 
 const START_TAG = `## Local development
 
+Some of the automation for GitHub Pages and autoversioned documentation requires this repository be called "cpac-docs".
+
 ### Requirements
 `;
 const END_TAG = "- [pre-commit](https://pre-commit.com)";
@@ -52,7 +54,7 @@ function updateContributing(engines) {
 
 
   if (!pattern.test(content)) {
-    console.error("Required comment tags not found in CONTRIBUTING.md.");
+    console.error("Required lines not found in CONTRIBUTING.md.");
     process.exit(1);
   }
 
