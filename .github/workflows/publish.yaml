@@ -13,7 +13,7 @@ on:
         required: true
 
 env:
-  GH_PAGES_DIR: cpac-docs
+  GH_PAGES_DIR: "${HOME}/dist"
 
 jobs:
   build-and-publish-docs:
