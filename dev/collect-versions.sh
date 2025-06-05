@@ -1,5 +1,5 @@
 #!/bin/bash
-DIR=${1:-./dist}
+DIR=${1:-./cpac-docs}
 
 # Collect clean top-level directories, excluding specific names
 mapfile -t dirs < <(

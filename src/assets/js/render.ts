@@ -64,35 +64,51 @@ function constructUrl(dataId: string, ext: string = "yaml", supersection: string
   supersection ??= "content/pages";
   section = assets ? [section, supersection].join("/") : supersection;
   if (inSection) {
-    subsection ??= getSection(window.location.href);
-    section = [section, subsection].join("/");
-    if (section === "assets/content/pages/") {
-      section = "";
-      inSection = false;
-    }
+      if (!subsection) {
+          subsection = getSection(window.location.href);
+      }
+      section = [section, subsection].join("/");
+      if (section === "assets/content/pages/") {
+          section = "";
+          inSection = false;
+      }
   }
   
   const baseUrl = window.location.origin;
   const pathname = window.location.pathname.split("/");
-  if (section === "" || section === null && dataId == "versions") {
+  if (section === "" || section === null && dataId == "cpac-docs/versions") {
     return new URL(ext ? `${baseUrl}/${dataId}.${ext}` : `${baseUrl}/${dataId}`, baseUrl);
   }
   let project_slug = "";
+  let version: string | undefined = undefined;
   while (pathname.length && !project_slug) {
-    const next = pathname.shift();
-    if (next !== undefined) {
-      project_slug = next;
-    }
+      const next = pathname.shift();
+      if (next !== undefined) {
+          project_slug = next;
+      }
+      if (project_slug === "cpac-docs") {
+          while (pathname.length && !version) {
+              const nextVersion = pathname.shift();
+              version = nextVersion;
+          }
+      }
+  }
+  console.log(project_slug, pathname);
+  if (version === "versions") {
+      version = "";
   }
   if (project_slug === "pages") {
       project_slug = "../..";
-  } else if (project_slug === "versions") {
-    project_slug = "";
-  } else {
-    project_slug = `/${project_slug}`;
   }
-  
-  return new URL(ext === ""? `${project_slug}/${section}/${dataId}` : `${project_slug}/${section}/${dataId}.${ext}`, baseUrl);
+  else if (project_slug === "versions") {
+      project_slug = "cpac-docs";
+  }
+  else {
+      project_slug = `/${project_slug}`;
+  }
+
+  const basePath = (version ? `${project_slug}/${version}/${section}/${dataId}` : `${project_slug}/${section}/${dataId}`).replace(/([^:]\/)\/+/g, "$1");
+  return new URL(ext === ""? `${basePath}` : `${basePath}.${ext}`, baseUrl);
 }
 
 async function getData(container: HTMLElement, filename: URL | string | null = null): Promise<[YamlData, string | null]> {
@@ -213,14 +229,13 @@ function getOrCreateContainer(id: string, type: string, parent: HTMLElement | nu
   return return_container ? return_container : checkForDom(parent, sibling);
 }
 
-async function createGridCard(cardData: GridData, index: number, inSection: boolean = true, ext: string = "html"): Promise<HTMLElement> {
+async function createGridCard(cardData: GridData, index: number, subsection: string = "pages", ext: string = "html"): Promise<HTMLElement> {
 const gridCard = document.createElement("div");
 
 gridCard.setAttribute("class", "grid-item");
 
 const anchor = document.createElement("a");
-const subsection = inSection ? "pages": "";
-anchor.setAttribute("href", `${constructUrl(cardData.page, ext, subsection, null, inSection, false)}`);
+anchor.setAttribute("href", `${constructUrl(cardData.page, ext, subsection, null, true, false)}`);
 gridCard.appendChild(anchor);
 const img = document.createElement("img");
 let title = cardData.page;
@@ -243,17 +258,17 @@ return gridCard;
 async function populateGrid(yamlData: YamlData, parent: HTMLElement | null = null, sibling: HTMLElement | null = null): Promise<HTMLElement> {
   if ("grid" in yamlData && yamlData.grid) {
     
-    let inSection = true;
+    let subsection = "pages";
     let ext = "html";
     if (yamlData?.meta?.title === "C-PAC Documentation Versions") {
-      inSection = false;
+      subsection = "";
       ext = "";
     }
     const gridContainer: HTMLElement = getOrCreateContainer("index-grid", "div", parent, sibling, {"class": "grid"});
     
     for (const [index, cardData] of yamlData.grid.entries()) {
       
-      const card = await createGridCard(cardData as GridData, index, inSection, ext);
+      const card = await createGridCard(cardData as GridData, index, subsection, ext);
       
       gridContainer.appendChild(card);
     }
@@ -357,7 +372,7 @@ async function populateFooter(yamlData: YamlData, container: HTMLElement): Promi
   }
   footer.setAttribute("class", "footer");
   footer.innerHTML = yamlData?.meta?.copyright
-  ?? (await loadData(constructUrl("about", "yaml", null, "about"))).meta?.copyright
+  ?? (await loadData(constructUrl("about", "yaml", null, "about", true))).meta?.copyright
   ?? "";
 }
 

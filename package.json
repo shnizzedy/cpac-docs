@@ -11,7 +11,8 @@
     "@yarnpkg/pnpify": "^4.1.4",
     "chokidar-cli": "^3.0.0",
     "concurrently": "^9.1.2",
-    "cpx": "^1.5.0",
+    "cpx2": "^8.0.0",
+    "cross-env": "^7.0.3",
     "eslint": "^9.28.0",
     "eslint-import-resolver-node": "^0.3.9",
     "eslint-plugin-typescript": "^0.14.0",
@@ -30,14 +31,15 @@
   },
   "packageManager": "yarn@4.9.1",
   "scripts": {
-    "build": "tsc --outDir \"${OUTDIR:-./dist}\" --target es6",
+    "build": "node dev/build.js",
     "check-ts": "tsc --target ES2020 --noEmit",
-    "copy": "sh -c 'cpx \"src/**/*.!(ts)\" \"${OUTDIR:-./dist}\"' && sh -c 'cpx \"versions.yaml\" \"./dist\"' && sh -c 'cpx \"index.html\" \"./dist\"'",
-    "copy-and-build": "yarn copy && yarn build",
+    "copy": "node dev/copy.js",
+    "copy-global-assets": "node dev/copy-global-assets.js",
+    "copy-and-build": "yarn copy && yarn build && yarn copy-global-assets",
     "dev": "vite",
-    "watch": "chokidar 'src/**/*' -c 'yarn copy-and-build'",
-    "serve": "vite preview",
     "format": "prettier",
-    "lint": "eslint"
+    "lint": "eslint",
+    "serve": "vite preview",
+    "watch": "chokidar 'src/**/*' -c 'yarn copy-and-build'"
   }
 }

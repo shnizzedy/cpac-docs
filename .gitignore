@@ -1,4 +1,5 @@
 dist
+cpac-docs
 node_modules
 
 # Yarn

@@ -1,10 +1,9 @@
 import { defineConfig } from 'vite';
-import { viteStaticCopy } from 'vite-plugin-static-copy';
 
 export default defineConfig({
   root: 'src',
   build: {
-    outDir: '../dist',
+    outDir: '../cpac-docs',
     emptyOutDir: true
   },
   plugins: [

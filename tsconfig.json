@@ -2,7 +2,7 @@
   "extends": "@tsconfig/recommended/tsconfig.json",
   "compilerOptions": {
     "esModuleInterop": true,
-    "outDir": "dist",
+    "outDir": "cpac-docs",
     "rootDir": "src",
     "strict": true,
     "target": "ES2020",
@@ -15,7 +15,7 @@
     "resolveJsonModule": true,
     "paths": {
       "js-yaml": [
-        "./src/js/types/js-yaml"
+        "./src/assets/js/types/js-yaml"
       ]
     }
   },
@@ -24,6 +24,7 @@
   ],
   "exclude": [
     "node_modules",
-    "dist"
+    "dist",
+    "cpac-docs"
   ]
 }
