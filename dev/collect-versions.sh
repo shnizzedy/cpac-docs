@@ -12,7 +12,7 @@ mapfile -t dirs < <(
 # Sort version numbers
 sorted_versions=()
 if (( ${#dirs[@]} > 0 )); then
-  mapfile -t sorted_versions < <(printf "%s\n" "${dirs[@]}" | sort -V)
+  mapfile -t sorted_versions < <(printf "%s\n" "${dirs[@]}" | sort -rV)
 fi
 
 # Add 'latest' at the start and 'develop' at the end
