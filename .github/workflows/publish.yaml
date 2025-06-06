@@ -67,6 +67,9 @@ jobs:
           yarn cpx "./${GH_PAGES_DIR}/${LATEST}" "./${GH_PAGES_DIR}/latest"
 
       - name: Commit and push to gh-pages
+        env:
+          GIT_ASKPASS: echo
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd "$GH_PAGES_DIR"
           git add .
