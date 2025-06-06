@@ -27,14 +27,11 @@ jobs:
 
       - name: Determine DOCS_VERSION
         id: vars
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "DOCS_VERSION=${{ github.event.inputs.DOCS_VERSION }}" >> "$GITHUB_OUTPUT"
-          elif [[ "${{ github.ref_type }}" == "tag" ]]; then
-            echo "DOCS_VERSION=${GITHUB_REF#refs/tags/}" >> "$GITHUB_OUTPUT"
-          else
-            echo "DOCS_VERSION=develop" >> "$GITHUB_OUTPUT"
-          fi
+        run: echo "DOCS_VERSION=${{ github.event.inputs.DOCS_VERSION || (github.ref_type == 'tag' && github.ref_name) || 'develop' }}" >> "$GITHUB_OUTPUT"
+
+      - name: Log DOCS_VERSION
+        run: 'echo "Using DOCS_VERSION: ${{ steps.vars.outputs.DOCS_VERSION }}"'
+
 
       - name: Checkout source code
         uses: actions/checkout@v4
