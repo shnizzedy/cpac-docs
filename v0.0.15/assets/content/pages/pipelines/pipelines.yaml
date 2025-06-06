@@ -1,0 +1,10 @@
+# this is a C-PAC Docs content file (placeholder)
+
+paragraphs:
+  - title: null
+    paragraphs:
+    - Preconfigured pipelines in C-PAC are YAML configuration files that define a full analysis workflow — from data preprocessing to various outputs like connectivity matrices. These files specify all the steps and parameters required for the pipeline to run.
+    - Each preconfigured pipeline is an readable .yaml file, making it easy to read and edit.
+    - Even though these pipelines are "preconfigured," every part of them is customizable. You can tweak motion correction parameters, choose different spatial normalization methods, select different atlases for time series extraction, and so on.
+    - C-PAC ships with several commonly used pipelines (e.g. those used in major studies like the ABIDE dataset). These serve as starting points and can be modified as needed.
+    - You can also build a custom pipeline from scratch by writing your own YAML configuration. This gives you complete control over the workflow, allowing you to design a pipeline tailored to your specific research needs.

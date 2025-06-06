@@ -1,0 +1,1064 @@
+# This is a C-PAC nodeblock descriptor file. (to be pulled from C-PAC/CPAC/nodeblock)
+
+steps:
+
+  register_FSL_anat_to_template:
+    description: null
+    references: null
+    methods:
+      register_FSL_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[register_FSL_anat_to_template] --> B[FSL_registration_connector];
+            B --> C[Set interpolation];
+            B --> D[Set fnirt_config];
+            A --> E[strat_pool.get_data: desc-brain_T1w, space-longitudinal_desc-brain_T1w];
+            E --> F[wf.connect: input_brain];
+            A --> G[strat_pool.get_data: T1w-brain-template];
+            G --> H[wf.connect: reference_brain];
+            A --> I[strat_pool.get_data: T1w-template];
+            I --> J[wf.connect: reference_head];
+            A --> K[strat_pool.get_data: desc-preproc_T1w, space-longitudinal_desc-reorient_T1w];
+            K --> L[wf.connect: input_head];
+            A --> M[strat_pool.get_data: template-ref-mask];
+            M --> N[wf.connect: reference_mask];
+            A --> O[Condition: space-longitudinal in brain];
+            O --> P[Modify outputs: replace from-T1w with from-longitudinal];
+            O --> Q[Modify outputs: replace to-T1w with to-longitudinal];
+            A --> R[Return wf, outputs];
+        source: null
+        validation: null
+
+  register_symmetric_FSL_anat_to_template:
+    description: null
+    references: null
+    methods:
+      register_symmetric_FSL_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[register_symmetric_FSL_anat_to_template] --> B[FSL_registration_connector];
+            B --> C[Set interpolation];
+            B --> D[Set fnirt_config];
+            A --> E[strat_pool.get_data: desc-brain_T1w, space-longitudinal_desc-brain_T1w];
+            E --> F[wf.connect: input_brain];
+            A --> G[strat_pool.get_data: T1w-brain-template-symmetric];
+            G --> H[wf.connect: reference_brain];
+            A --> I[strat_pool.get_data: desc-preproc_T1w, space-longitudinal_desc-reorient_T1w];
+            I --> J[wf.connect: input_head];
+            A --> K[strat_pool.get_data: T1w-template-symmetric];
+            K --> L[wf.connect: reference_head];
+            A --> M[strat_pool.get_data: dilated-symmetric-brain-mask];
+            M --> N[wf.connect: reference_mask];
+            A --> O[Condition: space-longitudinal in brain];
+            O --> P[Modify outputs: replace from-T1w with from-longitudinal];
+            O --> Q[Modify outputs: replace to-T1w with to-longitudinal];
+            A --> R[Return wf, outputs];
+        source: null
+        validation: null
+
+  register_FSL_EPI_to_template:
+    description: null
+    references: null
+    methods:
+      register_FSL_EPI_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[register_FSL_EPI_to_template] --> B[FSL_registration_connector];
+            B --> C[Set interpolation];
+            B --> D[Set fnirt_config];
+            A --> E[strat_pool.get_data: sbref];
+            E --> F[wf.connect: input_brain];
+            A --> G[strat_pool.get_data: EPI-template];
+            G --> H[wf.connect: reference_brain];
+            A --> I[strat_pool.get_data: sbref];
+            I --> J[wf.connect: input_head];
+            A --> K[strat_pool.get_data: EPI-template];
+            K --> L[wf.connect: reference_head];
+            A --> M[strat_pool.get_data: EPI-template-mask];
+            M --> N[wf.connect: reference_mask];
+            A --> O[Return wf, outputs];
+        source: null
+        validation: null
+
+  register_ANTs_anat_to_template:
+    description: null
+    references: null
+    methods:
+      register_ANTs_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[register_ANTs_anat_to_template] --> B[ANTs_registration_connector];
+            B --> C[Set interpolation];
+            A --> D[strat_pool.get_data: desc-preproc_T1w, space-longitudinal_desc-brain_T1w];
+            D --> E[wf.connect: input_brain];
+            A --> F[strat_pool.node_data: T1w-brain-template];
+            F --> G[wf.connect: reference_brain];
+            A --> H[strat_pool.get_data: desc-restore_T1w, desc-head_T1w, desc-preproc_T1w, space-longitudinal_desc-reorient_T1w];
+            H --> I[wf.connect: input_head];
+            A --> J[strat_pool.node_data: T1w-template];
+            J --> K[wf.connect: reference_head];
+            A --> L[strat_pool.node_data: space-T1w_desc-brain_mask, space-longitudinal_desc-brain_mask, space-T1w_desc-acpcbrain_mask];
+            L --> M[wf.connect: input_mask];
+            A --> N[strat_pool.check_rpool: T1w-brain-template-mask];
+            N --> O[wf.connect: reference_mask];
+            A --> P[strat_pool.check_rpool: label-lesion_mask];
+            P --> Q[wf.connect: lesion_mask];
+            A --> R[Condition: space-longitudinal in brain];
+            R --> S[Modify outputs: replace from-T1w with from-longitudinal];
+            R --> T[Modify outputs: replace to-T1w with to-longitudinal];
+            A --> U[Return wf, outputs];
+        source: null
+        validation: null
+
+  register_symmetric_ANTs_anat_to_template:
+    description: null
+    references: null
+    methods:
+      register_symmetric_ANTs_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[register_symmetric_ANTs_anat_to_template] --> B[ANTs_registration_connector];
+            B --> C[Set interpolation];
+            A --> D[strat_pool.get_data: desc-preproc_T1w, space-longitudinal_desc-brain_T1w];
+            D --> E[wf.connect: input_brain];
+            A --> F[strat_pool.get_data: T1w-brain-template-symmetric];
+            F --> G[wf.connect: reference_brain];
+            A --> H[strat_pool.get_data: desc-head_T1w, desc-preproc_T1w, space-longitudinal_desc-reorient_T1w];
+            H --> I[wf.connect: input_head];
+            A --> J[strat_pool.get_data: T1w-template-symmetric];
+            J --> K[wf.connect: reference_head];
+            A --> L[strat_pool.get_data: space-T1w_desc-brain_mask, space-longitudinal_desc-brain_mask];
+            L --> M[wf.connect: input_mask];
+            A --> N[strat_pool.get_data: dilated-symmetric-brain-mask];
+            N --> O[wf.connect: reference_mask];
+            A --> P[strat_pool.check_rpool: label-lesion_mask];
+            P --> Q[wf.connect: lesion_mask];
+            A --> R[Condition: space-longitudinal in brain];
+            R --> S[Modify outputs: replace from-T1w with from-longitudinal];
+            R --> T[Modify outputs: replace to-T1w with to-longitudinal];
+            A --> U[Return wf, outputs];
+        source: null
+        validation: null
+
+  register_ANTs_EPI_to_template:
+    description: null
+    references: null
+    methods:
+      register_ANTs_EPI_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[register_ANTs_EPI_to_template] --> B[ANTs_registration_connector];
+            B --> C[Set interpolation];
+            A --> D[strat_pool.get_data: sbref];
+            D --> E[wf.connect: input_brain];
+            A --> F[strat_pool.get_data: EPI-template];
+            F --> G[wf.connect: reference_brain];
+            A --> H[strat_pool.get_data: sbref];
+            H --> I[wf.connect: input_head];
+            A --> J[strat_pool.get_data: EPI-template];
+            J --> K[wf.connect: reference_head];
+            A --> L[strat_pool.get_data: space-bold_desc-brain_mask];
+            L --> M[wf.connect: input_mask];
+            A --> N[strat_pool.check_rpool: EPI-template-mask];
+            N --> O[wf.connect: reference_mask];
+            A --> P[Return wf, outputs];
+        source: null
+        validation: null
+
+  overwrite_transform_anat_to_template:
+    description: null
+    references: null
+    methods:
+      overwrite_transform_anat_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[overwrite_transform_anat_to_template] --> B[strat_pool.get_cpac_provenance];
+            B --> C[check_prov_for_regtool];
+            A --> D[Check if opt == fsl and reg_tool == ants];
+            D --> E[antsApplyTransforms for T1 to template];
+            E --> F[strat_pool.get_data: desc-restore_T1w, desc-preproc_T1w];
+            F --> G[wf.connect: input_image];
+            E --> H[strat_pool.get_data: T1w-template];
+            H --> I[wf.connect: reference_image];
+            E --> J[strat_pool.get_data: from-T1w_to-template_mode-image_xfm];
+            J --> K[wf.connect: transforms];
+            A --> L[antsApplyTransforms for template to T1];
+            L --> M[strat_pool.get_data: desc-preproc_T1w];
+            M --> N[wf.connect: input_image];
+            L --> O[strat_pool.get_data: T1w-template];
+            O --> P[wf.connect: reference_image];
+            L --> Q[strat_pool.get_data: from-template_to-T1w_mode-image_xfm];
+            Q --> R[wf.connect: transforms];
+            A --> S[Split combined warp];
+            S --> T[split_combined_warp];
+            T --> U[wf.connect: input_name];
+            A --> V[Split combined inverse warp];
+            V --> W[split_combined_inv_warp];
+            W --> X[wf.connect: input_name];
+            A --> Y[Change e2 sign];
+            Y --> Z[change_e2_sign];
+            A --> AA[Change e2inv sign];
+            AA --> AB[change_e2inv_sign];
+            A --> AC[Merge transforms to list];
+            AC --> AD[merge_xfms_to_list];
+            AD --> AE[wf.connect: in1, in2, in3];
+            A --> AF[Merge transforms];
+            AF --> AG[merge_xfms];
+            AG --> AH[wf.connect: in_files];
+            A --> AI[Merge inverse transforms to list];
+            AI --> AJ[merge_inv_xfms_to_list];
+            AJ --> AK[wf.connect: in1, in2, in3];
+            A --> AL[Merge inverse transforms];
+            AL --> AM[merge_inv_xfms];
+            AM --> AN[wf.connect: in_files];
+            A --> AO[FSL Apply Warp for T1 to template];
+            AO --> AP[fsl_apply_warp_t1_to_template];
+            AP --> AQ[wf.connect: in_file];
+            AO --> AR[strat_pool.get_data: T1w-template];
+            AR --> AS[wf.connect: ref_file];
+            AO --> AT[wf.connect: field_file];
+            A --> AU[FSL Apply Warp for T1 brain to template];
+            AU --> AV[fsl_apply_warp_t1_brain_to_template];
+            AV --> AW[wf.connect: in_file];
+            AU --> AX[strat_pool.get_data: T1w-template];
+            AX --> AY[wf.connect: ref_file];
+            AU --> AZ[wf.connect: field_file];
+            A --> BA[FSL Apply Warp for T1 brain mask to template];
+            BA --> BB[fsl_apply_warp_t1_brain_mask_to_template];
+            BB --> BC[wf.connect: in_file];
+            BA --> BD[strat_pool.get_data: T1w-template];
+            BD --> BE[wf.connect: ref_file];
+            BA --> BF[wf.connect: field_file];
+            A --> BG[Apply Mask];
+            BG --> BH[apply_mask];
+            BH --> BI[wf.connect: in_file];
+            BH --> BJ[wf.connect: mask_file];
+            A --> BK[Return wf, outputs];
+        source: null
+        validation: null
+
+  mask_sbref:
+    description: null
+    references: null
+    methods:
+      mask_sbref():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[mask_sbref] --> B[pe.Node interface=afni.Calc];
+            B --> C[mask_sbref.inputs.expr = a*b];
+            B --> D[mask_sbref.inputs.outputtype = NIFTI_GZ];
+            A --> E[strat_pool.get_data: sbref];
+            E --> F[wf.connect: in_file_a];
+            A --> G[strat_pool.get_data: space-bold_desc-brain_mask];
+            G --> H[wf.connect: in_file_b];
+            A --> I[Return wf, outputs];
+            I --> J[sbref: mask_sbref, out_file];
+        source: null
+        validation: null
+
+  coregistration_prep_vol:
+    description: null
+    references: null
+    methods:
+      coregistration_prep_vol():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[get_func_volume] --> B[pe.Node interface=afni.Calc];
+            B --> C[get_func_volume.inputs.set];
+            C --> D[expr = a];
+            C --> E[single_idx = cfg.registration_workflows: functional_registration, coregistration, func_input_prep, Selected Functional Volume, func_reg_input_volume];
+            C --> F[outputtype = NIFTI_GZ];
+            A --> G[strat_pool.get_data: desc-preproc_bold];
+            G --> H[wf.connect: in_file_a];
+            A --> I[Return wf, outputs];
+            I --> J[sbref: coreg_input];
+        source: null
+        validation: null
+
+  coregistration_prep_mean:
+    description: null
+    references: null
+    methods:
+      coregistration_prep_mean():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[coreg_input = strat_pool.get_data: desc-mean_bold] --> B[Check if n4_correct_func is enabled];
+            B --> C{n4_correct_func enabled?};
+            C -->|Yes| D[n4_correct_func = pe.Node: interface=ants.N4BiasFieldCorrection];
+            D --> E[n4_correct_func.inputs.args = -r True];
+            E --> F[wf.connect: coreg_input to n4_correct_func.input_image];
+            F --> G[coreg_input = n4_correct_func, output_image];
+            C -->|No| H[Skip N4 correction];
+            G --> I[Return wf, outputs];
+            I --> J[sbref: coreg_input];
+        source: null
+        validation: null
+
+  coregistration_prep_fmriprep:
+    description: null
+    references: null
+    methods:
+      coregistration_prep_fmriprep():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Check if desc-unifized_bold exists in rpool] --> B{desc-unifized_bold exists?};
+            B -->|No| C[fsl_afni_wf = fsl_afni_subworkflow: cfg, pipe_num, opt];
+            C --> D[Connect inputs to fsl_afni_wf];
+            D --> E[Loop over keys];
+            E --> F[Get data for FSL-AFNI-bold-ref];
+            F --> G[Connect FSL-AFNI-bold-ref to fsl_afni_wf];
+            E --> H[Get data for FSL-AFNI-brain-mask];
+            H --> I[Connect FSL-AFNI-brain-mask to fsl_afni_wf];
+            E --> J[Get data for FSL-AFNI-brain-probseg];
+            J --> K[Connect FSL-AFNI-brain-probseg to fsl_afni_wf];
+            E --> L[Get data for motion-basefile];
+            L --> M[Connect motion-basefile to fsl_afni_wf];
+            C --> N[Set outputs: sbref = fsl_afni_wf.outputspec.desc-unifized_bold];
+            B -->|Yes| O[Get desc-unifized_bold from strat_pool];
+            N --> P[Return wf, outputs];
+            O --> P;
+            P --> Q[sbref: coreg_input];
+        source: null
+        validation: null
+
+  coregistration:
+    description: null
+    references: null
+    methods:
+      coregistration():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Check if despiked-fieldmap and fieldmap-mask exist in rpool] --> B{Both exist?};
+            B -->|Yes| C[Set diff_complete = True];
+            B -->|No| D[Check if T2w exists and run_t2 is True];
+            D -->|Yes| E[Create func_to_anat using T2w];
+            E --> F[Create func_mc_mean node];
+            F --> G[Connect desc-motion_bold to func_mc_mean];
+            G --> H[Connect func_mc_mean to func_to_anat];
+            E --> I[Connect desc-preproc_T1w to func_to_anat];
+            I --> J[Connect desc-head_T2w to func_to_anat];
+            J --> K[Connect desc-preproc_T2w to func_to_anat];
+            D -->|No| L[Create func_to_anat using fieldmap];
+            L --> M[Set DOF and interpolation from config];
+            M --> N[Connect sbref to func_to_anat];
+            N --> O[Connect desc-restore-brain_T1w and desc-preproc_T1w to func_to_anat];
+            B -->|Yes| P[Connect effectiveEchoSpacing to func_to_anat];
+            P --> Q[Connect pe-direction to func_to_anat];
+            Q --> R[Connect despiked-fieldmap to func_to_anat];
+            R --> S[Connect fieldmap-mask to func_to_anat];
+            F[Check if T2w exists and run_t2] --> T[Create outputs dictionary];
+            T --> U{Boundary Based Registration enabled?};
+            U -->|Yes| V[Create func_to_anat_bbreg node];
+            V --> W[Connect functional data to func_to_anat_bbreg];
+            W --> X[Check if reference is whole-head or brain];
+            X --> Y[Connect desc-head_T1w or desc-preproc_T1w to func_to_anat_bbreg];
+            W --> Z[Connect func_to_anat linear transformation to func_to_anat_bbreg];
+            Z --> AA[Check for WM segmentation in rpool];
+            AA -->|Yes| AB[Connect WM segmentation to func_to_anat_bbreg];
+            AA -->|No| AC[Check if WM map is probability_map or partial_volume_map];
+            AC --> AD[Connect corresponding WM map to func_to_anat_bbreg];
+            P --> AE[Connect effectiveEchoSpacing to func_to_anat_bbreg];
+            AE --> AF[Connect pe-direction to func_to_anat_bbreg];
+            AF --> AG[Connect despiked-fieldmap to func_to_anat_bbreg];
+            AG --> AH[Connect fieldmap-mask to func_to_anat_bbreg];
+            U -->|No| AI[Create outputs dictionary for func_to_anat];
+            T --> AJ[Return wf and outputs];
+            U --> AK[Return wf and outputs];
+        source: null
+        validation: null
+
+  create_func_to_T1template_xfm:
+    description: null
+    references: null
+    methods:
+      create_func_to_T1template_xfm():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Create func to T1template xfm] --> B[get_cpac_provenance from-T1w_to-template_mode-image_xfm]
+            B --> C[check_prov_for_regtool]
+            C --> D[bold_to_T1template_xfm_connector]
+            D --> E[from-bold_to-T1w_mode-image_desc-linear_xfm]
+            D --> F[desc-brain_T1w]
+            D --> G[sbref]
+            D --> H[T1w-brain-template-funcreg]
+            D --> I[from-T1w_to-template_mode-image_xfm]
+            E --> J[connect inputspec.coreg_xfm]
+            F --> J
+            G --> J
+            H --> J
+            I --> J
+            J --> K[optional: from-template_to-T1w_mode-image_xfm]
+            K --> L[connect inputspec.template_to_T1w_xfm]
+            M[Check rpool for ants-blip-warp] --> N[connect inputspec.blip_warp]
+            M --> O[Check rpool for fsl-blip-warp] --> P[connect inputspec.blip_warp]
+            L --> Q[Return outputs]
+        source: null
+        validation: null
+
+  create_func_to_T1template_symmetric_xfm:
+    description: null
+    references: null
+    methods:
+      create_func_to_T1template_symmetric_xfm():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Create func to T1template symmetric xfm] --> B[get_cpac_provenance from-T1w_to-symtemplate_mode-image_xfm]
+            B --> C[check_prov_for_regtool]
+            C --> D[bold_to_T1template_xfm_connector]
+            D --> E[from-bold_to-T1w_mode-image_desc-linear_xfm]
+            D --> F[desc-brain_T1w]
+            D --> G[sbref]
+            D --> H[T1w-brain-template-symmetric-deriv]
+            D --> I[from-T1w_to-symtemplate_mode-image_xfm]
+            E --> J[connect inputspec.coreg_xfm]
+            F --> J
+            G --> J
+            H --> J
+            I --> J
+            J --> K[optional: from-symtemplate_to-T1w_mode-image_xfm]
+            K --> L[connect inputspec.template_to_T1w_xfm]
+            L --> M[Return outputs]
+        source: null
+        validation: null
+
+  apply_phasediff_to_timeseries_separately:
+    description: null
+    references: null
+    methods:
+      apply_phasediff_to_timeseries_separately():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Apply phasediff to timeseries] --> B[get_data desc-preproc_bold]
+            B --> C[check_rpool despiked-fieldmap]
+            C --> D[invert_coreg_xfm]
+            D --> E[from-bold-to-T1w_mode-image_desc-linear_xfm]
+            D --> F[warp_fmap]
+            F --> G[despiked-fieldmap]
+            F --> H[sbref]
+            F --> I[invert_coreg_xfm.out_file]
+            F --> J[mask_fmap]
+            J --> K[warp_fmap.out_file]
+            J --> L[convert_pedir]
+            L --> M[pe-direction]
+            L --> N[fugue_saveshift]
+            N --> O[warp_fmap.out_file]
+            N --> P[mask_fmap.out_file]
+            N --> Q[effectiveEchoSpacing]
+            N --> R[convert_pedir.pedir]
+            N --> S[shift_warp]
+            S --> T[fugue_saveshift.shift_out_file]
+            S --> U[sbref]
+            S --> V[convert_pedir.pedir]
+            S --> W[warp_bold]
+            W --> X[warp_bold.in_file]
+            W --> Y[warp_bold.ref_file]
+            W --> Z[shift_warp.out_file]
+            Z --> AA[warp_sbref]
+            AA --> AB[sbref]
+            AA --> AC[sbref]
+            AA --> AD[shift_warp.out_file]
+            B --> AE[Return outputs]
+        source: null
+        validation: null
+
+  apply_blip_to_timeseries_separately:
+    description: null
+    references: null
+    methods:
+      apply_blip_to_timeseries_separately():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Apply blip to timeseries] --> B[get_data from-bold-to-template_mode-image_xfm]
+            B --> C[check_rpool ants-blip-warp]
+            C --> D[reg_tool is ants]
+            D --> E[get_data ants-blip-warp]
+            E --> F[apply_transform warp_ts_to_blip_sep]
+            F --> G[reg_tool == ants]
+            G --> H[apply_xfm.inputs.inputspec.interpolation]
+            F --> I[opt == default]
+            I --> J[get_data desc-preproc_bold]
+            F --> K[opt == single_step_resampling_from_stc]
+            K --> L[get_data desc-stc_bold]
+            F --> M[opt == abcd]
+            M --> N[get_data desc-reorient_bold]
+            F --> O[connect node to apply_xfm.inputspec.input_image]
+            F --> P[connect node to apply_xfm.inputspec.reference]
+            F --> Q[connect blip_node to apply_xfm.inputspec.transform]
+            Q --> R[outputs out_label to apply_xfm.outputspec.output_image]
+            F --> S[Return outputs]
+        source: null
+        validation: null
+
+  transform_whole_head_T1w_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_wholeheadT1_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Warp T1 head to template] --> B[get_data from-T1w-to-template_mode-image_xfm]
+            B --> C[check_prov_for_regtool]
+            C --> D[reg_tool is ants]
+            D --> E[apply_transform warp_wholehead_T1w_to_T1template]
+            E --> F[apply_xfm.inputs.inputspec.interpolation]
+            E --> G[opt == default]
+            G --> H[get_data desc-head_T1w]
+            E --> I[connect node to apply_xfm.inputspec.input_image]
+            E --> J[get_data T1w-template]
+            E --> K[connect node to apply_xfm.inputspec.reference]
+            E --> L[get_data from-T1w-to-template_mode-image_xfm]
+            E --> M[connect node to apply_xfm.inputspec.transform]
+            E --> N[Return outputs space-template_desc-head_T1w]
+        source: null
+        validation: null
+
+  transform_T1mask_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_T1mask_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Warp T1 mask to template] --> B[get_data from-T1w-to-template_mode-image_xfm]
+            B --> C[check_prov_for_regtool]
+            C --> D[reg_tool is ants]
+            D --> E[apply_transform warp_T1mask_to_T1template]
+            E --> F[apply_xfm.inputs.inputspec.interpolation]
+            E --> G[opt == default]
+            G --> H[get_data space-T1w_desc-brain_mask]
+            E --> I[connect node to apply_xfm.inputspec.input_image]
+            E --> J[get_data T1w-template]
+            E --> K[connect node to apply_xfm.inputspec.reference]
+            E --> L[get_data from-T1w-to-template_mode-image_xfm]
+            E --> M[connect node to apply_xfm.inputspec.transform]
+            E --> N[Return outputs space-template_desc-brain_mask]
+        source: null
+        validation: null
+
+  transform_timeseries_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Warp timeseries to T1 template] --> B[get_data from-bold-to-template_mode-image_xfm]
+            B --> C[check_prov_for_regtool]
+            C --> D[reg_tool is ants]
+            D --> E[apply_transform warp_ts_to_T1template]
+            E --> F[apply_xfm.inputs.inputspec.interpolation]
+            E --> G[opt == default]
+            G --> H[get_data desc-preproc_bold]
+            E --> I[connect node to apply_xfm.inputspec.input_image]
+            E --> J[get_data T1w-brain-template-funcreg]
+            E --> K[connect node to apply_xfm.inputspec.reference]
+            E --> L[get_data from-bold-to-template_mode-image_xfm]
+            E --> M[connect node to apply_xfm.inputspec.transform]
+            E --> N[Return outputs space-template_desc-preproc_bold]
+        source: null
+        validation: null
+
+  transform_timeseries_to_T1template_deriv:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_T1template_deriv():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Warp timeseries to T1 template at derivative resolution] --> B[get_data from-bold-to-template_mode-image_xfm]
+            B --> C[check_prov_for_regtool]
+            C --> D[reg_tool is ants]
+            D --> E[apply_transform warp_ts_to_T1template]
+            E --> F[apply_xfm.inputs.inputspec.interpolation]
+            E --> G[opt == default]
+            G --> H[get_data desc-preproc_bold]
+            E --> I[connect node to apply_xfm.inputspec.input_image]
+            E --> J[get_data T1w-brain-template-deriv]
+            E --> K[connect node to apply_xfm.inputspec.reference]
+            E --> L[get_data from-bold-to-template_mode-image_xfm]
+            E --> M[connect node to apply_xfm.inputspec.transform]
+            E --> N[Return outputs space-template_res-derivative_desc-preproc_bold]
+        source: null
+        validation: null
+
+  transform_timeseries_to_T1template_abcd:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_T1template_abcd():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Warp timeseries to T1 template using ABCD-style registration] --> B[convert_func_to_anat_linear_warp]
+            B --> C[set out_relwarp True]
+            B --> D[set relwarp True]
+            B --> E[connect reference with desc-preproc_T1w]
+            F[Check if fsl-blip-warp exists] --> G[connect postmat with from-bold-to-T1w_mode-image_desc-linear_xfm]
+            F --> H[connect warp1 with fsl-blip-warp]
+            F --> I[connect premat with from-bold-to-T1w_mode-image_desc-linear_xfm]
+            B --> J[convert_func_to_standard_warp]
+            J --> K[connect out_file of convert_func_to_anat_linear_warp to warp1]
+            J --> L[connect warp2 with from-T1w-to-template_mode-image_xfm]
+            M[anat_brain_to_func_res] --> N[connect inputspec.space-template_desc-preproc_T1w to anat_brain_to_func_res]
+            M --> O[connect inputspec.T1w-template-funcreg to anat_brain_to_func_res]
+            M --> P[connect space-template_res-bold_desc-brain_T1w to convert_func_to_standard_warp reference]
+            Q[extract_func_roi] --> R[set t_min to 0]
+            Q --> S[set t_size to 3]
+            Q --> T[connect in_file with desc-reorient_bold]
+            U[multiply_func_roi_by_zero] --> V[set args to -mul 0]
+            U --> W[connect roi_file to multiply_func_roi_by_zero]
+            X[split_func] --> Y[set dimension to t]
+            X --> Z[connect in_file with desc-reorient_bold]
+            AA[convert_motion_distortion_warp] --> AB[set out_relwarp True]
+            AA --> AC[set relwarp True]
+            AA --> AD[connect warp1 with multiply_func_roi_by_zero out_file]
+            AA --> AE[connect reference with split_func out_files]
+            AA --> AF[connect postmat with coordinate-transformation]
+            AG[convert_registration_warp] --> AH[set out_relwarp True]
+            AG --> AI[set relwarp True]
+            AG --> AJ[connect reference with anat_brain_to_func_res output]
+            AG --> AK[connect warp1 with convert_motion_distortion_warp out_file]
+            AG --> AL[connect warp2 with convert_func_to_standard_warp out_file]
+            AM[generate_vol_mask] --> AN[set args to -mul 0 -add 1]
+            AM --> AO[connect in_file with split_func out_files]
+            AP[applywarp_func_to_standard] --> AQ[set relwarp True]
+            AP --> AR[set interp to spline]
+            AP --> AS[connect in_file with split_func out_files]
+            AP --> AT[connect field_file with convert_registration_warp out_file]
+            AP --> AU[connect ref_file with anat_brain_to_func_res output]
+            AV[applywarp_func_mask_to_standard] --> AW[set relwarp True]
+            AV --> AX[set interp to nn]
+            AV --> AY[connect in_file with generate_vol_mask out_file]
+            AV --> AZ[connect field_file with convert_registration_warp out_file]
+            AV --> BA[connect ref_file with anat_brain_to_func_res output]
+            BB[merge_func_to_standard] --> BC[set dimension to t]
+            BB --> BD[connect out_file with applywarp_func_to_standard out_file]
+            BE[merge_func_mask_to_standard] --> BF[set dimension to t]
+            BE --> BG[connect out_file with applywarp_func_mask_to_standard out_file]
+            BH[find_min_mask] --> BI[set args to -Tmin]
+            BH --> BJ[connect merged_file with merge_func_mask_to_standard out]
+            BK[convert_dc_warp] --> BL[set out_relwarp True]
+            BK --> BM[set relwarp True]
+            BK --> BN[connect reference with anat_brain_to_func_res output]
+            BK --> BO[connect warp1 with multiply_func_roi_by_zero out_file]
+            BK --> BP[connect warp2 with convert_func_to_standard_warp out_file]
+            BQ[applywarp_scout] --> BR[set relwarp True]
+            BQ --> BS[set interp to spline]
+            BQ --> BT[connect in_file with motion-basefile]
+            BQ --> BU[connect ref_file with anat_brain_to_func_res output]
+            BQ --> BV[connect field_file with convert_dc_warp out_file]
+            BW[merge_func_mask] --> BX[connect space-template_desc-brain_mask to anat_brain_mask_to_func_res]
+            BW --> BY[connect space-template_res-bold_desc-brain_T1w to anat_brain_mask_to_func_res]
+            BW --> BZ[connect outputspec.space-template_desc-bold_mask to merge_func_mask in1]
+            BW --> CA[connect find_min_mask out_file to merge_func_mask in2]
+            CB[extract_func_brain] --> CC[set op_string to -mas %s -mas %s -thr 0 -ing 10000]
+            CB --> CD[set output_datatype to float]
+            CB --> CE[connect merged_file with merge_func_to_standard merged_file]
+            CB --> CF[connect operand_files with merge_func_mask out]
+            CG[extract_scout_brain] --> CH[set op_string to -mas %s -mas %s -thr 0 -ing 10000]
+            CG --> CI[set output_datatype to float]
+            CG --> CJ[connect out_file with applywarp_scout out_file]
+            CG --> CK[connect operand_files with merge_func_mask out]
+            CL[Outputs] --> CM[space-template_desc-preproc_bold]
+            CL --> CN[space-template_desc-scout_bold]
+            CL --> CO[space-template_desc-head_bold]
+        source: null
+        validation: null
+
+  transform_timeseries_to_T1template_dcan_nhp:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_T1template_dcan_nhp():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[anat_resample] -->|in_file| B[anat_resample_func_res_pipe_num] 
+            A[anat_resample] -->|reference| B[anat_resample_func_res_pipe_num] 
+            B[anat_resample_func_res_pipe_num] --> C[applywarp_anat_res] 
+            D[applywarp_anat_res] -->|in_file| E[applywarp_anat_res_pipe_num] 
+            E[applywarp_anat_res_pipe_num] --> F[applywarp_anat_mask_res] 
+            F[applywarp_anat_mask_res] --> G[T1_brain_res] 
+            G[T1_brain_res] -->|operand_files| H[applywarp_bias_field_res] 
+            H[applywarp_bias_field_res] --> I[applywarp_bias_field_res_pipe_num] 
+            J[applywarp_bias_field_res_pipe_num] --> K[convert_func_to_standard_warp] 
+            K[convert_func_to_standard_warp] -->|warp1| L[convert_func_to_standard_warp_pipe_num] 
+            M[extract_func_roi] --> N[multiply_func_roi_by_zero] 
+            N[multiply_func_roi_by_zero] --> O[split_func] 
+            O[split_func] --> P[convert_motion_distortion_warp] 
+            P[convert_motion_distortion_warp] --> Q[convert_registration_warp] 
+            Q[convert_registration_warp] --> R[generate_vol_mask] 
+            R[generate_vol_mask] --> S[applywarp_func_to_standard] 
+            T[applywarp_func_to_standard] --> U[applywarp_func_mask_to_standard] 
+            U[applywarp_func_mask_to_standard] --> V[merge_func_to_standard] 
+            V[merge_func_to_standard] --> W[merge_func_mask_to_standard] 
+            W[merge_func_mask_to_standard] --> X[find_min_mask] 
+            X[find_min_mask] --> Y[merge_operand_files] 
+            Y[merge_operand_files] --> Z[extract_func_brain] 
+            Z[extract_func_brain] --> AA[func_mask_final] 
+            AA[func_mask_final] -->|out_file| AB[outputs] 
+            AB[outputs] -->|space-template_desc-preproc_bold| AC[extract_func_brain] 
+            AB[outputs] -->|space-template_desc-bold_mask| AD[func_mask_final] 
+        source: null
+        validation: null
+
+  single_step_resample_stc_timeseries_to_T1template:
+    description: null
+    references: null
+    methods:
+      single_step_resample_stc_timeseries_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[convert_bbr2itk_pipe_num] --> B[reference_file]
+            A[convert_bbr2itk_pipe_num] --> C[source_file]
+            A[convert_bbr2itk_pipe_num] --> D[transform_file]
+            B -->|T1w or desc-preproc_T1w| E[reference]
+            C -->|sbref| F[source]
+            D -->|from-bold_to-T1w_mode-image_desc-linear_xfm| G[transform]
+            H[split_func_pipe_num] --> I[in_file]
+            I -->|desc-stc_bold| J[split_func_out]
+            J --> K[motionxfm2itk_pipe_num]
+            K -->|reference_file| L[motion-basefile]
+            K -->|source_file| M[motion-basefile]
+            K --> N[coordinate-transformation]
+            N -->|transform_file| O[motion_correct_tool]
+            O -->|mcflirt| P[mcflirt_transform]
+            O -->|3dvolreg| Q[convert_transform_pipe_num]
+            P --> R[convert_transform_out]
+            Q --> R[convert_transform_out]
+            S[collectxfm_func_to_standard_pipe_num] --> T[in1]
+            S[collectxfm_func_to_standard_pipe_num] --> U[in2]
+            S[collectxfm_func_to_standard_pipe_num] --> V[in3]
+            S[collectxfm_func_to_standard_pipe_num] --> W[in4]
+            T -->|from-T1w_to-template_mode-image_xfm| X[input]
+            U -->|itk_transform| Y[bbr2itk]
+            V -->|identity| Z[identity]
+            W -->|ants-blip-warp or fsl-blip-warp| AA[blip]
+            K -->|itk_transform| AB[motionxfm2itk_out]
+            AC[applyxfm_func_to_standard_pipe_num] --> AD[input_image]
+            AC[applyxfm_func_to_standard_pipe_num] --> AE[transforms]
+            AD -->|split_func_out| AF[applyxfm_func_to_standard_out]
+            AE -->|collectxfm_out| AG[applyxfm_func_to_standard_transforms]
+            AH[applyxfm_derivfunc_to_standard_pipe_num] --> AI[input_image]
+            AH[applyxfm_derivfunc_to_standard_pipe_num] --> AJ[transforms]
+            AI -->|split_func_out| AK[applyxfm_derivfunc_to_standard_out]
+            AJ -->|collectxfm_out| AL[applyxfm_derivfunc_to_standard_transforms]
+            AM[merge_func_to_standard_pipe_num] --> AN[merged_file]
+            AN -->|applyxfm_func_to_standard_out| AO[applyxfm_func_to_standard]
+            AP[merge_derivfunc_to_standard_pipe_num] --> AQ[merged_file]
+            AQ -->|applyxfm_derivfunc_to_standard_out| AR[applyxfm_derivfunc_to_standard]
+            AS[applyxfm_func_mask_to_standard_pipe_num] --> AT[input_image]
+            AS[applyxfm_func_mask_to_standard_pipe_num] --> AU[reference_image]
+            AT -->|space-bold_desc-brain_mask| AV[applyxfm_func_mask_to_standard_out]
+            AU -->|T1w-brain-template-funcreg| AW[applyxfm_func_mask_to_standard_ref]
+            AX[collectxfm_mask_pipe_num] --> AY[in1]
+            AX[collectxfm_mask_pipe_num] --> AZ[in2]
+            AY -->|from-T1w_to-template_mode-image_xfm| BA[input]
+            AZ -->|itk_transform| BB[bbr2itk]
+            BC[applyxfm_deriv_mask_to_standard_pipe_num] --> BD[input_image]
+            BC[applyxfm_deriv_mask_to_standard_pipe_num] --> BE[reference_image]
+            BD -->|space-bold_desc-brain_mask| BF[applyxfm_deriv_mask_to_standard_out]
+            BE -->|T1w-brain-template-deriv| BG[applyxfm_deriv_mask_to_standard_ref]
+            BF -->|merged_file| BH[apply_mask]
+            BI[apply_mask] --> BJ[out_file]
+            BJ -->|outputs| BK[final_outputs]
+            BJ -->|space-template_desc-brain_bold| BL[brain_bold_output]
+            BJ -->|space-template_desc-preproc_bold| BM[preproc_bold_output]
+            BL -->|merged_file| BN[final_bold_output]
+            BM -->|merged_file| BO[preproc_bold_output]
+        source: null
+        validation: null
+
+  transform_sbref_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_sbref_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_sbref_to_T1template] --> B[warp_resource_to_template]
+            B -->|sbref| C[sbref_input]
+            B -->|from-bold-to-template-mode-image-xfm| D[xfm_transform]
+            C -->|T1w-brain-template-funcreg| E[reference_image]
+            D --> F[apply_xfm]
+            F -->|outputspec.output_image| G[space-template_sbref]
+            G -->|outputs| H[final_outputs]
+            H -->|output| I[space-template_sbref]
+        source: null
+        validation: null
+
+  transform_bold_mask_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_bold_mask_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_bold_mask_to_T1template] --> B[warp_resource_to_template]
+            B -->|space-bold_desc-brain_mask| C[bold_mask_input]
+            B -->|from-bold-to-template-mode-image-xfm| D[xfm_transform]
+            C -->|T1w-brain-template-funcreg| E[reference_image]
+            D --> F[apply_xfm]
+            F -->|outputspec.output_image| G[space-template_desc-bold_mask]
+            G -->|outputs| H[final_outputs]
+            H -->|output| I[space-template_desc-bold_mask]
+        source: null
+        validation: null
+
+  transform_deriv_mask_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_deriv_mask_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_deriv_mask_to_T1template] --> B[warp_resource_to_template]
+            B -->|space-bold_desc-brain_mask| C[bold_mask_input]
+            B -->|from-bold-to-template-mode-image-xfm| D[xfm_transform]
+            C -->|T1w-brain-template-deriv| E[reference_image]
+            D --> F[apply_xfm]
+            F -->|outputspec.output_image| G[space-template_res-derivative_desc-bold_mask]
+            G -->|outputs| H[final_outputs]
+            H -->|output| I[space-template_res-derivative_desc-bold_mask]
+        source: null
+        validation: null
+
+  transform_timeseries_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_timeseries_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_timeseries_to_EPItemplate] --> B[warp_resource_to_template]
+            B -->|desc-preproc_bold| C[bold_timeseries_input]
+            B -->|from-bold-to-EPItemplate-mode-image-xfm| D[xfm_transform]
+            C --> E[apply_xfm]
+            E -->|outputspec.output_image| F[space-template_desc-preproc_bold]
+            F -->|outputs| G[final_outputs]
+            G -->|output| H[space-template_desc-preproc_bold]
+        source: null
+        validation: null
+
+  transform_bold_mean_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_bold_mean_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_bold_mean_to_EPItemplate] --> B[warp_resource_to_template]
+            B -->|desc-mean_bold| C[bold_mean_input]
+            B -->|from-bold-to-EPItemplate-mode-image-xfm| D[xfm_transform]
+            C --> E[apply_xfm]
+            E -->|outputspec.output_image| F[space-template_desc-mean_bold]
+            F -->|outputs| G[final_outputs]
+            G -->|output| H[space-template_desc-mean_bold]
+        source: null
+        validation: null
+
+  transform_bold_mask_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_bold_mask_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_bold_mask_to_EPItemplate] --> B[warp_resource_to_template]
+            B -->|space-bold_desc-brain_mask| C[bold_mask_input]
+            B -->|from-bold-to-EPItemplate-mode-image-xfm| D[xfm_transform]
+            C --> E[apply_xfm]
+            E -->|outputspec.output_image| F[space-template_desc-bold_mask]
+            F -->|outputs| G[final_outputs]
+            G -->|output| H[space-template_desc-bold_mask]
+        source: null
+        validation: null
+
+  transform_deriv_mask_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_deriv_mask_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_deriv_mask_to_EPItemplate] --> B[warp_resource_to_template]
+            B -->|space-bold_desc-brain_mask| C[bold_mask_input]
+            B -->|from-bold-to-EPItemplate-mode-image-xfm| D[xfm_transform]
+            C --> E[apply_xfm]
+            E -->|outputspec.output_image| F[space-template_res-derivative_desc-bold_mask]
+            F -->|outputs| G[final_outputs]
+            G -->|output| H[space-template_res-derivative_desc-bold_mask]
+        source: null
+        validation: null
+
+  warp_tissuemask_to_T1template:
+    description: null
+    references: null
+    methods:
+      warp_tissuemask_to_T1template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_tissuemask_to_T1template] --> B[warp_tissuemask_to_template]
+            B -->|from-T1w-to-template-mode-image-xfm| C[xfm_transform]
+            C -->|template_space=T1| D[T1_template]
+            D --> E[final_outputs]
+        source: null
+        validation: null
+
+  warp_tissuemask_to_EPItemplate:
+    description: null
+    references: null
+    methods:
+      warp_tissuemask_to_EPItemplate():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_tissuemask_to_EPItemplate] --> B[warp_tissuemask_to_template]
+            B -->|from-bold-to-EPItemplate-mode-image-xfm| C[xfm_transform]
+            C -->|template_space=EPI| D[EPI_template]
+            D --> E[final_outputs]
+        source: null
+        validation: null
+    
+      warp_tissuemask_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_tissuemask_to_template] --> B[warp_resource_to_template]
+            B -->|label-CSF_mask| C[apply_xfm_CSF]
+            B -->|label-WM_mask| D[apply_xfm_WM]
+            B -->|label-GM_mask| E[apply_xfm_GM]
+            C --> F[T1_template]
+            D --> F
+            E --> F
+            F --> G[final_outputs]
+        source: null
+        validation: null
+
+    
+      warp_resource_to_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[warp_resource_to_template] --> B[determine template_space]
+            B --> C[determine registration tool]
+            C --> D[check resource in strat_pool]
+            D -->|resource found| E[get_data from strat_pool]
+            D -->|resource not found| F[return wf, None, input_resource]
+            E --> G[set reference and subworkflow name]
+            G --> H[apply_transform subworkflow]
+            H --> I[set interpolation based on registration tool]
+            I --> J[connect nodes to subworkflow]
+            J --> K[return wf, apply_xfm, input_resource]
+        source: null
+        validation: null
+
+    
+      _warp_return():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[_warp_return] --> B[check if apply_xfm is None]
+            B -->|apply_xfm is None| C[return wf, empty outputs]
+            B -->|apply_xfm is not None| D[return wf, outputs]
+        source: null
+        validation: null

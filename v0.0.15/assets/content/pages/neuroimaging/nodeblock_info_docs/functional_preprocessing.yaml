@@ -1,0 +1,21 @@
+# this is a C-PAC Docs content file (placeholder)
+
+paragraphs:
+
+  - paragraph: Functional Preprocessing
+    subparagraphs:
+      - paragraph: General Preprocessing
+        subparagraphs:
+          - paragraph: Slice-Time Correction
+          - paragraph: De-Spiking
+            details:
+            - AFNI 3dDespike directly modifies the BOLD values which some may not like, vs. spike regression which affects all regressors/estimates, but does not directly modify the actual BOLD spike values.
+            - AFNI 3dDespike does not account for broader spatial/global effects of spikes.
+          - paragraph: Intensity Normalization
+          - paragraph: Smoothing
+            details:
+            - Smoothing decreases the spatial resolution of functional data by replacing the signal at each voxel with a weighted average of that voxel’s neighbors.
+            - By averaging nearby voxels, we can cancel out the noise found in fMRI data and enhance the signal.
+            - As we use larger smoothing kernels, the images become blurrier and the anatomical details become less distinct.
+      - paragraph: BOLD Masking
+      - paragraph: Motion Correction
