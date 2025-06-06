@@ -54,10 +54,6 @@ jobs:
       - name: Clone gh-pages branch
         run: |
           git clone --branch gh-pages --depth 1 "https://github.com/${{ github.repository }}.git" "$GH_PAGES_DIR"
-          cd "$GH_PAGES_DIR"
-          git config user.name "$(git log -1 --pretty=format:'%an' ${{ github.workspace }}/)"
-          git config user.email "$(git log -1 --pretty=format:'%ae' ${{ github.workspace }}/)"
-          cd ${{ github.workspace }}
 
       - name: Build and copy docs
         run: |
