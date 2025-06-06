@@ -42,7 +42,12 @@ repos:
 
       - id: check-types
         name: Type Check
-        entry: bash -c "yarn check-ts"
+        entry: |
+          bash -c "
+          corepack enable;
+          corepack prepare yarn@4.9.1 --activate;
+          yarn workspaces focus --all;
+          yarn check-ts"
         language: system
         types: [ts]
         require_serial: true
