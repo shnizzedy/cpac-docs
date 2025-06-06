@@ -22,7 +22,7 @@ jobs:
 
       - name: Determine DOCS_VERSION
         id: vars
-        run: echo "DOCS_VERSION=${{ github.event.inputs.DOCS_VERSION || (github.ref_type == 'tag' && github.ref_name) || 'develop' }}" >> "$GITHUB_OUTPUT"
+        run: echo "DOCS_VERSION=${{ (github.ref_type == 'tag' && github.ref_name) || 'develop' }}" >> "$GITHUB_OUTPUT"
 
       - name: Log DOCS_VERSION
         run: 'echo "Using DOCS_VERSION: ${{ steps.vars.outputs.DOCS_VERSION }}"'
