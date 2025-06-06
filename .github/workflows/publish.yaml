@@ -58,6 +58,7 @@ jobs:
       - name: Build and copy docs
         run: |
           OUTDIR="${GH_PAGES_DIR}/${{ steps.vars.outputs.DOCS_VERSION }}" yarn copy-and-build
+          ./dev/collect-versions.sh "$GH_PAGES_DIR"
 
       - name: Update latest
         if: ${{ startsWith(github.ref, 'refs/tags/') }}
@@ -72,7 +73,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           cd "$GH_PAGES_DIR"
-          git add .
+          git add . -f
           LAST_COMMIT_MSG=$(git --git-dir=${{ github.workspace }}/.git log -1 --pretty=%B)
           git commit -m "$LAST_COMMIT_MSG" || echo "No changes to commit"
           git push origin gh-pages
