@@ -6,11 +6,6 @@ on:
       - main
     tags:
       - '*'
-  workflow_dispatch:
-    inputs:
-      DOCS_VERSION:
-        description: 'C-PAC version to freeze docs for (e.g., v1.2.3)'
-        required: true
 
 env:
   GH_PAGES_DIR: "${HOME}/dist"
