@@ -7,26 +7,22 @@ on:
     tags:
       - '*'
 
-env:
-  GH_PAGES_DIR: "${HOME}/dist"
-
 jobs:
   build-and-publish-docs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up Git user
+      - name: Set up Git user && gh-pages directory
         run: |
           git config --global user.name "Theodore 🐈🤖"
           git config --global user.email "CMI_CPAC_Support@childmind.org"
-
+          echo "GH_PAGES_DIR=${HOME}/dist" >> "$GITHUB_ENV"
       - name: Determine DOCS_VERSION
         id: vars
         run: echo "DOCS_VERSION=${{ (github.ref_type == 'tag' && github.ref_name) || 'develop' }}" >> "$GITHUB_OUTPUT"
 
       - name: Log DOCS_VERSION
-        run: 'echo "Using DOCS_VERSION: ${{ steps.vars.outputs.DOCS_VERSION }}"'
-
+        run: 'echo "Using DOCS_VERSION: ${{ steps.vars.outputs.DOCS_VERSION }}\nUsing GH_PAGES_DIR: ${GH_PAGES_DIR}"'
 
       - name: Checkout source code
         uses: actions/checkout@v4
