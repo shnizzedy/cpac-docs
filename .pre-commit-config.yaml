@@ -42,7 +42,7 @@ repos:
 
       - id: check-types
         name: Type Check
-        entry: bash -c "yarn check-ts"
+        entry: bash -c "node .yarn/releases/yarn-*.cjs check-ts"
         language: system
         types: [ts]
         require_serial: true
