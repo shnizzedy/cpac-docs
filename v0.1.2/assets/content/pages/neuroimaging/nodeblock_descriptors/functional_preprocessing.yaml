@@ -1,0 +1,394 @@
+# This is a C-PAC nodeblock descriptor file. (to be pulled from C-PAC/CPAC/nodeblock)
+
+steps:
+
+  func_reorient:
+    description: null
+    references: null
+    methods:
+      func_reorient():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+              A[func_deoblique] --> B[Connect to strat_pool];
+              A --> C[Set Deoblique True];
+              B --> D[Connect to func_reorient];
+              C --> E[Set Orientation];
+              D --> F[Set Output Type to NIFTI_GZ];
+              E --> G[Return Outputs];
+        source: null
+        validation: null
+
+  func_scaling:
+    description: null
+    references: null
+    methods:
+      func_scaling():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[scale_func_wf] --> B[Set Scaling Factor];
+            A --> C[Connect to strat_pool];
+            B --> D[Connect to inputspec.func];
+            C --> E[Return Outputs];
+        source: null
+        validation: null
+
+  func_truncate:
+    description: null
+    references: null
+    methods:
+      func_truncate():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Create WF Edit Func] --> B[Set Start Index];
+            A --> C[Set Stop Index];
+            B --> D[Connect to strat_pool];
+            C --> D;
+            D --> E[Return Outputs];
+        source: null
+        validation: null
+
+  func_despike:
+    description: null
+    references: null
+    methods:
+      func_despike():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Create Despike Node] --> B[Set Output Type];
+            A --> C[Connect to strat_pool];
+            B --> D[Return Outputs];
+            C --> D;
+        source: null
+        validation: null
+  
+  func_despike_template:
+    description: null
+    references: null
+    methods:
+      func_despike_template():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Create Despike Template Node] --> B[Set Output Type];
+            A --> C[Connect to strat_pool];
+            B --> D[Return Outputs];
+            C --> D;
+            D --> E{Check for space-template_res-derivative_desc-preproc_bold};
+            E -->|Yes| F[Create Derivative Despike Node];
+            F --> G[Set Output Type for Derivative];
+            F --> H[Connect to strat_pool for Derivative];
+            G --> I[Updated Outputs for Derivative];
+            H --> I;
+            I --> D;
+        source: null
+        validation: null
+
+  func_slice_time:
+    description: null
+    references: null
+    methods:
+      func_slice_time():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Create Slice Time Correction Node] --> B[Set Parameters tpattern and tzero];
+            A --> C[Connect to strat_pool: desc-preproc_bold];
+            B --> D[Return Outputs];
+            C --> D;
+            D --> E[Connect to strat_pool: TR];
+            E --> F[Connect to strat_pool: tpattern];
+            F --> G[Return Outputs];
+        source: null
+        validation: null
+
+  bold_mask_afni:
+    description: null
+    references: null
+    methods:
+      bold_mask_afni():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Create func_get_brain_mask Node] --> B[Set Output Type to NIFTI_GZ];
+            A --> C[Connect to strat_pool: desc-preproc_bold];
+            B --> D[Return Outputs];
+            C --> D;
+            D --> E[Return Outputs: space-bold_desc-brain_mask];
+        source: null
+        validation: null       
+
+  bold_mask_fsl:
+    description: null
+    references: null
+    methods:
+      bold_mask_fsl():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Create inputnode_bet Node] --> B[Set BET Inputs from Config];
+            A --> C[Create func_get_brain_mask Node];
+            C --> D[Set Output Type to NIFTI_GZ];
+            C --> E[Set Mask to True];
+            B --> F[Connect inputnode_bet to func_get_brain_mask];
+            F --> G[Check functional_mean_boolean];
+            
+            G -->|True| H[Create func_skull_mean Node];
+            H --> I[Set Options and Output Type];
+            H --> J[Connect to strat_pool: desc-preproc_bold];
+            
+            J --> K[Check functional_mean_thr];
+            K -->|True| L[Create threshold_T Node];
+            L --> M[Set Stats Op String];
+            M --> N[Connect to func_skull_mean];
+            N --> O[Create form_thr_string Node];
+            O --> P[Connect threshold_T to form_thr_string];
+            P --> Q[Create func_skull_mean_thr Node];
+            Q --> R[Connect form_thr_string to func_skull_mean_thr];
+            
+            R --> S[Connect to func_mean_skull_fast for bias correction];
+            S --> T[Connect func_mean_skull_fast to func_get_brain_mask];
+            
+            G -->|False| U[Connect desc-preproc_bold to func_get_brain_mask];
+            
+            V[Create erode_one_voxel Node] --> W[Set Kernel Shape and Size];
+            W --> X[Connect to func_get_brain_mask];
+            
+            X --> Y[Return Outputs: space-bold_desc-brain_mask];
+        source: null
+        validation: null   
+
+  bold_mask_fsl_afni:
+    description: null
+    references: null
+    methods:
+      bold_mask_fsl_afni():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[Create fsl_afni_wf Node] --> B[Connect FSL-AFNI-bold-ref to fsl_afni_wf];
+            A --> C[Connect FSL-AFNI-brain-mask to fsl_afni_wf];
+            A --> D[Connect FSL-AFNI-brain-probseg to fsl_afni_wf];
+            A --> E[Connect motion-basefile to fsl_afni_wf];
+            
+            B --> F[Outputs: desc-unifized_bold];
+            C --> G[Outputs: space-bold_desc-brain_mask];
+            
+            F --> H[Return Outputs: desc-unifized_bold];
+            G --> I[Return Outputs: space-bold_desc-brain_mask];
+        source: null
+        validation: null   
+
+  bold_mask_anatomical_refined:
+    description: null
+    references: null
+    methods:
+      bold_mask_anatomical_refined():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[space-T1w_desc-brain_mask or space-T1w_desc-acpcbrain_mask] --> B[anat_brain_mask_bin]; 
+            B --> C[anat_brain_mask_filled]; 
+            D[bold] --> E[raw_func_deoblique]; 
+            E --> F[raw_func_reorient]; 
+            F --> G[init_bold_mask inputspec.func]; 
+            C --> G[init_bold_mask inputspec.anatomical_brain_mask]; 
+            H[desc-brain_T1w] --> G[init_bold_mask inputspec.anat_brain]; 
+            G --> I[func_tmp_brain_mask_dil]; 
+            J[desc-preproc_bold or bold] --> K[refined_bold_mask inputspec.func]; 
+            H --> K[refined_bold_mask inputspec.anat_brain]; 
+            I --> K[refined_bold_mask inputspec.init_func_brain_mask]; 
+            C --> L[anat_mask_dilate]; 
+            L --> K[refined_bold_mask inputspec.anatomical_brain_mask]; 
+            C --> K[refined_bold_mask inputspec.anatomical_brain_mask]; 
+            I --> M[func_mask_final in_file]; 
+            K --> M[func_mask_final operand_files]; 
+            M --> N[Output space-bold_desc-brain_mask];
+        source: null
+        validation: null   
+
+  bold_mask_anatomical_based:
+    description: null
+    references: null
+    methods:
+      bold_mask_anatomical_based():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[desc-preproc_bold] --> B[func_single_volume]; 
+            B --> C[func_to_anat_linear_reg in_file]; 
+            D[desc-preproc_T1w or desc-reorient_T1w or T1w] --> C[func_to_anat_linear_reg reference]; 
+            C --> E[inv_func2anat_affine]; 
+            F[desc-brain_T1w] --> G[reg_anat_brain_to_func in_file]; 
+            A --> G[reg_anat_brain_to_func ref_file]; 
+            E --> G[reg_anat_brain_to_func premat]; 
+            G --> H[func_mask_bin]; 
+            H --> I[func_mask_fill_holes]; 
+            I --> J[Output space-bold_desc-brain_mask];
+        source: null
+        validation: null   
+      anat_brain_to_bold_res():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[space-template_desc-preproc_T1w] --> B[resample_anat_brain_in_standard]; 
+            C[T1w-template-funcreg] --> B[resample_anat_brain_in_standard]; 
+            B --> D[Output space-template_res-bold_desc-brain_T1w];
+        source: null
+        validation: null   
+      anat_brain_mask_to_bold_res():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[space-template_desc-brain_mask] --> B[resample_anat_brain_mask_in_standard]; 
+            C[space-template_desc-preproc_T1w] --> B[resample_anat_brain_mask_in_standard]; 
+            B --> D[Output space-template_desc-bold_mask];
+        source: null
+        validation: null   
+
+  bold_mask_anatomical_resampled:
+    description: null
+    references: null
+    methods:
+      bold_mask_anatomical_resampled():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[space-template_desc-preproc_T1w] --> B[anat_brain_to_bold_res]; 
+            C[T1w-template-funcreg] --> B[anat_brain_to_bold_res]; 
+            B --> D[space-template_res-bold_desc-brain_T1w]; 
+            E[space-template_desc-brain_mask] --> F[anat_brain_mask_to_bold_res]; 
+            D --> F[anat_brain_mask_to_bold_res]; 
+            F --> G[space-template_desc-bold_mask]; 
+            G --> H[resample_func_mask_to_native]; 
+            I[desc-preproc_bold] --> H[resample_func_mask_to_native]; 
+            H --> J[Output space-bold_desc-brain_mask];
+        source: null
+        validation: null   
+
+  bold_mask_ccs:
+    description: null
+    references: null
+    methods:
+      bold_mask_ccs():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[desc-motion_bold desc-preproc_bold bold] --> B[func_tmp_brain_mask_AFNI]; 
+            A --> C[extract_func_roi]; 
+            C --> D[get_func_tmp_brain]; 
+            B --> D; 
+            D --> E[func_to_anat_linear_reg]; 
+            F[desc-brain_T1w] --> E; 
+            E --> G[inv_func2anat_affine]; 
+            F --> H[reg_anat_brain_to_func]; 
+            C --> H; 
+            G --> H; 
+            H --> I[bin_anat_brain_in_func]; 
+            A --> J[bin_func]; 
+            B --> K[merge_func_mask]; 
+            I --> K; 
+            J --> L[intersect_mask]; 
+            K --> L; 
+            C --> M[get_example_func_brain]; 
+            L --> M; 
+            L --> N[Output space-bold_desc-brain_mask]; 
+            M --> O[Output desc-ref_bold];
+        source: null
+        validation: null   
+
+  bold_masking:
+    description: null
+    references: null
+    methods:
+      bold_masking():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[desc-preproc_bold] --> B[func_extract_brain]; 
+            C[space-bold_desc-brain_mask] --> B; 
+            B --> D[Output desc-preproc_bold]; 
+            B --> E[Output desc-brain_bold]; 
+            A --> F[Output desc-head_bold];
+        source: null
+        validation: null   
+
+  func_mean:
+    description: null
+    references: null
+    methods:
+      func_mean():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[desc-preproc_bold] --> B[func_mean]; 
+            B --> C[Output desc-mean_bold];
+        source: null
+        validation: null   
+
+  func_normalize:
+    description: null
+    references: null
+    methods:
+      func_normalize():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[desc-preproc_bold] --> B[func_normalize]; 
+            B --> C[Output desc-preproc_bold];
+        source: null
+        validation: null   
+
+  func_mask_normalize:
+    description: null
+    references: null
+    methods:
+      func_mask_normalize():
+        description: null
+        references: null
+        config: null
+        operations: |
+          graph TD
+            A[desc-preproc_bold] --> B[func_mask_normalize]; 
+            B --> C[Output space-bold_desc-brain_mask];
+        source: null
+        validation: null  
