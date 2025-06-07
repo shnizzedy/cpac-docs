@@ -2,6 +2,7 @@
 
 <!-- TOC -->
 
+- [GitHub Actions configuration](#github-actions-configuration)
 - [Local development](#local-development)
   - [Requirements](#requirements)
   - [Process](#process)
@@ -12,6 +13,22 @@
 For contribution guidelines that may have archived or are currently being moved over to this repo, please refer to [archive/CONTRIBUTING.md](./archive/CONTRIBUTING.md)
 
 <!-- /TOC -->
+
+## GitHub Actions configuration
+
+If you send pull requests to [FCP-INDI/cpac-docs@`main`](https://github.com/FCP-INDI/cpac-docs/tree/main), GitHub Actions should build and deploy the changes. If you're working on a fork and want a published version on your fork, you need to configure some settings:
+
+### Pages
+
+Make sure your fork has a compiled `gh-pages` branch and set **Branch** to `gh-pages` under your fork's `settings/pages`.
+
+### Deploy key
+
+[Locally generate a new SSH key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#generating-a-new-ssh-key) to use for the [deploy key](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/managing-deploy-keys#deploy-keys). [FCP-INDI/cpac-docs](https://github.com/FCP-INDI/cpac-docs) uses [a machine user](https://docs.github.com/en/authentication/connecting-to-github-with-ssh/managing-deploy-keys#machine-users) for the key owner's identity, but what user you want to use for a fork is up to you. Copy the full text of the public key and paste it into **Key** in "Deploy keys / Add new" under your fork's `settings/keys/new`. Give the key write access and whatever title you'd like. Click "Add key".
+
+### Secrets and variables
+
+Copy the full text of [the private key generated above](#deploy-key) and paste it into **Secret** in "Actions secrets / New secret" under your fork's `settings/secrets/actions/new`. Give the secret the name `DEPLOY_SSH_KEY`.
 
 ## Local development
 
