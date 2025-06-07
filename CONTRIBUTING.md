@@ -31,6 +31,7 @@ Some of the automation for GitHub Pages and autoversioned documentation requires
         and
     2. run `yarn`.
 3. Run `yarn dev` to start a local hot-refreshing development server. By default, the compiled code will be served at `http://localhost:5173`.
+4. Target pull requests at [`main`](https://github.com/FCP-INDI/cpac-docs/tree/main). Once they're merged to main, the changes will be reflected in [fcp-indi.github.io/cpac-docs/develop](https://fcp-indi.github.io/cpac-docs/develop). When a commit is tagged, that tag will be built as a frozen version, and if it's the latest [semantic version](https://semver.org), that version will also overwrite [fcp-indi.github.io/cpac-docs/latest](https://fcp-indi.github.io/cpac-docs/latest).
 
 ## Content
 
