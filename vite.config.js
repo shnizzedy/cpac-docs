@@ -6,16 +6,6 @@ export default defineConfig({
     outDir: '../cpac-docs',
     emptyOutDir: true
   },
-  plugins: [
-    viteStaticCopy({
-      targets: [
-        {
-          src: 'public/latest/assets/*',
-          dest: 'assets',
-        },
-      ],
-    }),
-  ],
   server: {
     headers: {
       'Cache-Control': 'no-store'
