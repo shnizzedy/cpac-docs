@@ -1,6 +1,0 @@
-# this is a C-PAC Docs content file 
-
-meta:
-  title: Optimize Memory Estimation
-  displayTitle: false
-iframe: https://nbviewer.org/github/FCP-INDI/C-PAC_tutorials/blob/main/observed_usage/index.ipynb
