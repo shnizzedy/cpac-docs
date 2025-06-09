@@ -4,6 +4,7 @@
 ci:
   skip:
     - yarn-update-installation
+    - check-types
     - lint
     - format
 
